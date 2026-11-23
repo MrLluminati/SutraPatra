@@ -190,3 +190,6 @@ h1,h2,h3,h4 { line-height: 1.4; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
 }
+
+.all-articles-link { font-size: 13px; font-weight: 800; color: var(--brand); white-space: nowrap; }
+.all-articles-link:hover { text-decoration: underline; text-underline-offset: 4px; }

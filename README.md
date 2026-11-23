@@ -21,3 +21,13 @@ Only publish reviewed, sourced, original material. Articles live in `src/content
 ## Status
 
 Initial website in development. No ads, analytics scripts or trackers are included by default.
+
+## Reader-facing sections
+
+- `/` — Hindi homepage
+- `/lekh/` — complete article archive
+- `/vishay/{category}/` — category archive
+- `/lekh/{slug}/` — individual article
+- `/sitemap.xml`, `/rss.xml`, `/robots.txt` — discovery feeds
+
+For the first editorial batch, see `docs/EDITORIAL_PLAN.md` and `docs/PUBLISHING.md`.

@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+
+const articles = (await getCollection('articles', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout title="सभी लेख" description="सूत्रपत्र पर प्रकाशित सभी हिंदी लेख एक ही जगह पढ़ें। संस्कृति, आरती, स्तोत्र, व्रत और त्योहार से जुड़े विषय देखें।">
+  <div class="container page-container">
+    <div class="breadcrumbs"><a href="/">मुखपृष्ठ</a><span aria-hidden="true">/</span><span>सभी लेख</span></div>
+    <header class="section-page-header">
+      <span class="section-kicker">सूत्रपत्र · लेख संग्रह</span>
+      <h1>सभी लेख</h1>
+      <p>हमारे प्रकाशित लेख पढ़ें, पसंदीदा विषय खोजें और जानकारी को विस्तार से समझें।</p>
+    </header>
+    {articles.length > 0 ? (
+      <div class="cards-grid">
+        {articles.map((article) => <ArticleCard article={article} />)}
+      </div>
+    ) : (
+      <div class="empty-notice"><p>इस समय कोई प्रकाशित लेख उपलब्ध नहीं है।</p></div>
+    )}
+  </div>
+</BaseLayout>

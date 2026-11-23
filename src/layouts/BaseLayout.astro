@@ -59,6 +59,7 @@ const year = new Date().getFullYear();
         <div class="container nav-inner">
           <a class="nav-home" href="/">मुखपृष्ठ</a>
           {categories.map((category) => <a href={'/vishay/' + category.slug + '/'}>{category.label}</a>)}
+          <a href="/lekh/">सभी लेख</a>
           <a class="nav-about" href="/hamare-bare-mein/">हमारे बारे में</a>
         </div>
       </nav>
@@ -71,7 +72,7 @@ const year = new Date().getFullYear();
           <p>{tagline} — भारतीय संस्कृति और सामान्य विषयों पर स्पष्ट, सुलभ और उपयोगी हिंदी सामग्री।</p>
         </div>
         <div><h2>विषय</h2>{categories.map((category) => <a href={'/vishay/' + category.slug + '/'}>{category.label}</a>)}</div>
-        <div><h2>महत्वपूर्ण लिंक</h2><a href="/hamare-bare-mein/">हमारे बारे में</a><a href="/sampadakiya-neeti/">संपादकीय नीति</a><a href="/gopniyata/">गोपनीयता नीति</a><a href="/sampark/">संपर्क</a></div>
+        <div><h2>महत्वपूर्ण लिंक</h2><a href="/lekh/">सभी लेख</a><a href="/hamare-bare-mein/">हमारे बारे में</a><a href="/sampadakiya-neeti/">संपादकीय नीति</a><a href="/gopniyata/">गोपनीयता नीति</a><a href="/sampark/">संपर्क</a></div>
       </div>
       <div class="container footer-bottom"><span>© {year} सूत्रपत्र। सर्वाधिकार सुरक्षित।</span><span>स्वतंत्र प्रकाशन · हिंदी में</span></div>
     </footer>

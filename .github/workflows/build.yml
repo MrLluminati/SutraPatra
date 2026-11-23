@@ -22,3 +22,11 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Build static website
         run: npm run build
+      - name: Verify key generated pages
+        run: |
+          test -f dist/index.html
+          test -f dist/lekh/index.html
+          test -f dist/lekh/aarti-aur-stotra-mein-antar/index.html
+          test -f dist/sitemap.xml
+          test -f dist/rss.xml
+          test -f dist/robots.txt

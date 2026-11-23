@@ -4,6 +4,7 @@ import { categories } from '../lib/site';
 
 const publicPages = [
   '/',
+  '/lekh/',
   '/hamare-bare-mein/',
   '/sampadakiya-neeti/',
   '/gopniyata/',

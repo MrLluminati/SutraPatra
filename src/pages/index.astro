@@ -37,7 +37,7 @@ const featuredCategory = featured && getCategory(featured.data.category);
       <section class="empty-notice"><h2>सूत्रपत्र में आपका स्वागत है</h2><p>हम स्वतंत्र और उपयोगी हिंदी सामग्री प्रकाशित करने की तैयारी कर रहे हैं।</p></section>
     )}
     <section class="home-section" aria-labelledby="recent-title">
-      <div class="section-heading"><div><span class="section-kicker">नई प्रस्तुतियाँ</span><h2 id="recent-title">नवीन लेख</h2></div><span class="section-heading-aside">पढ़ें • समझें • जानें</span></div>
+      <div class="section-heading"><div><span class="section-kicker">नई प्रस्तुतियाँ</span><h2 id="recent-title">नवीन लेख</h2></div><a class="all-articles-link" href="/lekh/">सभी लेख देखें <span aria-hidden="true">←</span></a></div>
       <div class="cards-grid">
         {(recent.length ? recent : articles).map((article) => <ArticleCard article={article} />)}
       </div>
