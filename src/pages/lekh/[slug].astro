@@ -14,12 +14,25 @@ export async function getStaticPaths() {
 const { article } = Astro.props;
 const { Content } = await render(article);
 const category = getCategory(article.data.category);
+const articleUrl = new URL('/lekh/' + article.id + '/', Astro.site ?? new URL('https://sutrapatra.pages.dev')).toString();
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: article.data.title,
+  description: article.data.description,
+  inLanguage: 'hi-IN',
+  datePublished: article.data.date.toISOString(),
+  dateModified: (article.data.updated ?? article.data.date).toISOString(),
+  mainEntityOfPage: articleUrl,
+  author: { '@type': 'Organization', name: article.data.author },
+  publisher: { '@type': 'Organization', name: 'SutraPatra', url: new URL('/', articleUrl).toString() },
+};
 const otherArticles = (await getCollection('articles', ({ data }) => !data.draft && data.category === article.data.category))
   .filter((item) => item.id !== article.id)
   .slice(0, 3);
 ---
 
-<BaseLayout title={article.data.title} description={article.data.description} article>
+<BaseLayout title={article.data.title} description={article.data.description} structuredData={articleSchema} article>
   <div class="container article-shell">
     <div class="breadcrumbs"><a href="/">मुखपृष्ठ</a><span aria-hidden="true">/</span><a href={'/vishay/' + article.data.category + '/'}>{category?.label}</a><span aria-hidden="true">/</span><span>लेख</span></div>
     <article class="full-article">

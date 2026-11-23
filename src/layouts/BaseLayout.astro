@@ -6,16 +6,18 @@ interface Props {
   title?: string;
   description?: string;
   article?: boolean;
+  structuredData?: Record<string, unknown>;
 }
 
 const {
   title = 'सूत्रपत्र — जानकारी से समझ तक',
   description = 'सूत्रपत्र एक स्वतंत्र हिंदी डिजिटल पत्रिका है। संस्कृति, परंपरा, पर्व और उपयोगी जानकारी को सरल भाषा में समझें।',
   article = false,
+  structuredData,
 } = Astro.props;
 
-const baseUrl = import.meta.env.PUBLIC_SITE_URL?.trim().replace(/\/$/, '');
-const canonical = baseUrl ? new URL(Astro.url.pathname, baseUrl).toString() : undefined;
+const baseUrl = (import.meta.env.PUBLIC_SITE_URL?.trim() || 'https://sutrapatra.pages.dev').replace(/\/$/, '');
+const canonical = new URL(Astro.url.pathname, baseUrl).toString();
 const fullTitle = title.includes('सूत्रपत्र') ? title : title + ' | सूत्रपत्र';
 const year = new Date().getFullYear();
 ---
@@ -38,6 +40,8 @@ const year = new Date().getFullYear();
     {canonical && <meta property="og:url" content={canonical} />}
     <meta name="twitter:card" content="summary" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" href="/rss.xml" title="सूत्रपत्र RSS" />
+    {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')} />}
     <slot name="head" />
   </head>
   <body>
