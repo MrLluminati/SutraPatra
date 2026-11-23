@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatHindiDate, getCategory } from '../lib/site';
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+  compact?: boolean;
+}
+
+const { article, compact = false } = Astro.props;
+const category = getCategory(article.data.category);
+const articleUrl = '/lekh/' + article.id + '/';
+---
+
+<article class:list={['article-card', { compact }]}>
+  <a class:list={['article-art', 'theme-' + article.data.category]} href={articleUrl} aria-label={article.data.title}>
+    <span class="art-decor" aria-hidden="true">{category?.letter ?? 'सू'}</span>
+    <span class="art-corner" aria-hidden="true">सूत्रपत्र</span>
+  </a>
+  <div class="article-card-body">
+    <a class="eyebrow" href={'/vishay/' + article.data.category + '/'}>{category?.label}</a>
+    <h3><a href={articleUrl}>{article.data.title}</a></h3>
+    {!compact && <p class="card-description">{article.data.description}</p>}
+    <div class="byline"><time datetime={article.data.date.toISOString()}>{formatHindiDate(article.data.date)}</time><span aria-hidden="true">·</span><span>{article.data.author}</span></div>
+  </div>
+</article>

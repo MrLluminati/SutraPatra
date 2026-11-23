@@ -1,0 +1,75 @@
+---
+import '../styles/global.css';
+import { categories, siteName, siteNameEnglish, tagline } from '../lib/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  article?: boolean;
+}
+
+const {
+  title = 'सूत्रपत्र — जानकारी से समझ तक',
+  description = 'सूत्रपत्र एक स्वतंत्र हिंदी डिजिटल पत्रिका है। संस्कृति, परंपरा, पर्व और उपयोगी जानकारी को सरल भाषा में समझें।',
+  article = false,
+} = Astro.props;
+
+const baseUrl = import.meta.env.PUBLIC_SITE_URL?.trim().replace(/\/$/, '');
+const canonical = baseUrl ? new URL(Astro.url.pathname, baseUrl).toString() : undefined;
+const fullTitle = title.includes('सूत्रपत्र') ? title : title + ' | सूत्रपत्र';
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="hi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#9f2f28" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:site_name" content={siteNameEnglish} />
+    <meta property="og:locale" content="hi_IN" />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">मुख्य सामग्री पर जाएँ</a>
+    <div class="utility-bar"><div class="container utility-inner"><span>स्वतंत्र हिंदी डिजिटल पत्रिका</span><span>संस्कृति • परंपरा • उपयोगी जानकारी</span></div></div>
+    <header class="site-header">
+      <div class="container header-main">
+        <a class="brand" href="/" aria-label="सूत्रपत्र — मुख्य पृष्ठ">
+          <span class="brand-emblem" aria-hidden="true">सू</span>
+          <span class="brand-text"><strong>{siteName}</strong><small>{tagline}</small></span>
+        </a>
+        <div class="header-message">हर विषय को समझने का एक नया नज़रिया<span class="header-message-line"></span></div>
+      </div>
+      <nav class="nav-bar" aria-label="मुख्य नेविगेशन">
+        <div class="container nav-inner">
+          <a class="nav-home" href="/">मुखपृष्ठ</a>
+          {categories.map((category) => <a href={'/vishay/' + category.slug + '/'}>{category.label}</a>)}
+          <a class="nav-about" href="/hamare-bare-mein/">हमारे बारे में</a>
+        </div>
+      </nav>
+    </header>
+    <main id="main-content"><slot /></main>
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <a class="footer-brand" href="/">{siteName}</a>
+          <p>{tagline} — भारतीय संस्कृति और सामान्य विषयों पर स्पष्ट, सुलभ और उपयोगी हिंदी सामग्री।</p>
+        </div>
+        <div><h2>विषय</h2>{categories.map((category) => <a href={'/vishay/' + category.slug + '/'}>{category.label}</a>)}</div>
+        <div><h2>महत्वपूर्ण लिंक</h2><a href="/hamare-bare-mein/">हमारे बारे में</a><a href="/sampadakiya-neeti/">संपादकीय नीति</a><a href="/gopniyata/">गोपनीयता नीति</a><a href="/sampark/">संपर्क</a></div>
+      </div>
+      <div class="container footer-bottom"><span>© {year} सूत्रपत्र। सर्वाधिकार सुरक्षित।</span><span>स्वतंत्र प्रकाशन · हिंदी में</span></div>
+    </footer>
+  </body>
+</html>

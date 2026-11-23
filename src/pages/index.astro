@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { categories, formatHindiDate, getCategory } from '../lib/site';
+
+const articles = (await getCollection('articles', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const featured = articles.find((item) => item.data.featured) ?? articles[0];
+const recent = articles.filter((item) => item.id !== featured?.id).slice(0, 6);
+const featuredCategory = featured && getCategory(featured.data.category);
+---
+
+<BaseLayout>
+  <div class="container">
+    <section class="introduction" aria-label="सूत्रपत्र परिचय">
+      <span class="section-kicker"><span class="red-dot"></span> विचार, संस्कृति और जानकारी</span>
+      <h1>हर जानकारी के पीछे <em>एक कहानी</em> है।</h1>
+      <p>परंपराओं से लेकर रोज़मर्रा के सवालों तक — पढ़िए आसान भाषा में, सोचिए नए नज़रिए से।</p>
+    </section>
+    <div class="rule-with-label"><span>संपादक की पसंद</span></div>
+    {featured ? (
+      <section class="lead-grid" aria-label="प्रमुख लेख">
+        <a href={'/lekh/' + featured.id + '/'} class:list={['lead-illustration', 'theme-' + featured.data.category]} aria-label={featured.data.title}>
+          <span class="lead-illustration-symbol" aria-hidden="true">{featuredCategory?.letter ?? 'सू'}</span>
+          <span class="lead-illustration-caption">सूत्रपत्र · विशेष प्रस्तुति</span>
+        </a>
+        <div class="lead-copy">
+          <a class="eyebrow" href={'/vishay/' + featured.data.category + '/'}>{featuredCategory?.label}</a>
+          <h2><a href={'/lekh/' + featured.id + '/'}>{featured.data.title}</a></h2>
+          <p>{featured.data.description}</p>
+          <div class="byline"><time datetime={featured.data.date.toISOString()}>{formatHindiDate(featured.data.date)}</time><span aria-hidden="true">·</span><span>{featured.data.author}</span></div>
+          <a class="read-more" href={'/lekh/' + featured.id + '/'}>पूरा लेख पढ़ें <span aria-hidden="true">←</span></a>
+        </div>
+      </section>
+    ) : (
+      <section class="empty-notice"><h2>सूत्रपत्र में आपका स्वागत है</h2><p>हम स्वतंत्र और उपयोगी हिंदी सामग्री प्रकाशित करने की तैयारी कर रहे हैं।</p></section>
+    )}
+    <section class="home-section" aria-labelledby="recent-title">
+      <div class="section-heading"><div><span class="section-kicker">नई प्रस्तुतियाँ</span><h2 id="recent-title">नवीन लेख</h2></div><span class="section-heading-aside">पढ़ें • समझें • जानें</span></div>
+      <div class="cards-grid">
+        {(recent.length ? recent : articles).map((article) => <ArticleCard article={article} />)}
+      </div>
+    </section>
+    <section class="category-section" aria-labelledby="topics-title">
+      <div class="section-heading"><div><span class="section-kicker">अपनी रुचि के अनुसार</span><h2 id="topics-title">विषय खोजें</h2></div></div>
+      <div class="category-grid">
+        {categories.map((category, index) => (
+          <a class:list={['category-tile', 'category-' + index]} href={'/vishay/' + category.slug + '/'}>
+            <span class="category-symbol" aria-hidden="true">{category.letter}</span>
+            <span class="category-content"><strong>{category.label}</strong><small>{category.description}</small><span class="category-cta">लेख देखें <span aria-hidden="true">←</span></span></span>
+          </a>
+        ))}
+      </div>
+    </section>
+    <section class="mission-band">
+      <div><span class="section-kicker">हमारा उद्देश्य</span><h2>सिर्फ जानकारी नहीं, <span>बेहतर समझ।</span></h2></div>
+      <p>सूत्रपत्र की शुरुआत एक सरल विचार से हुई है: हिंदी में ऐसे लेख हों जो स्पष्ट, उपयोगी और संदर्भ के प्रति सजग हों। <a href="/hamare-bare-mein/">हमारे बारे में जानें ←</a></p>
+    </section>
+  </div>
+</BaseLayout>

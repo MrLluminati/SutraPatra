@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { categories, type Category } from '../../lib/site';
+
+interface Props { category: Category; }
+
+export function getStaticPaths() {
+  return categories.map((category) => ({
+    params: { category: category.slug },
+    props: { category },
+  }));
+}
+
+const { category } = Astro.props;
+const articles = (await getCollection('articles', ({ data }) =>
+  !data.draft && data.category === category.slug
+)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout title={category.label} description={category.description}>
+  <div class="container page-container">
+    <div class="breadcrumbs"><a href="/">मुखपृष्ठ</a><span aria-hidden="true">/</span><span>{category.label}</span></div>
+    <header class="section-page-header"><span class="section-kicker">सूत्रपत्र · विषय</span><h1>{category.label}</h1><p>{category.description}</p></header>
+    {articles.length > 0 ? <div class="cards-grid">{articles.map((article) => <ArticleCard article={article} />)}</div> : <div class="empty-notice"><p>इस विषय पर नए लेख जल्द उपलब्ध होंगे।</p></div>}
+  </div>
+</BaseLayout>

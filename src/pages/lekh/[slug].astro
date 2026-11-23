@@ -1,0 +1,44 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { formatHindiDate, getCategory } from '../../lib/site';
+
+interface Props { article: CollectionEntry<'articles'>; }
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles', ({ data }) => !data.draft);
+  return articles.map((article) => ({ params: { slug: article.id }, props: { article } }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+const category = getCategory(article.data.category);
+const otherArticles = (await getCollection('articles', ({ data }) => !data.draft && data.category === article.data.category))
+  .filter((item) => item.id !== article.id)
+  .slice(0, 3);
+---
+
+<BaseLayout title={article.data.title} description={article.data.description} article>
+  <div class="container article-shell">
+    <div class="breadcrumbs"><a href="/">मुखपृष्ठ</a><span aria-hidden="true">/</span><a href={'/vishay/' + article.data.category + '/'}>{category?.label}</a><span aria-hidden="true">/</span><span>लेख</span></div>
+    <article class="full-article">
+      <header class="article-header">
+        <a class="eyebrow" href={'/vishay/' + article.data.category + '/'}>{category?.label}</a>
+        <h1>{article.data.title}</h1>
+        <p class="article-deck">{article.data.description}</p>
+        <div class="article-meta">
+          <span>{article.data.author}</span><span aria-hidden="true">·</span>
+          <time datetime={article.data.date.toISOString()}>{formatHindiDate(article.data.date)}</time>
+          {article.data.updated && <span>· संशोधित: <time datetime={article.data.updated.toISOString()}>{formatHindiDate(article.data.updated)}</time></span>}
+        </div>
+      </header>
+      <div class:list={['article-hero-art','theme-' + article.data.category]} aria-hidden="true">
+        <span>{category?.letter ?? 'सू'}</span>
+      </div>
+      <div class="prose"><Content /></div>
+      <div class="article-bottom"><span>यह लेख उपयोगी लगा?</span><p>इस पृष्ठ का लिंक साझा करें और सूत्रपत्र के अन्य विषय पढ़ें।</p><a href={'/vishay/' + article.data.category + '/'}>इसी विषय के और लेख देखें ←</a></div>
+    </article>
+    {otherArticles.length > 0 && <section class="related-articles" aria-label="संबंधित लेख"><div class="section-heading"><h2>इन्हें भी पढ़ें</h2></div><div class="cards-grid">{otherArticles.map((item) => <ArticleCard article={item} compact />)}</div></section>}
+  </div>
+</BaseLayout>

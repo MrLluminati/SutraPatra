@@ -1,0 +1,19 @@
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
+import { glob } from 'astro/loaders';
+
+const articles = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/articles' }),
+  schema: z.object({
+    title: z.string().min(8),
+    description: z.string().min(30),
+    category: z.enum(['dharm-sanskriti', 'aarti-stotra', 'vrat-tyohar']),
+    date: z.coerce.date(),
+    updated: z.coerce.date().optional(),
+    author: z.string().default('सूत्रपत्र संपादकीय'),
+    featured: z.boolean().default(false),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { articles };
