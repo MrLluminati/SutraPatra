@@ -3,6 +3,7 @@ title: "आरती, स्तोत्र और मंत्र में क
 description: "आरती, स्तोत्र और मंत्र भारतीय धार्मिक परंपराओं में अलग-अलग भूमिकाएँ निभाते हैं। इनके स्वरूप और उपयोग को सरल भाषा में समझिए।"
 category: "aarti-stotra"
 date: 2026-11-23
+updated: 2026-11-25
 author: "सूत्रपत्र संपादकीय"
 featured: true
 draft: false
@@ -39,3 +40,16 @@ draft: false
 ## पाठ करते समय किन बातों का ध्यान रखें?
 
 यदि आप किसी पाठ को पहली बार पढ़ रहे हैं, तो उसका मूल स्रोत, भाषा और विश्वसनीय अर्थ देखना उपयोगी है। संस्कृत के उच्चारण में शंका हो तो किसी प्रामाणिक पाठ या जानकार व्यक्ति की सहायता ली जा सकती है। किसी पाठ के सांस्कृतिक या धार्मिक महत्त्व को समझना उसके यांत्रिक उच्चारण से अलग एक उपयोगी अभ्यास है।
+
+## संबंधित लेख
+
+- [हनुमान चालीसा की भाषा और रचना](/lekh/hanuman-chalisa-parichay/)
+- [आदित्य हृदय स्तोत्र का रामायण-संदर्भ](/lekh/aditya-hridaya-stotra-parichay/)
+
+## संदर्भ
+
+- [University of Hyderabad — Monier-Williams Sanskrit Dictionary: स्तोत्र](https://sanskrit.uohyd.ac.in/SKT/MW/305.html)
+- [COVE Collective — आरती का परिचय और उपयोग](https://editions.covecollective.org/content/arti)
+- [Sanskrit Documents — आदित्य हृदय स्तोत्र और रामायण पाठ](https://sanskritdocuments.org/sites/valmikiramayan/yuddha/sarga105/yuddharoman105.htm)
+
+*यह लेख व्यापक प्रचलन का सामान्य परिचय है; अलग धार्मिक परंपराओं की शब्दावली और विधि भिन्न हो सकती है।*

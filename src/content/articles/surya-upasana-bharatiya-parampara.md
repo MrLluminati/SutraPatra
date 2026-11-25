@@ -3,6 +3,7 @@ title: "भारतीय संस्कृति में सूर्य �
 description: "सूर्य को लेकर भारतीय लोक और धार्मिक परंपराओं में अनेक रूप मिलते हैं। जानिए सूर्य उपासना के सांस्कृतिक अर्थ और विविध उदाहरण।"
 category: "dharm-sanskriti"
 date: 2026-11-21
+updated: 2026-11-25
 author: "सूत्रपत्र संपादकीय"
 draft: false
 ---
@@ -32,3 +33,16 @@ draft: false
 ## इस विषय को आगे कैसे पढ़ें?
 
 सूर्य उपासना की विविधता समझने के लिए अलग-अलग क्षेत्रों के त्योहारों, लोकगीतों, ग्रंथ-पाठों और रीति-रिवाजों पर ध्यान देना उपयोगी है। किसी एक प्रथा को समूची भारतीय संस्कृति की एकमात्र परंपरा मानने के बजाय व्यापक चित्र देखना बेहतर होता है।
+
+## संबंधित लेख
+
+- [आदित्य हृदय स्तोत्र का परिचय](/lekh/aditya-hridaya-stotra-parichay/)
+- [छठ पूजा के चार दिन](/lekh/chhath-puja-char-din/)
+
+## संदर्भ
+
+- [NASA Science — सूर्य के बारे में वैज्ञानिक तथ्य](https://science.nasa.gov/sun/facts/)
+- [बिहार सरकार, पर्यटन विभाग — छठ पूजा](https://tourism.bihar.gov.in/hi/experiences/festivals-and-fairs/festivals/chhath-puja)
+- [Sanskrit Documents — वाल्मीकि रामायण में आदित्य हृदय](https://sanskritdocuments.org/sites/valmikiramayan/yuddha/sarga105/yuddharoman105.htm)
+
+*धार्मिक मान्यताओं को प्रमाणित वैज्ञानिक परिणामों की तरह प्रस्तुत नहीं किया गया है।*

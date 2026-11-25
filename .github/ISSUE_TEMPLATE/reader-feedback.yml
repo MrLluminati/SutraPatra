@@ -1,0 +1,39 @@
+name: "पाठक सुझाव / लेख सुधार"
+description: "सूत्रपत्र पर प्रकाशित सामग्री की त्रुटि या सुझाव सार्वजनिक रूप से भेजें"
+title: "[सुझाव] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        धन्यवाद! यह सार्वजनिक GitHub Issue है। कृपया नाम, फोन, ईमेल, निजी दस्तावेज, मेडिकल विवरण या अन्य संवेदनशील जानकारी साझा न करें।
+        GitHub खाते से साइन-इन आवश्यक है।
+  - type: dropdown
+    id: type
+    attributes:
+      label: "किस प्रकार का सुझाव है?"
+      options:
+        - "तथ्यात्मक सुधार"
+        - "टूटा हुआ लिंक / तकनीकी समस्या"
+        - "भाषा / टाइपिंग सुधार"
+        - "नया विषय सुझाना"
+        - "अन्य"
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: "संबंधित लेख का URL (यदि उपलब्ध हो)"
+      placeholder: "https://sutrapatra.pages.dev/lekh/..."
+  - type: textarea
+    id: details
+    attributes:
+      label: "समस्या या सुझाव का विवरण"
+      placeholder: "क्या बदला जाना चाहिए और क्यों?"
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: "संदर्भ / प्रमाण (यदि उपलब्ध हो)"
+      description: "सार्वजनिक स्रोत लिंक जोड़ें, निजी फाइल नहीं"
