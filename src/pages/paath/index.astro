@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const prayers = (await getCollection('prayers', ({ data }) => !data.draft))
+  .sort((a, b) => a.data.title.localeCompare(b.data.title, 'hi'));
+const chalisa = prayers.filter((item) => item.data.kind === 'chalisa');
+const aarti = prayers.filter((item) => item.data.kind === 'aarti');
+---
+
+<BaseLayout title="संपूर्ण आरती एवं चालीसा पाठ" description="सूत्रपत्र पर श्री हनुमान चालीसा और लोकप्रिय आरतियों का पूर्ण देवनागरी पाठ पढ़ें। बड़े अक्षर, पाठ कॉपी और प्रिंट की सुविधा।">
+  <div class="container page-container">
+    <div class="breadcrumbs"><a href="/">मुखपृष्ठ</a><span aria-hidden="true">/</span><span>आरती एवं चालीसा पाठ</span></div>
+    <header class="section-page-header">
+      <span class="section-kicker">सूत्रपत्र · भक्ति संग्रह</span>
+      <h1>आरती एवं चालीसा का संपूर्ण पाठ</h1>
+      <p>पढ़ने में सुविधाजनक देवनागरी पाठ। प्रत्येक रचना के साथ स्रोत और पाठभेद की जानकारी भी दी गई है।</p>
+    </header>
+    {prayers.length === 0 ? <div class="empty-notice">अभी कोई प्रकाशित पाठ उपलब्ध नहीं है।</div> : (
+      <>
+        {chalisa.length > 0 && (
+          <section aria-labelledby="chalisa-heading" class="home-section">
+            <div class="section-heading"><h2 id="chalisa-heading">चालीसा</h2></div>
+            <div class="prayer-list-grid">
+              {chalisa.map((item) => (
+                <a class="prayer-preview-card" href={'/paath/' + item.id + '/'}>
+                  <span class="prayer-card-type">चालीसा · {item.data.deity}</span>
+                  <strong>{item.data.title}</strong>
+                  <span class="prayer-card-action">पूरा पाठ पढ़ें ←</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+        {aarti.length > 0 && (
+          <section aria-labelledby="aarti-heading" class="home-section">
+            <div class="section-heading"><h2 id="aarti-heading">आरतियाँ</h2></div>
+            <div class="prayer-list-grid">
+              {aarti.map((item) => (
+                <a class="prayer-preview-card" href={'/paath/' + item.id + '/'}>
+                  <span class="prayer-card-type">आरती · {item.data.deity}</span>
+                  <strong>{item.data.title}</strong>
+                  <span class="prayer-card-action">पूरा पाठ पढ़ें ←</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+      </>
+    )}
+  </div>
+</BaseLayout>

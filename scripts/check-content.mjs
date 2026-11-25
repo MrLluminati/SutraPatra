@@ -61,3 +61,36 @@ if (errors.length) {
   process.exit(1);
 }
 console.log('Content checks passed.');
+
+
+// Devotional source-text validation, separate from editorial articles.
+const prayerDir = 'src/content/prayers';
+const prayerFiles = readdirSync(prayerDir).filter((name) => name.endsWith('.md'));
+for (const file of prayerFiles) {
+  const text = readFileSync(join(prayerDir, file), 'utf8');
+  const match = text.match(/^---\r?\n([\s\S]+?)\r?\n---\r?\n/);
+  if (!match) { errors.push(file + ': missing devotional frontmatter'); continue; }
+  const metadata = Object.fromEntries(match[1].split(/\r?\n/).map((line) => {
+    const m = line.match(/^([a-z]+):\s*(.*)$/);
+    return m ? [m[1], m[2].trim().replace(/^["']|["']$/g, '')] : [];
+  }).filter((item) => item.length === 2));
+  for (const key of ['title', 'description', 'kind', 'deity', 'attribution', 'date', 'draft']) {
+    if (!metadata[key]) errors.push(file + ': missing devotional field ' + key);
+  }
+  if (!['aarti', 'chalisa'].includes(metadata.kind)) errors.push(file + ': invalid devotional kind');
+  if (!['true', 'false'].includes(metadata.draft)) errors.push(file + ': invalid draft value');
+  if (!text.includes('## पाठ') && !text.includes('## स्रोत') && !text.includes('## संस्करण')) {
+    warnings.push(file + ': lacks explicit version/source heading');
+  }
+  if (!text.includes('> ')) errors.push(file + ': missing verse block');
+  if (file === 'hanuman-chalisa.md') {
+    const body = text.split('## चालीस चौपाइयाँ\n')[1]?.split('## समापन दोहा')[0] ?? '';
+    const count = body.trim().split(/\n>\s*\n>\s*/).filter(Boolean).length;
+    if (count !== 40) errors.push(file + ': expected 40 chaupais, found ' + count);
+  }
+}
+console.log('Checked ' + prayerFiles.length + ' devotional text files.');
+if (errors.length) {
+  for (const error of errors) console.error('ERROR: ' + error);
+  process.exit(1);
+}

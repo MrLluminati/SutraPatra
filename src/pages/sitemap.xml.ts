@@ -5,6 +5,7 @@ import { categories } from '../lib/site';
 const publicPages = [
   '/',
   '/lekh/',
+  '/paath/',
   '/hamare-bare-mein/',
   '/sampadakiya-neeti/',
   '/gopniyata/',
@@ -19,11 +20,16 @@ const escapeXml = (value: string): string =>
 export const GET: APIRoute = async ({ site }) => {
   const origin = site ?? new URL('https://sutrapatra.pages.dev');
   const articles = await getCollection('articles', ({ data }) => !data.draft);
+  const prayers = await getCollection('prayers', ({ data }) => !data.draft);
   const entries = [
     ...publicPages.map((pathname) => ({ pathname })),
     ...categories.map(({ slug }) => ({ pathname: '/vishay/' + slug + '/' })),
     ...articles.map(({ id, data }) => ({
       pathname: '/lekh/' + id + '/',
+      modified: (data.updated ?? data.date).toISOString().slice(0, 10),
+    })),
+    ...prayers.map(({ id, data }) => ({
+      pathname: '/paath/' + id + '/',
       modified: (data.updated ?? data.date).toISOString().slice(0, 10),
     })),
   ];

@@ -36,5 +36,9 @@ jobs:
           test -f dist/lekh/hanuman-chalisa-parichay/index.html
           test -f dist/lekh/chhath-puja-char-din/index.html
           test -f dist/sitemap.xml
+          test -f dist/paath/index.html
+          test -f dist/paath/hanuman-chalisa/index.html
+          test -f dist/paath/om-jai-jagdish-hare/index.html
+          test -f dist/paath/jai-ganesh-deva/index.html
           test -f dist/rss.xml
           test -f dist/robots.txt

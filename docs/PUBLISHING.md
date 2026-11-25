@@ -37,3 +37,25 @@ Valid categories: `dharm-sanskriti`, `aarti-stotra`, and `vrat-tyohar`.
 Use `updated: YYYY-MM-DD` for substantive corrections while retaining the original publication date in `date`. Avoid year-specific claims without year/location verification.
 
 The first source-linked batch is recorded in `docs/ARTICLE_REVIEW.md`. The six articles from that batch need a final site-owner copyedit even though they were prepared and source-compared before publication. The original three articles should also be reviewed for citations.
+
+## Complete aarti, chalisa and devotional text pages
+
+Full texts are **not** stored as regular articles. Their Markdown files are in `src/content/prayers/`, served at `/paath/{slug}/`, and listed at `/paath/`.
+
+Frontmatter:
+
+```yaml
+---
+title: "पाठ का नाम"
+description: "मूल पाठ के बारे में पर्याप्त विवरण..."
+kind: "aarti" # or "chalisa"
+deity: "श्री गणेश"
+attribution: "रचयिता या पारंपरिक श्रेय"
+date: 2026-11-25
+draft: true
+---
+```
+
+Use blockquoted stanzas with two spaces before each line break to retain the two-line verse format. Include historical source/edition notes and clear treatment of text variants. Only public-domain source compositions or material with adequate republication rights may be added; do not copy modern translations or web-specific annotations without permission.
+
+The `/paath/` archive and site sitemap automatically include approved (non-draft) texts. Reading mode includes size adjustment, copy-text, and print controls. Refer to `docs/TEXT_SOURCES.md` before extending the library.

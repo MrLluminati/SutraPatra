@@ -56,6 +56,8 @@ draft: false
 
 **आगे पढ़ें:** [आरती, स्तोत्र और मंत्र के अंतर](/lekh/aarti-aur-stotra-mein-antar/) तथा [संस्कृत स्तोत्र का परिचय: आदित्य हृदय](/lekh/aditya-hridaya-stotra-parichay/)।
 
+**सीधे पढ़ें:** [श्री हनुमान चालीसा का संपूर्ण पाठ — दोहे और 40 चौपाइयाँ](/paath/hanuman-chalisa/)।
+
 ## संदर्भ
 
 - [The Indian Express — हनुमान चालीसा पर साहित्यिक पुस्तक समीक्षा](https://indianexpress.com/article/books-and-literature/hanuman-chalisa-english-translation-abhay-k-review-10897488/)

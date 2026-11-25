@@ -193,3 +193,50 @@ h1,h2,h3,h4 { line-height: 1.4; }
 
 .all-articles-link { font-size: 13px; font-weight: 800; color: var(--brand); white-space: nowrap; }
 .all-articles-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+/* Dedicated, accessible devotional text library. */
+.prayer-home-section { margin-top: 76px; }
+.prayer-list-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; }
+.prayer-preview-card { display: flex; flex-direction: column; gap: 13px; min-height: 178px; padding: 24px; background: #f6eee6; border: 1px solid #e7d9cb; border-top: 3px solid var(--brand); transition: box-shadow .15s, transform .15s; }
+.prayer-preview-card:hover { color: var(--ink); transform: translateY(-2px); box-shadow: 0 10px 22px rgba(44,30,21,.08); }
+.prayer-card-type { font-size: 12px; color: var(--brand); font-weight: 800; }
+.prayer-preview-card strong { font-size: clamp(17px,2vw,22px); line-height: 1.65; font-family: var(--serif); }
+.prayer-card-action { margin-top: auto; font-size: 12px; font-weight: 800; color: var(--brand); }
+.prayer-reader { max-width: 800px; }
+.prayer-reader .article-header { text-align: center; }
+.prayer-reader .article-header h1 { font-size: clamp(30px, 4vw, 44px); }
+.prayer-kind { color: var(--brand); font-size: 13px; font-weight: 800; }
+.prayer-byline { font-size: 13px; color: var(--muted); }
+.prayer-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; padding: 15px; margin: 21px 0 30px; border: 1px solid var(--line); background: var(--surface); }
+.prayer-toolbar button { padding: 8px 13px; font: inherit; font-size: 13px; font-weight: 750; background: #f5eee7; border: 1px solid #d6c4b6; border-radius: 4px; color: var(--brand-dark); cursor: pointer; }
+.prayer-toolbar button:hover { background: #e9dbce; }
+.prayer-toolbar button:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.prayer-status { flex-basis: 100%; text-align: center; font-size: 12px; min-height: 1.5em; color: var(--muted); }
+.prayer-prose { --prayer-font-size: 1.45rem; max-width: 780px; }
+.prayer-prose > p:first-child { color: #605449; font-size: 16px; line-height: 2; text-align: center; margin-bottom: 30px; }
+.prayer-prose h2 { text-align: center; font-size: 23px; color: var(--brand-dark); margin: 38px 0 18px; }
+.prayer-prose blockquote { border: 1px solid #e8d9c8; border-left: 1px solid #e8d9c8; border-radius: 6px; padding: 27px 20px; background: #fffaf3; text-align: center; margin: 15px 0 30px; font-family: var(--serif); }
+.prayer-prose blockquote p { margin: 0 0 1.15em; font-size: var(--prayer-font-size); line-height: 2.05; color: #3d2924; overflow-wrap: anywhere; }
+.prayer-prose blockquote p:last-child { margin-bottom: 0; }
+.prayer-prose blockquote + h2 { margin-top: 42px; }
+.prayer-prose h2 ~ p, .prayer-prose ul { font-size: 15px; }
+.prayer-prose blockquote + p { color: var(--muted); }
+.prayer-prose .language-note { font-size: 14px; }
+@media (max-width: 900px) { .prayer-list-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 650px) {
+  .prayer-home-section { margin-top: 49px; }
+  .prayer-list-grid { grid-template-columns: 1fr; }
+  .prayer-preview-card { min-height: 145px; }
+  .prayer-prose { --prayer-font-size: 1.25rem; }
+  .prayer-prose blockquote { padding: 20px 12px; }
+  .prayer-prose blockquote p { line-height: 2.12; }
+  .prayer-toolbar button { flex: 1 1 45%; }
+}
+@media print {
+  .site-header, .site-footer, .utility-bar, .prayer-toolbar, .breadcrumbs, .related-articles, .article-bottom { display: none !important; }
+  .container, .full-article, .prayer-reader { max-width: 100%; width: 100%; }
+  .prayer-prose blockquote { border: none; background: transparent; break-inside: avoid; padding: 0; }
+  .prayer-prose blockquote p { font-size: 16pt; color: #111; }
+  body { background: white; }
+  .article-shell { padding: 0; }
+}

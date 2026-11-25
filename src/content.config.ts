@@ -16,4 +16,18 @@ const articles = defineCollection({
   }),
 });
 
-export const collections = { articles };
+const prayers = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/prayers' }),
+  schema: z.object({
+    title: z.string().min(8),
+    description: z.string().min(30),
+    kind: z.enum(['aarti', 'chalisa']),
+    deity: z.string().min(2),
+    attribution: z.string().min(4),
+    date: z.coerce.date(),
+    updated: z.coerce.date().optional(),
+    draft: z.boolean().default(true),
+  }),
+});
+
+export const collections = { articles, prayers };

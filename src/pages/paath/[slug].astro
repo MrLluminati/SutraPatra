@@ -1,0 +1,100 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatHindiDate } from '../../lib/site';
+
+interface Props { prayer: CollectionEntry<'prayers'>; }
+
+export async function getStaticPaths() {
+  const prayers = await getCollection('prayers', ({ data }) => !data.draft);
+  return prayers.map((prayer) => ({ params: { slug: prayer.id }, props: { prayer } }));
+}
+
+const { prayer } = Astro.props;
+const { Content } = await render(prayer);
+const fullUrl = new URL('/paath/' + prayer.id + '/', Astro.site ?? new URL('https://sutrapatra.pages.dev')).toString();
+const prayerSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: prayer.data.title,
+  description: prayer.data.description,
+  inLanguage: 'hi-IN',
+  isAccessibleForFree: true,
+  datePublished: prayer.data.date.toISOString(),
+  dateModified: (prayer.data.updated ?? prayer.data.date).toISOString(),
+  mainEntityOfPage: fullUrl,
+  creator: prayer.data.attribution,
+  publisher: { '@type': 'Organization', name: 'SutraPatra' },
+};
+const related = (await getCollection('prayers', ({ data }) => !data.draft))
+  .filter((item) => item.id !== prayer.id)
+  .slice(0, 3);
+---
+
+<BaseLayout title={prayer.data.title} description={prayer.data.description} structuredData={prayerSchema} article>
+  <div class="container article-shell">
+    <div class="breadcrumbs"><a href="/">मुखपृष्ठ</a><span aria-hidden="true">/</span><a href="/paath/">आरती एवं चालीसा</a><span aria-hidden="true">/</span><span>{prayer.data.kind === 'aarti' ? 'आरती' : 'चालीसा'}</span></div>
+    <article class="full-article prayer-reader">
+      <header class="article-header">
+        <span class="prayer-kind">{prayer.data.kind === 'aarti' ? 'आरती' : 'चालीसा'} · {prayer.data.deity}</span>
+        <h1>{prayer.data.title}</h1>
+        <p class="article-deck">{prayer.data.description}</p>
+        <div class="prayer-byline">{prayer.data.attribution} · {formatHindiDate(prayer.data.date)}</div>
+      </header>
+      <div class="prayer-toolbar" role="group" aria-label="पाठ पढ़ने के विकल्प">
+        <button type="button" id="prayer-smaller" aria-label="पाठ का आकार घटाएँ">अ− छोटा</button>
+        <button type="button" id="prayer-larger" aria-label="पाठ का आकार बढ़ाएँ">अ+ बड़ा</button>
+        <button type="button" id="prayer-copy">पाठ कॉपी करें</button>
+        <button type="button" id="prayer-print">प्रिंट करें</button>
+        <span class="prayer-status" id="prayer-status" role="status" aria-live="polite"></span>
+      </div>
+      <div class="prose prayer-prose" id="prayer-text"><Content /></div>
+      <div class="article-bottom">
+        <span>पाठ में कोई त्रुटि दिखे?</span>
+        <p>विभिन्न परंपराओं में कुछ शब्द अलग मिल सकते हैं। यदि कोई संशोधन सुझाना हो, तो कृपया पाठ और स्रोत का उल्लेख करें।</p>
+        <a href="/sampark/">संपादकीय सुझाव भेजें ←</a>
+      </div>
+    </article>
+    {related.length > 0 && (
+      <section class="related-articles" aria-labelledby="more-prayers">
+        <div class="section-heading"><h2 id="more-prayers">अन्य आरती और चालीसा</h2></div>
+        <div class="prayer-list-grid">
+          {related.map((item) => (
+            <a class="prayer-preview-card" href={'/paath/' + item.id + '/'}>
+              <span class="prayer-card-type">{item.data.kind === 'aarti' ? 'आरती' : 'चालीसा'} · {item.data.deity}</span>
+              <strong>{item.data.title}</strong>
+              <span class="prayer-card-action">संपूर्ण पाठ पढ़ें ←</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+  <script>
+    const root = document.getElementById('prayer-text');
+    const status = document.getElementById('prayer-status');
+    let size = 1.45;
+    const isMobile = window.matchMedia('(max-width: 650px)').matches;
+    if (isMobile) size = 1.25;
+    const update = () => root?.style.setProperty('--prayer-font-size', size.toFixed(2) + 'rem');
+    document.getElementById('prayer-smaller')?.addEventListener('click', () => {
+      size = Math.max(1, Math.round((size - 0.1) * 100) / 100);
+      update();
+    });
+    document.getElementById('prayer-larger')?.addEventListener('click', () => {
+      size = Math.min(2.4, Math.round((size + 0.1) * 100) / 100);
+      update();
+    });
+    document.getElementById('prayer-copy')?.addEventListener('click', async () => {
+      const stanzas = [...(root?.querySelectorAll('blockquote') ?? [])]
+        .map((block) => block.textContent?.trim() ?? '').filter(Boolean);
+      try {
+        await navigator.clipboard.writeText(stanzas.join('\n\n'));
+        if (status) status.textContent = 'संपूर्ण पाठ कॉपी हो गया।';
+      } catch {
+        if (status) status.textContent = 'कॉपी नहीं हो सकी। ब्राउज़र की अनुमति जाँचें।';
+      }
+    });
+    document.getElementById('prayer-print')?.addEventListener('click', () => window.print());
+  </script>
+</BaseLayout>
