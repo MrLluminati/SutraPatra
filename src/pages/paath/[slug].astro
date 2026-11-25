@@ -11,6 +11,8 @@ export async function getStaticPaths() {
 }
 
 const { prayer } = Astro.props;
+const kindLabels = { aarti: 'आरती', chalisa: 'चालीसा', stotra: 'स्तोत्र' } as const;
+const languageLabels = { hi: 'हिंदी', mr: 'मराठी', sa: 'संस्कृत', awa: 'अवधी' } as const;
 const { Content } = await render(prayer);
 const fullUrl = new URL('/paath/' + prayer.id + '/', Astro.site ?? new URL('https://sutrapatra.pages.dev')).toString();
 const prayerSchema = {
@@ -33,13 +35,13 @@ const related = (await getCollection('prayers', ({ data }) => !data.draft))
 
 <BaseLayout title={prayer.data.title} description={prayer.data.description} structuredData={prayerSchema} article>
   <div class="container article-shell">
-    <div class="breadcrumbs"><a href="/">मुखपृष्ठ</a><span aria-hidden="true">/</span><a href="/paath/">आरती एवं चालीसा</a><span aria-hidden="true">/</span><span>{prayer.data.kind === 'aarti' ? 'आरती' : 'चालीसा'}</span></div>
+    <div class="breadcrumbs"><a href="/">मुखपृष्ठ</a><span aria-hidden="true">/</span><a href="/paath/">आरती, चालीसा और स्तोत्र</a><span aria-hidden="true">/</span><span>{kindLabels[prayer.data.kind]}</span></div>
     <article class="full-article prayer-reader">
       <header class="article-header">
-        <span class="prayer-kind">{prayer.data.kind === 'aarti' ? 'आरती' : 'चालीसा'} · {prayer.data.deity}</span>
+        <span class="prayer-kind">{kindLabels[prayer.data.kind]} · {prayer.data.deity}</span>
         <h1>{prayer.data.title}</h1>
         <p class="article-deck">{prayer.data.description}</p>
-        <div class="prayer-byline">{prayer.data.attribution} · {formatHindiDate(prayer.data.date)}</div>
+        <div class="prayer-byline">{prayer.data.attribution} · मूल भाषा: {languageLabels[prayer.data.language]} · {formatHindiDate(prayer.data.date)}</div>
       </header>
       <div class="prayer-toolbar" role="group" aria-label="पाठ पढ़ने के विकल्प">
         <button type="button" id="prayer-smaller" aria-label="पाठ का आकार घटाएँ">अ− छोटा</button>
@@ -48,7 +50,7 @@ const related = (await getCollection('prayers', ({ data }) => !data.draft))
         <button type="button" id="prayer-print">प्रिंट करें</button>
         <span class="prayer-status" id="prayer-status" role="status" aria-live="polite"></span>
       </div>
-      <div class="prose prayer-prose" id="prayer-text"><Content /></div>
+      <div class="prose prayer-prose" id="prayer-text" data-verse-language={prayer.data.language}><Content /></div>
       <div class="article-bottom">
         <span>पाठ में कोई त्रुटि दिखे?</span>
         <p>विभिन्न परंपराओं में कुछ शब्द अलग मिल सकते हैं। यदि कोई संशोधन सुझाना हो, तो कृपया पाठ और स्रोत का उल्लेख करें।</p>
@@ -57,11 +59,11 @@ const related = (await getCollection('prayers', ({ data }) => !data.draft))
     </article>
     {related.length > 0 && (
       <section class="related-articles" aria-labelledby="more-prayers">
-        <div class="section-heading"><h2 id="more-prayers">अन्य आरती और चालीसा</h2></div>
+        <div class="section-heading"><h2 id="more-prayers">अन्य भक्ति पाठ</h2></div>
         <div class="prayer-list-grid">
           {related.map((item) => (
             <a class="prayer-preview-card" href={'/paath/' + item.id + '/'}>
-              <span class="prayer-card-type">{item.data.kind === 'aarti' ? 'आरती' : 'चालीसा'} · {item.data.deity}</span>
+              <span class="prayer-card-type">{kindLabels[item.data.kind]} · {item.data.deity}</span>
               <strong>{item.data.title}</strong>
               <span class="prayer-card-action">संपूर्ण पाठ पढ़ें ←</span>
             </a>
@@ -73,6 +75,7 @@ const related = (await getCollection('prayers', ({ data }) => !data.draft))
   <script>
     const root = document.getElementById('prayer-text');
     const status = document.getElementById('prayer-status');
+    root?.querySelectorAll('blockquote').forEach((element) => element.setAttribute('lang', root.dataset.verseLanguage ?? 'hi'));
     let size = 1.45;
     const isMobile = window.matchMedia('(max-width: 650px)').matches;
     if (isMobile) size = 1.25;
@@ -87,7 +90,7 @@ const related = (await getCollection('prayers', ({ data }) => !data.draft))
     });
     document.getElementById('prayer-copy')?.addEventListener('click', async () => {
       const stanzas = [...(root?.querySelectorAll('blockquote') ?? [])]
-        .map((block) => block.textContent?.trim() ?? '').filter(Boolean);
+        .map((block) => block.innerText?.trim() ?? block.textContent?.trim() ?? '').filter(Boolean);
       try {
         await navigator.clipboard.writeText(stanzas.join('\n\n'));
         if (status) status.textContent = 'संपूर्ण पाठ कॉपी हो गया।';

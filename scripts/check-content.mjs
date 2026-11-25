@@ -77,12 +77,22 @@ for (const file of prayerFiles) {
   for (const key of ['title', 'description', 'kind', 'deity', 'attribution', 'date', 'draft']) {
     if (!metadata[key]) errors.push(file + ': missing devotional field ' + key);
   }
-  if (!['aarti', 'chalisa'].includes(metadata.kind)) errors.push(file + ': invalid devotional kind');
+  if (!['aarti', 'chalisa', 'stotra'].includes(metadata.kind)) errors.push(file + ': invalid devotional kind');
   if (!['true', 'false'].includes(metadata.draft)) errors.push(file + ': invalid draft value');
+  if (metadata.language && !['hi', 'mr', 'sa', 'awa'].includes(metadata.language)) errors.push(file + ': invalid language');
   if (!text.includes('## पाठ') && !text.includes('## स्रोत') && !text.includes('## संस्करण')) {
     warnings.push(file + ': lacks explicit version/source heading');
   }
   if (!text.includes('> ')) errors.push(file + ': missing verse block');
+  if (file === 'shiva-panchakshara-stotram.md' || file === 'ganesha-pancharatnam.md') {
+    const count = [...text.matchAll(/^### /gm)].length;
+    if (count !== 5) errors.push(file + ': expected five main verse headings, got ' + count);
+    if (!text.includes('## फलश्रुति')) errors.push(file + ': missing separate phalashruti');
+  }
+  if (file === 'sukhkarta-dukhharta.md') {
+    const count = [...text.matchAll(/^### .*अंतरा/gm)].length;
+    if (count !== 3) errors.push(file + ': expected three main stanzas, got ' + count);
+  }
   if (file === 'hanuman-chalisa.md') {
     const body = text.split('## चालीस चौपाइयाँ\n')[1]?.split('## समापन दोहा')[0] ?? '';
     const count = body.trim().split(/\n>\s*\n>\s*/).filter(Boolean).length;

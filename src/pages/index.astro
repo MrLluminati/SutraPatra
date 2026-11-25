@@ -8,6 +8,10 @@ const articles = (await getCollection('articles', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 const prayers = (await getCollection('prayers', ({ data }) => !data.draft))
   .sort((a, b) => a.data.title.localeCompare(b.data.title, 'hi'));
+const kindLabels = { aarti: 'आरती', chalisa: 'चालीसा', stotra: 'स्तोत्र' } as const;
+const previewPrayers = (['chalisa', 'aarti', 'stotra'] as const)
+  .map((kind) => prayers.find((item) => item.data.kind === kind))
+  .filter((item) => item !== undefined);
 const featured = articles.find((item) => item.data.featured) ?? articles[0];
 const recent = articles.filter((item) => item.id !== featured?.id).slice(0, 6);
 const featuredCategory = featured && getCategory(featured.data.category);
@@ -41,13 +45,13 @@ const featuredCategory = featured && getCategory(featured.data.category);
     {prayers.length > 0 && (
       <section class="prayer-home-section" aria-labelledby="prayer-title">
         <div class="section-heading">
-          <div><span class="section-kicker">भक्ति पाठ संग्रह</span><h2 id="prayer-title">आरती और चालीसा का संपूर्ण पाठ</h2></div>
+          <div><span class="section-kicker">भक्ति पाठ संग्रह</span><h2 id="prayer-title">आरती, चालीसा और स्तोत्र का मूल पाठ</h2></div>
           <a class="all-articles-link" href="/paath/">सभी पाठ देखें <span aria-hidden="true">←</span></a>
         </div>
         <div class="prayer-list-grid">
-          {prayers.slice(0, 3).map((prayer) => (
+          {previewPrayers.map((prayer) => (
             <a class="prayer-preview-card" href={'/paath/' + prayer.id + '/'}>
-              <span class="prayer-card-type">{prayer.data.kind === 'aarti' ? 'आरती' : 'चालीसा'} · {prayer.data.deity}</span>
+              <span class="prayer-card-type">{kindLabels[prayer.data.kind]} · {prayer.data.deity}</span>
               <strong>{prayer.data.title}</strong>
               <span class="prayer-card-action">संपूर्ण पाठ पढ़ें <span aria-hidden="true">←</span></span>
             </a>

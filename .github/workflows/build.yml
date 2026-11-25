@@ -40,5 +40,8 @@ jobs:
           test -f dist/paath/hanuman-chalisa/index.html
           test -f dist/paath/om-jai-jagdish-hare/index.html
           test -f dist/paath/jai-ganesh-deva/index.html
+          test -f dist/paath/shiva-panchakshara-stotram/index.html
+          test -f dist/paath/ganesha-pancharatnam/index.html
+          test -f dist/paath/sukhkarta-dukhharta/index.html
           test -f dist/rss.xml
           test -f dist/robots.txt

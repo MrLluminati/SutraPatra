@@ -40,3 +40,9 @@ For the first editorial batch, see `docs/EDITORIAL_PLAN.md` and `docs/PUBLISHING
 - `/paath/jai-ganesh-deva/` — common traditional aarti version
 
 These are distinct from editorial explainer articles. See `docs/TEXT_SOURCES.md` for provenance and variant notes.
+
+Additional devotional sources:
+
+- `/paath/shiva-panchakshara-stotram/` — five Sanskrit verses plus phalashruti
+- `/paath/ganesha-pancharatnam/` — five Sanskrit verses plus phalashruti
+- `/paath/sukhkarta-dukhharta/` — three-stanza Marathi aarti

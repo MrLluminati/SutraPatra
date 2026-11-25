@@ -34,3 +34,27 @@
 ## Future texts
 
 Before adding another prayer, record: work title, author/era where known, public-domain or license basis, source edition, and variant choices. For works with uncertain modern authorship or insufficient republication rights, **do not publish the full text** until rights are clarified.
+
+## शिव पंचाक्षर स्तोत्रम् / Shiva Panchakshara
+
+- Sanskrit stotra: five verses corresponding to न, म, शि, वा, य; a separately marked phalashruti follows.
+- Traditionally attributed to Adi Shankaracharya; the attribution is a *tradition*, not proof of authorship.
+- Text witnesses: [Wikisource original](https://sa.wikisource.org/wiki/श्रीशिवपञ्चाक्षरस्तोत्रम्) and [Shaivam archive](https://shaivam.org/scripture/Sanskrit/ssk-shivapanchakshara-stotram/).
+- Noted variants: `त्रिलोचनाय/विलोचनाय`, `मन्दारपुष्प/मन्दारमुख्य`. The page presents a familiar traditional reading with these differences disclosed.
+- Only old Sanskrit source verses, not a modern translation or editorial commentary, are reproduced.
+
+## श्री गणेश पंचरत्नम् / Ganesha Pancharatnam
+
+- Sanskrit stotra: five numbered principal verses plus a separate phalashruti.
+- Traditionally attributed to Adi Shankaracharya; avoid confident historical-authorship claims.
+- Compare [Wikisource text A](https://sa.wikisource.org/wiki/गणेशपञ्चरत्नम्) and [Wikisource text B](https://sa.wikisource.org/wiki/गणेशपंचरत्न_स्तोत्रम्).
+- Variants include `विलासिलोकरञ्जकम्/विलासिलोकरक्षकम्`, plus a misnumbered fifth verse in one transcription.
+- No modern translation, performance, or arrangement is included.
+
+## सुखकर्ता दुःखहर्ता / Sukhkarta Dukhharta
+
+- Marathi Ganapati aarti, traditionally attributed to Samarth Ramdas.
+- Primary-edition context: *Shriram Upasana Grantha* (1910) contains a three-stanza version, covered in [this source comparison](https://udyogjyotish.com/hi/aarti/sukhkarta-dukhharta).
+- A shorter **two-stanza** text appears in an 1891 collected-works edition; see [the historical print comparison](https://www.livepanditji.com/blog/sukhkarta-dukhharta-aarti-meaning-ramdas/).
+- The page presents the common **three-stanza** reading and does not represent it as the only version.
+- Language: **Marathi**, in Devanagari script. This is not a Hindi translation.

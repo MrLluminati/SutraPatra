@@ -6,14 +6,15 @@ const prayers = (await getCollection('prayers', ({ data }) => !data.draft))
   .sort((a, b) => a.data.title.localeCompare(b.data.title, 'hi'));
 const chalisa = prayers.filter((item) => item.data.kind === 'chalisa');
 const aarti = prayers.filter((item) => item.data.kind === 'aarti');
+const stotra = prayers.filter((item) => item.data.kind === 'stotra');
 ---
 
-<BaseLayout title="संपूर्ण आरती एवं चालीसा पाठ" description="सूत्रपत्र पर श्री हनुमान चालीसा और लोकप्रिय आरतियों का पूर्ण देवनागरी पाठ पढ़ें। बड़े अक्षर, पाठ कॉपी और प्रिंट की सुविधा।">
+<BaseLayout title="संपूर्ण आरती, चालीसा और स्तोत्र पाठ" description="सूत्रपत्र पर पारंपरिक आरती, चालीसा और संस्कृत स्तोत्र का मूल देवनागरी पाठ पढ़ें। बड़े अक्षर, पाठ कॉपी और प्रिंट की सुविधा।">
   <div class="container page-container">
-    <div class="breadcrumbs"><a href="/">मुखपृष्ठ</a><span aria-hidden="true">/</span><span>आरती एवं चालीसा पाठ</span></div>
+    <div class="breadcrumbs"><a href="/">मुखपृष्ठ</a><span aria-hidden="true">/</span><span>आरती, चालीसा और स्तोत्र</span></div>
     <header class="section-page-header">
       <span class="section-kicker">सूत्रपत्र · भक्ति संग्रह</span>
-      <h1>आरती एवं चालीसा का संपूर्ण पाठ</h1>
+      <h1>आरती, चालीसा और स्तोत्र का मूल पाठ</h1>
       <p>पढ़ने में सुविधाजनक देवनागरी पाठ। प्रत्येक रचना के साथ स्रोत और पाठभेद की जानकारी भी दी गई है।</p>
     </header>
     {prayers.length === 0 ? <div class="empty-notice">अभी कोई प्रकाशित पाठ उपलब्ध नहीं है।</div> : (
@@ -27,6 +28,20 @@ const aarti = prayers.filter((item) => item.data.kind === 'aarti');
                   <span class="prayer-card-type">चालीसा · {item.data.deity}</span>
                   <strong>{item.data.title}</strong>
                   <span class="prayer-card-action">पूरा पाठ पढ़ें ←</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+        {stotra.length > 0 && (
+          <section aria-labelledby="stotra-heading" class="home-section">
+            <div class="section-heading"><h2 id="stotra-heading">स्तोत्र</h2></div>
+            <div class="prayer-list-grid">
+              {stotra.map((item) => (
+                <a class="prayer-preview-card" href={'/paath/' + item.id + '/'}>
+                  <span class="prayer-card-type">स्तोत्र · {item.data.deity}</span>
+                  <strong>{item.data.title}</strong>
+                  <span class="prayer-card-action">पूरा मूल पाठ पढ़ें ←</span>
                 </a>
               ))}
             </div>
