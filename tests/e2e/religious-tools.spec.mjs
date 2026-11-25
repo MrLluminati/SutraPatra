@@ -94,7 +94,7 @@ test('kundli research lab labels tropical positions and never implies completed 
   await expect(page.locator('#kundli-lab-result')).toBeVisible();
   await expect(page.locator('#kundli-position-rows tr')).toHaveCount(7);
   await expect(page.locator('#kundli-utc')).toContainText('2026-06-21T06:30:00Z');
-  await expect(page.locator('.kundli-result-warning')).toContainText('D1 कुंडली नहीं');
+  await expect(page.locator('#kundli-lab-result .kundli-result-warning')).toContainText('D1 कुंडली नहीं');
   await withinPage(page);
   await page.screenshot({path:testInfo.outputPath('kundli-research-lab.png'),fullPage:true});
 });
