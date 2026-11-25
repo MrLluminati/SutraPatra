@@ -28,7 +28,7 @@ test('Hindi title search and Sanskrit original-text search work', async ({ page 
   await expect(page.locator('[data-prayer-card]:visible')).toHaveCount(1);
   await expect(page.locator('[data-prayer-card]:visible')).toContainText('गणेश पंचरत्न');
 
-  await search.fill('शब्द जो यहाँ नहीं है');
+  await search.fill('असम्भवअद्वितीयखोजपरीक्षण९९९');
   await expect(page.locator('[data-prayer-card]:visible')).toHaveCount(0);
   await expect(page.getByText('कोई पाठ नहीं मिला')).toBeVisible();
 
