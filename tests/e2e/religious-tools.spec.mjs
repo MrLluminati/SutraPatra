@@ -129,3 +129,45 @@ test('tropical Sun near June solstice is near 90 degrees — astronomical sanity
   expect(longitude,'June solstice solar tropical longitude').toBeGreaterThan(88);
   expect(longitude,'June solstice solar tropical longitude').toBeLessThan(92);
 });
+
+test('Kundli research accepts birth years before 2000', async ({page}) => {
+  await page.goto('/upkaran/janam-kundli/');
+  const field=page.locator('#kundli-date');
+  await expect(field).toHaveAttribute('min','0001-01-01');
+  await expect(field).toHaveAttribute('max','9999-12-31');
+  for(const year of ['1950','1985','1890']) {
+    await field.fill(year+'-08-15');
+    await page.locator('#kundli-time').fill('10:30');
+    await page.getByRole('button',{name:'ग्रहों की स्थिति देखें'}).click();
+    await expect(page.locator('#kundli-lab-result')).toBeVisible();
+    await expect(page.locator('#kundli-position-rows tr')).toHaveCount(7);
+  }
+  await expect(page.locator('#kundli-historical-warning')).toContainText('1906');
+});
+
+test('Kundli date parsing handles years before 0100 and year 9999', async ({page}) => {
+  await page.goto('/upkaran/janam-kundli/');
+  for(const [date,utc] of [
+    ['0099-01-01','0099-01-01T06:30:00Z'],
+    ['0001-01-01','0001-01-01T06:30:00Z'],
+    ['9999-12-31','9999-12-31T06:30:00Z']
+  ]) {
+    await page.locator('#kundli-date').fill(date);
+    await page.locator('#kundli-time').fill('12:00');
+    await page.getByRole('button',{name:'ग्रहों की स्थिति देखें'}).click();
+    await expect(page.locator('#kundli-lab-result')).toBeVisible();
+    await expect(page.locator('#kundli-utc')).toContainText(utc);
+    await expect(page.locator('#kundli-position-rows tr')).toHaveCount(7);
+  }
+});
+
+test('Kundli flags historical time-zone ambiguities', async ({page}) => {
+  await page.goto('/upkaran/janam-kundli/');
+  await page.locator('#kundli-date').fill('1943-07-01');
+  await page.locator('#kundli-time').fill('10:00');
+  await page.getByRole('button',{name:'ग्रहों की स्थिति देखें'}).click();
+  await expect(page.locator('#kundli-historical-warning')).toContainText('1942–1945');
+  await page.locator('#kundli-date').fill('1900-03-01');
+  await page.getByRole('button',{name:'ग्रहों की स्थिति देखें'}).click();
+  await expect(page.locator('#kundli-historical-warning')).toContainText('1906');
+});

@@ -5,9 +5,13 @@ Status: **Geocentric tropical research demonstration only, NOT a Vedic Kundli**.
 ## Public, working foundation
 
 - `src/lib/kundli-astronomy.ts` computes apparent geocentric positions of Sun, Moon, Mercury, Venus, Mars, Jupiter and Saturn via the MIT-licensed `astronomy-engine` library. `GeoVector(body, date, true)` creates a J2000-equator position; `Ecliptic(vector)` rotates to **true ecliptic of date**, reporting tropical longitude and latitude.
-- The form at `/upkaran/janam-kundli/` shows numbers as *research-stage astronomy*, not kundli or horoscope. Date/time supports **2000-01-01–2099-12-31** with an explicit `+05:30` IST offset. 00:00 IST on 2000-01-01 corresponds to 1999-12-31T18:30:00Z; this is browser-timezone-independent.
+- The form at `/upkaran/janam-kundli/` shows numbers as *research-stage astronomy*, not kundli or horoscope. Date/time supports **0001-01-01–9999-12-31 CE**, in the proleptic Gregorian calendar with an explicitly assumed fixed `+05:30` offset. BCE is not supported. The corrected `setUTCFullYear` calendar validator avoids JavaScript's 0–99 year remapping. Years outside independent ephemeris benchmarks remain experimental. 00:00 IST on 2000-01-01 corresponds to 1999-12-31T18:30:00Z; this is browser-timezone-independent.
 - This geocentric calculation is independent of observer city. It does not generate a lagna or house system.
 - All processing happens in-browser with no request from the form and no persistent storage of selected date/time.
+
+## Historical conventions
+
+The original 2000–2099 bound was application validation only. Users can now select any four-digit Common Era year. For dates before 1582, the input is **proleptic Gregorian**, not historical Julian. Before 1906, the +05:30 time convention may not match recorded local clock time; wartime changes occurred 1942–1945. This preview does not reconstruct local historical zones automatically.
 
 ## Reproducible checks (GitHub Browser QA)
 

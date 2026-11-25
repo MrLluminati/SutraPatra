@@ -17,14 +17,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <div class="kundli-lab-heading">
         <span class="section-kicker">गणना सीधे आपके ब्राउज़र में</span>
         <h2 id="kundli-lab-heading">ग्रह-स्थिति परीक्षण</h2>
-        <p>सिर्फ वर्ष 2000–2099 और भारतीय मानक समय (UTC+05:30) के लिए। परिणाम कहीं सेव नहीं किए जाते।</p>
+        <p>ईस्वी सन् 0001 से 9999 तक की तारीखें दर्ज करें। समय को निश्चित UTC+05:30 मानकर गणना होगी; परिणाम कहीं सेव नहीं किए जाते।</p>
       </div>
       <form id="kundli-research-form" class="tool-form" autocomplete="off">
         <div class="tool-form-grid">
-          <div class="tool-field"><label for="kundli-date">तारीख (IST)</label><input id="kundli-date" type="date" min="2000-01-01" max="2099-12-31" value="2000-01-01" required /></div>
+          <div class="tool-field"><label for="kundli-date">तारीख (ईस्वी सन् 0001–9999)</label><input id="kundli-date" type="date" min="0001-01-01" max="9999-12-31" required /><p class="tool-field-note">1950, 1985 या पुराने वर्ष भी चुनें। ईसा-पूर्व वर्ष अभी समर्थित नहीं हैं।</p></div>
           <div class="tool-field"><label for="kundli-time">समय (IST, 24 घंटे)</label><input id="kundli-time" type="time" value="12:00" required /></div>
         </div>
-        <p class="tool-field-note">इस भूकेन्द्रीय गणना में जन्म-स्थान की आवश्यकता नहीं है। भविष्य में लग्न और भाव की गणना के लिए स्थान आवश्यक होगा।</p>
+        <p class="tool-field-note">1582 से पहले भी गणना ग्रेगोरियन कैलेंडर मानती है; ऐतिहासिक जूलियन तारीख अलग हो सकती है। UTC+05:30 एक <strong>निश्चित माना हुआ ऑफसेट</strong> है, जरूरी नहीं कि पुराने जन्म-रिकॉर्ड का स्थानीय समय भी यही हो।</p>
         <button class="tool-action" type="submit">ग्रहों की स्थिति देखें</button>
       </form>
       <section id="kundli-lab-result" class="kundli-lab-result" aria-labelledby="kundli-result-heading" hidden>
@@ -35,12 +35,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         </table></div>
         <p class="kundli-result-warning">ये संख्याएँ निरयन राशि या D1 कुंडली नहीं हैं। इनका उपयोग ज्योतिषीय भविष्यवाणी के लिए न करें।</p>
       </section>
+      <p id="kundli-historical-warning" class="kundli-result-warning" role="note" hidden></p>
       <p class="tool-feedback" id="kundli-feedback" role="status" aria-live="polite">तारीख और समय चुनें।</p>
     </section>
     <section class="tool-explainer">
       <h2>संपूर्ण कुंडली के लिए अगले आवश्यक कदम</h2>
       <ol>
-        <li>जन्मस्थान और ऐतिहासिक समय-क्षेत्र के अनुसार सटीक UTC परिवर्तन। फिलहाल केवल आधुनिक भारतीय IST उदाहरण समर्थित हैं।</li>
+        <li>जन्मस्थान और ऐतिहासिक समय-क्षेत्र के अनुसार सटीक UTC परिवर्तन। इस प्रयोगशाला में ऐतिहासिक स्थानीय समय के स्वतः रूपांतरण के बजाय निश्चित +05:30 ऑफसेट प्रयोग होता है।</li>
         <li>प्रामाणिक लाहिड़ी अयनांश और निरयन राशियों के स्वतंत्र संदर्भ परिणामों से मिलान।</li>
         <li>लग्न, स्थानीय क्षितिज, भाव-विभाजन और D1 चार्ट के प्रकाशित उदाहरणों से जाँच।</li>
         <li>राहु-केतु की mean/true पद्धति तथा नवांश और दशाओं का अलग सत्यापन।</li>
@@ -52,7 +53,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     </section>
   </div>
   <script>
-    import {parseModernIstInstant, tropicalPositions} from '../../lib/kundli-astronomy';
+    import {parseFixedIstInstant, tropicalPositions} from '../../lib/kundli-astronomy';
     const form=document.getElementById('kundli-research-form');
     const date=document.getElementById('kundli-date') as HTMLInputElement | null;
     const time=document.getElementById('kundli-time') as HTMLInputElement | null;
@@ -60,13 +61,22 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     const rows=document.getElementById('kundli-position-rows');
     const utc=document.getElementById('kundli-utc');
     const message=document.getElementById('kundli-feedback');
+    const historicalWarning=document.getElementById('kundli-historical-warning') as HTMLElement | null;
     const fmt=new Intl.NumberFormat('hi-IN-u-nu-deva',{minimumFractionDigits:2,maximumFractionDigits:2});
     form?.addEventListener('submit',event=>{
       event.preventDefault();
       if(result) result.hidden=true;
       rows?.replaceChildren();
+      if (historicalWarning) historicalWarning.hidden=true;
       try {
-        const instant=parseModernIstInstant(date?.value??'',time?.value??'');
+        const instant=parseFixedIstInstant(date?.value??'',time?.value??'');
+        const year=Number(date?.value.slice(0,4));
+        const warnings: string[]=[];
+        if(year<1582) warnings.push('1582 से पहले की ऐतिहासिक तारीख जूलियन कैलेंडर में दर्ज हो सकती है; यहाँ ग्रेगोरियन कैलेंडर माना गया है।');
+        if(year<1906) warnings.push('1906 से पहले पूरे भारत में वर्तमान IST लागू नहीं था; स्थानीय जन्म-समय का वास्तविक UTC ऑफसेट जाँचें।');
+        if(year>=1942 && year<=1945) warnings.push('1942–1945 के दौरान भारत में युद्धकालीन समय-परिवर्तन हुए; जन्म-रिकॉर्ड का सही UTC ऑफसेट जाँचें।');
+        if(year<1800 || year>2100) warnings.push('अत्यंत पुराने या दूर भविष्य के ग्रह-मान स्वतंत्र रूप से सत्यापित नहीं हैं; इन्हें प्रायोगिक समझें।');
+        if(historicalWarning && warnings.length) {historicalWarning.textContent=warnings.join(' ');historicalWarning.hidden=false;}
         const positions=tropicalPositions(instant);
         for(const entry of positions) {
           const tr=document.createElement('tr');

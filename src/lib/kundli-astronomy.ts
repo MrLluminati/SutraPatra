@@ -19,14 +19,20 @@ export function normalizeDegrees(angle: number): number {
   return (angle % 360 + 360) % 360;
 }
 
-/** Supports 2000–2099 local IST; explicit offset never depends on device timezone. */
-export function parseModernIstInstant(date: string, time: string): Date {
-  const d = /^(20\d\d)-(\d\d)-(\d\d)$/.exec(date);
+/**
+ * Four-digit Common Era (0001–9999) proleptic Gregorian dates.
+ * Fixed UTC+05:30 — not a claim about historical local civil clock time.
+ */
+export function parseFixedIstInstant(date: string, time: string): Date {
+  const d = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
   const t = /^(\d\d):(\d\d)$/.exec(time);
   if (!d || !t) throw new Error('तारीख और समय का प्रारूप सही नहीं है।');
   const [y,m,day,hh,mm] = [d[1],d[2],d[3],t[1],t[2]].map(Number);
-  if (m < 1 || m > 12 || hh > 23 || mm > 59) throw new Error('तारीख या समय अमान्य है।');
-  const check = new Date(Date.UTC(y,m-1,day));
+  if (y < 1 || y > 9999 || m < 1 || m > 12 || day < 1 || day > 31 || hh > 23 || mm > 59)
+    throw new Error('ईस्वी सन् 0001–9999 में मान्य तारीख और समय दर्ज करें।');
+  // Date.UTC(0..99) maps to years 1900..1999; setUTCFullYear avoids that bug.
+  const check = new Date(0);
+  check.setUTCFullYear(y,m-1,day);
   if (check.getUTCFullYear()!==y || check.getUTCMonth()!==m-1 || check.getUTCDate()!==day)
     throw new Error('यह तारीख कैलेंडर में मान्य नहीं है।');
   const instant = new Date(date+'T'+time+':00+05:30');
