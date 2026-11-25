@@ -68,6 +68,16 @@ const currentSection = (path: string) => currentPath === path || (path !== '/' &
           <a class="nav-about" href="/hamare-bare-mein/">हमारे बारे में</a>
         </div>
       </nav>
+      <script>
+        // Reveal the active section in the horizontally scrollable mobile navigation.
+        const nav = document.querySelector<HTMLElement>('.nav-inner');
+        const active = nav?.querySelector<HTMLElement>('[aria-current="page"]');
+        if (nav && active && nav.scrollWidth > nav.clientWidth) {
+          const navRect = nav.getBoundingClientRect();
+          const activeRect = active.getBoundingClientRect();
+          nav.scrollLeft += activeRect.left - navRect.left - (nav.clientWidth - activeRect.width) / 2;
+        }
+      </script>
     </header>
     <main id="main-content"><slot /></main>
     <footer class="site-footer">

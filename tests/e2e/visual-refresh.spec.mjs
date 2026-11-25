@@ -49,3 +49,37 @@ test('manuscript reader uses paper style without clipping text', async ({ page }
   await expectNoHorizontalOverflow(page);
   await page.screenshot({ path: testInfo.outputPath('manuscript-reader.png'), fullPage: true });
 });
+
+test('archive headings align to the content edge and active navigation is visible', async ({ page }) => {
+  await page.goto('/paath/');
+  const title = page.locator('#deity-heading');
+  const row = title.locator('xpath=..');
+  const positions = await Promise.all([
+    title.boundingBox(),
+    row.boundingBox(),
+  ]);
+  expect(positions[0]).not.toBeNull();
+  expect(positions[1]).not.toBeNull();
+  expect(positions[0].x - positions[1].x, 'Section title drifted away from its left edge').toBeLessThan(55);
+
+  const nav = page.locator('.nav-inner');
+  const active = nav.locator('[aria-current="page"]');
+  const result = await page.evaluate(() => {
+    const container = document.querySelector('.nav-inner');
+    const link = container?.querySelector('[aria-current="page"]');
+    if (!container || !link) return null;
+    return {
+      scrollable: container.scrollWidth > container.clientWidth,
+      linkLeft: link.getBoundingClientRect().left,
+      linkRight: link.getBoundingClientRect().right,
+      navLeft: container.getBoundingClientRect().left,
+      navRight: container.getBoundingClientRect().right,
+    };
+  });
+  expect(result).not.toBeNull();
+  if (result.scrollable) {
+    expect(result.linkLeft).toBeGreaterThanOrEqual(result.navLeft - 2);
+    expect(result.linkRight).toBeLessThanOrEqual(result.navRight + 2);
+  }
+  await expect(active).toHaveAttribute('aria-current', 'page');
+});
