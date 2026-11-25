@@ -20,7 +20,7 @@ for (const file of files) {
   }
   const metadata = Object.fromEntries(
     fm[1].split(/\r?\n/).map((line) => {
-      const m = line.match(/^([a-z]+):\s*(.*)$/);
+      const m = line.match(/^([a-zA-Z]+):\s*(.*)$/);
       return m ? [m[1], m[2].trim().replace(/^["']|["']$/g, '')] : [];
     }).filter((parts) => parts.length === 2)
   );
@@ -71,7 +71,7 @@ for (const file of prayerFiles) {
   const match = text.match(/^---\r?\n([\s\S]+?)\r?\n---\r?\n/);
   if (!match) { errors.push(file + ': missing devotional frontmatter'); continue; }
   const metadata = Object.fromEntries(match[1].split(/\r?\n/).map((line) => {
-    const m = line.match(/^([a-z]+):\s*(.*)$/);
+    const m = line.match(/^([a-zA-Z]+):\s*(.*)$/);
     return m ? [m[1], m[2].trim().replace(/^["']|["']$/g, '')] : [];
   }).filter((item) => item.length === 2));
   for (const key of ['title', 'description', 'kind', 'deity', 'deitySlug', 'attribution', 'date', 'draft']) {
