@@ -122,3 +122,30 @@
   .puja-items{grid-template-columns:repeat(2,1fr)}
   .puja-item{break-inside:avoid}
 }
+
+/* Kundli astronomy research lab — deliberately not a D1 chart. */
+.kundli-lab { max-width: 825px; margin: 29px auto 0; background: #fffaf3; border: 1px solid #dac6af; border-top: 4px solid #986045; padding: 28px; }
+.kundli-lab-heading h2 { font-family: var(--serif); color: #71352f; font-size: 27px; margin: 10px 0 8px; }
+.kundli-lab-heading p { line-height: 1.9; color: #6f6154; font-size: 14px; margin: 0 0 20px; }
+.kundli-lab .tool-form { max-width: none; padding: 0; margin: 0; border: none; background: none; }
+.kundli-lab .tool-action { font-size: 14px; }
+.tool-field-note { color: #877769; font-size: 12px; line-height: 1.85; margin: 13px 0 0; }
+.kundli-lab-result { margin-top: 27px; padding: 22px; background: #f3e6d6; border: 1px solid #dfc8aa; }
+.kundli-lab-result[hidden] { display: none; }
+.kundli-result-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 18px; justify-content: space-between; margin-bottom: 15px; }
+.kundli-result-heading h3 { font-family: var(--serif); font-size: 20px; color: #74392f; margin: 0; }
+.kundli-result-heading p { font-size: 12px; font-family: monospace; color: #695548; margin: 0; overflow-wrap: anywhere; }
+.kundli-table-scroll { overflow-x: auto; max-width: 100%; }
+.kundli-position-table { border-collapse: collapse; width: 100%; min-width: 420px; font-size: 13px; text-align: left; background: #fffaf3; }
+.kundli-position-table th, .kundli-position-table td { border-bottom: 1px solid #e6d9c8; padding: 11px 12px; }
+.kundli-position-table thead { background: #ead9c2; color: #6d3029; font-size: 12px; }
+.kundli-position-table tbody th { font-weight: 800; color: #45342b; }
+.kundli-position-table tbody td { font-variant-numeric: tabular-nums; color: #624d3e; }
+.kundli-result-warning { border-left: 3px solid #985644; padding: 11px 13px; background: #fff8ef; font-size: 13px; color: #694537; line-height: 1.8; margin: 19px 0 0; }
+@media(max-width:650px){
+  .kundli-lab { padding: 19px 15px; }
+  .kundli-lab-heading h2 { font-size: 23px; }
+  .kundli-lab-result { padding: 17px 10px; }
+  .kundli-position-table th, .kundli-position-table td { padding: 9px 10px; }
+}
+@media print { .kundli-lab .tool-form { display: none; } .kundli-lab-result { background: white; border: 0; } }

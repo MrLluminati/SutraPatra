@@ -6,7 +6,7 @@
 - `/upkaran/jaap-mala/`: a working, 108-count digital jaap counter; total, completed malas, undo, reset and optional browser-only saved count (localStorage with user opt-in). No data is transmitted from the counter.
 - `/upkaran/puja-samagri/`: initial item checklists for Ganesh, Shiv, Lakshmi and Satyanarayan Puja; supports check/uncheck, personal items, copying, clearing and printing. State stays in memory only; a page refresh resets it.
 - `/upkaran/suryoday-suryast/`: astronomy-based sunrise/sunset for ten Indian cities with city-center coordinates. Uses `astronomy-engine` v2.1.x (MIT license) in the user's browser. Dates 2000–2099; results formatted Asia/Kolkata. Definitions use top edge of the Sun with usual atmospheric refraction over a modeled horizon; do not advertise these as religious muhurat, local temple schedules, or exact visible time in obstructed terrain.
-- `/upkaran/janam-kundli/`: explanatory **development-status page, not a generator**. It contains no birth-date/time input and no fictitious planetary chart. This is intentional.
+- `/upkaran/janam-kundli/`: public **astronomical research preview, not a Vedic Kundli generator**. Date/time is entered in modern IST (2000–2099). It calculates seven apparent geocentric tropical ecliptic-of-date longitudes/latitudes on the client using Astronomy Engine. It intentionally does **not** apply Lahiri ayanamsa, sidereal signs, ascendant, lunar nodes, houses or D1. No data retention or network submission.
 
 ## Kundli engine — prerequisites before release
 
@@ -26,6 +26,6 @@
 
 ## Quality assurance
 
-GitHub Actions runs Astro build, content checks and Playwright browser tests at 320px, 390px and 1280px widths. The tool tests cover counter progression/opt-in persistence, puja custom items and template changes, local solar calculation output, and explicit Kundli under-development labelling.
+GitHub Actions runs Astro build, content checks and Playwright browser tests at 320px, 390px and 1280px widths. The tool tests cover counter progression/opt-in persistence, puja custom items and template changes, local solar calculation output, and the explicit non-Kundli labelling and seven calculated objects in the astronomical research preview.
 
 No paid API key, account system, location permission or user-uploaded personal data is required for Release 1.

@@ -1,18 +1,87 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="जन्म कुंडली निर्माता — विकास स्थिति" description="सूत्रपत्र की जन्म कुंडली गणना परियोजना: प्रामाणिक ग्रह-स्थितियों, लग्न, समय-क्षेत्र और अयनांश के सत्यापन का विवरण।">
+<BaseLayout title="जन्म कुंडली — खगोलीय गणना प्रयोगशाला" description="सूत्रपत्र की जन्म कुंडली विकास प्रयोगशाला: ब्राउज़र में सूर्य, चंद्रमा और ग्रहों की Tropical स्थिति की गणना। अभी वैदिक कुंडली नहीं।">
   <div class="container tool-detail">
     <div class="breadcrumbs"><a href="/">मुखपृष्ठ</a><span aria-hidden="true">/</span><a href="/upkaran/">धार्मिक उपकरण</a><span aria-hidden="true">/</span><span>जन्म कुंडली</span></div>
-    <header class="tool-page-header"><span class="section-kicker">गणना इंजन · तैयारी में</span><h1>जन्म कुंडली निर्माता</h1><p>जन्म विवरण से उत्तर भारतीय D1 चार्ट बनाने की योजना पर काम चल रहा है। इस चरण में हम अप्रमाणित या अनुमानित कुंडली प्रकाशित नहीं कर रहे हैं।</p></header>
-    <div class="kundli-notice"><strong>अभी कुंडली तैयार करने की सुविधा चालू नहीं है।</strong><p>सही जन्म तिथि, स्थानीय समय, जन्म-स्थान, ऐतिहासिक समय-क्षेत्र, ग्रहों की निरयन स्थिति और लग्न-गणना का एक साथ सत्यापन आवश्यक है। इस पृष्ठ पर जन्म-विवरण माँगा या संग्रहीत नहीं किया जाता।</p></div>
+    <header class="tool-page-header">
+      <span class="section-kicker">जन्म कुंडली · खगोलीय अनुसंधान संस्करण</span>
+      <h1>जन्म कुंडली निर्माता</h1>
+      <p>सत्यापित गणना इंजन की दिशा में पहला चरण: जन्म समय पर सात खगोलीय पिंडों की स्थिति। पूर्ण वैदिक कुंडली अभी उपलब्ध नहीं है।</p>
+    </header>
+    <div class="kundli-notice" role="note">
+      <strong>महत्त्वपूर्ण: यह जन्म कुंडली नहीं है।</strong>
+      <p>प्रयोगशाला केवल <b>Tropical (सायन) देशांतर</b> और क्रान्तिवृत्तीय अक्षांश दिखाती है। इसमें लाहिड़ी अयनांश, निरयन राशियाँ, जन्म लग्न, भाव, राहु-केतु या D1 चार्ट शामिल नहीं हैं।</p>
+    </div>
+    <section class="kundli-lab" aria-labelledby="kundli-lab-heading">
+      <div class="kundli-lab-heading">
+        <span class="section-kicker">गणना सीधे आपके ब्राउज़र में</span>
+        <h2 id="kundli-lab-heading">ग्रह-स्थिति परीक्षण</h2>
+        <p>सिर्फ वर्ष 2000–2099 और भारतीय मानक समय (UTC+05:30) के लिए। परिणाम कहीं सेव नहीं किए जाते।</p>
+      </div>
+      <form id="kundli-research-form" class="tool-form" autocomplete="off">
+        <div class="tool-form-grid">
+          <div class="tool-field"><label for="kundli-date">तारीख (IST)</label><input id="kundli-date" type="date" min="2000-01-01" max="2099-12-31" value="2000-01-01" required /></div>
+          <div class="tool-field"><label for="kundli-time">समय (IST, 24 घंटे)</label><input id="kundli-time" type="time" value="12:00" required /></div>
+        </div>
+        <p class="tool-field-note">इस भूकेन्द्रीय गणना में जन्म-स्थान की आवश्यकता नहीं है। भविष्य में लग्न और भाव की गणना के लिए स्थान आवश्यक होगा।</p>
+        <button class="tool-action" type="submit">ग्रहों की स्थिति देखें</button>
+      </form>
+      <section id="kundli-lab-result" class="kundli-lab-result" aria-labelledby="kundli-result-heading" hidden>
+        <div class="kundli-result-heading"><h3 id="kundli-result-heading">खगोलीय स्थिति (Tropical)</h3><p id="kundli-utc">UTC —</p></div>
+        <div class="kundli-table-scroll"><table class="kundli-position-table">
+          <thead><tr><th scope="col">ग्रह / पिंड</th><th scope="col">देशांतर (0°–360°)</th><th scope="col">क्रान्तिवृत्तीय अक्षांश</th></tr></thead>
+          <tbody id="kundli-position-rows"></tbody>
+        </table></div>
+        <p class="kundli-result-warning">ये संख्याएँ निरयन राशि या D1 कुंडली नहीं हैं। इनका उपयोग ज्योतिषीय भविष्यवाणी के लिए न करें।</p>
+      </section>
+      <p class="tool-feedback" id="kundli-feedback" role="status" aria-live="polite">तारीख और समय चुनें।</p>
+    </section>
     <section class="tool-explainer">
-      <h2>इसमें क्या-क्या शामिल होगा?</h2>
-      <ol><li>जन्मस्थान के निर्देशांक और वास्तविक ऐतिहासिक UTC समय का सुरक्षित रूपांतरण।</li><li>सूर्य, चंद्रमा, बुध, शुक्र, मंगल, गुरु और शनि की जाँच योग्य खगोलीय स्थितियाँ।</li><li>निर्दिष्ट अयनांश (जैसे Lahiri), निरयन राशि और नक्षत्र की गणना।</li><li>विश्वसनीय उदाहरणों से जन्म लग्न तथा उत्तर भारतीय D1 कुंडली का मिलान।</li><li>तभी डाउनलोड या प्रिंट करने योग्य चार्ट जारी करना।</li></ol>
-      <h2>गणना-पद्धति और स्रोत</h2>
-      <p>हम प्रारंभिक शोध के लिए <a href="https://github.com/cosinekitty/astronomy" target="_blank" rel="noopener noreferrer">MIT-licensed Astronomy Engine</a> देख रहे हैं। यह खगोलीय ग्रह-स्थितियों की गणना देता है; वैदिक कुंडली और दशा अपने-आप नहीं बनाता। Swiss Ephemeris की अलग AGPL/व्यावसायिक लाइसेंस शर्तें हैं, इसलिए उसे बिना लाइसेंस मूल्यांकन के शामिल नहीं करेंगे।</p>
-      <p><strong>ध्यान दें:</strong> ज्योतिषीय अर्थ और भविष्यफल धार्मिक-सांस्कृतिक मान्यताओं के अंतर्गत आते हैं, वैज्ञानिक रूप से सिद्ध जीवन-पूर्वानुमान नहीं।</p>
-      <a href="/upkaran/suryoday-suryast/">उपलब्ध खगोलीय समय कैलकुलेटर देखें ←</a>
+      <h2>संपूर्ण कुंडली के लिए अगले आवश्यक कदम</h2>
+      <ol>
+        <li>जन्मस्थान और ऐतिहासिक समय-क्षेत्र के अनुसार सटीक UTC परिवर्तन। फिलहाल केवल आधुनिक भारतीय IST उदाहरण समर्थित हैं।</li>
+        <li>प्रामाणिक लाहिड़ी अयनांश और निरयन राशियों के स्वतंत्र संदर्भ परिणामों से मिलान।</li>
+        <li>लग्न, स्थानीय क्षितिज, भाव-विभाजन और D1 चार्ट के प्रकाशित उदाहरणों से जाँच।</li>
+        <li>राहु-केतु की mean/true पद्धति तथा नवांश और दशाओं का अलग सत्यापन।</li>
+      </ol>
+      <h2>गणना विधि और गोपनीयता</h2>
+      <p><a href="https://github.com/cosinekitty/astronomy" target="_blank" rel="noopener noreferrer">MIT-licensed Astronomy Engine</a> से भूकेन्द्रीय ग्रहों के apparent स्थान प्राप्त कर true ecliptic-of-date देशांतर निकाले जाते हैं। इस प्रयोगशाला में तारीख और समय किसी सर्वर पर नहीं भेजे जाते, URL या ब्राउज़र स्टोरेज में नहीं सहेजे जाते।</p>
+      <p>ज्योतिषीय भविष्यफल सांस्कृतिक और धार्मिक परंपरा का विषय है, वैज्ञानिक रूप से सिद्ध व्यक्तिगत जीवन-पूर्वानुमान नहीं।</p>
+      <a href="/upkaran/suryoday-suryast/">सूर्योदय-सूर्यास्त कैलकुलेटर ←</a>
     </section>
   </div>
+  <script>
+    import {parseModernIstInstant, tropicalPositions} from '../../lib/kundli-astronomy';
+    const form=document.getElementById('kundli-research-form');
+    const date=document.getElementById('kundli-date') as HTMLInputElement | null;
+    const time=document.getElementById('kundli-time') as HTMLInputElement | null;
+    const result=document.getElementById('kundli-lab-result') as HTMLElement | null;
+    const rows=document.getElementById('kundli-position-rows');
+    const utc=document.getElementById('kundli-utc');
+    const message=document.getElementById('kundli-feedback');
+    const fmt=new Intl.NumberFormat('hi-IN-u-nu-deva',{minimumFractionDigits:2,maximumFractionDigits:2});
+    form?.addEventListener('submit',event=>{
+      event.preventDefault();
+      if(result) result.hidden=true;
+      rows?.replaceChildren();
+      try {
+        const instant=parseModernIstInstant(date?.value??'',time?.value??'');
+        const positions=tropicalPositions(instant);
+        for(const entry of positions) {
+          const tr=document.createElement('tr');
+          const name=document.createElement('th');name.scope='row';name.textContent=entry.name;tr.append(name);
+          for(const value of [entry.longitude,entry.latitude]){
+            const td=document.createElement('td');td.textContent=fmt.format(value)+'°';tr.append(td);
+          }
+          rows?.append(tr);
+        }
+        if(utc) utc.textContent='UTC: '+instant.toISOString().replace('.000Z','Z');
+        if(result)result.hidden=false;
+        if(message)message.textContent='सात खगोलीय पिंडों की सायन स्थिति निकाली गई। यह जन्म कुंडली नहीं है।';
+      } catch(error){
+        if(message)message.textContent=error instanceof Error?error.message:'गणना उपलब्ध नहीं है।';
+      }
+    });
+  </script>
 </BaseLayout>

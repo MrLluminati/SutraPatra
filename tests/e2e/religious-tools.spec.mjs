@@ -82,10 +82,50 @@ test('sunrise and sunset calculate nonplaceholder values for Patna', async ({pag
   await page.screenshot({path:testInfo.outputPath('sunrise-sunset.png'),fullPage:true});
 });
 
-test('kundli page avoids unverified chart output and collection of birth details', async ({page}) => {
+
+test('kundli research lab labels tropical positions and never implies completed D1', async ({page}, testInfo) => {
   await page.goto('/upkaran/janam-kundli/');
   await expect(page.getByRole('heading', {name:'जन्म कुंडली निर्माता'})).toBeVisible();
-  await expect(page.getByText('अभी कुंडली तैयार करने की सुविधा चालू नहीं है।')).toBeVisible();
-  await expect(page.locator('input[type="date"], input[type="time"]')).toHaveCount(0);
+  await expect(page.getByText('महत्त्वपूर्ण: यह जन्म कुंडली नहीं है।')).toBeVisible();
+  await expect(page.locator('#kundli-lab-result')).toBeHidden();
+  await page.locator('#kundli-date').fill('2026-06-21');
+  await page.locator('#kundli-time').fill('12:00');
+  await page.getByRole('button',{name:'ग्रहों की स्थिति देखें'}).click();
+  await expect(page.locator('#kundli-lab-result')).toBeVisible();
+  await expect(page.locator('#kundli-position-rows tr')).toHaveCount(7);
+  await expect(page.locator('#kundli-utc')).toContainText('2026-06-21T06:30:00Z');
+  await expect(page.locator('.kundli-result-warning')).toContainText('D1 कुंडली नहीं');
   await withinPage(page);
+  await page.screenshot({path:testInfo.outputPath('kundli-research-lab.png'),fullPage:true});
+});
+
+test('astronomy lab updates with new date and has no local birth-data storage', async ({page}) => {
+  await page.goto('/upkaran/janam-kundli/');
+  await page.locator('#kundli-date').fill('2000-01-01');
+  await page.locator('#kundli-time').fill('00:00');
+  await page.getByRole('button',{name:'ग्रहों की स्थिति देखें'}).click();
+  await expect(page.locator('#kundli-utc')).toContainText('1999-12-31T18:30:00Z');
+  const first = await page.locator('#kundli-position-rows tr').first().textContent();
+  await page.locator('#kundli-date').fill('2026-06-21');
+  await page.getByRole('button',{name:'ग्रहों की स्थिति देखें'}).click();
+  await expect(page.locator('#kundli-position-rows tr')).toHaveCount(7);
+  const second = await page.locator('#kundli-position-rows tr').first().textContent();
+  expect(second).not.toBe(first);
+  const saved = await page.evaluate(() => Object.keys(localStorage).filter(key => /kundli|birth|janam/i.test(key)));
+  expect(saved).toHaveLength(0);
+});
+
+
+test('tropical Sun near June solstice is near 90 degrees — astronomical sanity check', async ({page}) => {
+  await page.goto('/upkaran/janam-kundli/');
+  await page.locator('#kundli-date').fill('2026-06-21');
+  await page.locator('#kundli-time').fill('12:00');
+  await page.getByRole('button',{name:'ग्रहों की स्थिति देखें'}).click();
+  await expect(page.locator('#kundli-position-rows tr')).toHaveCount(7);
+  const sun = await page.locator('#kundli-position-rows tr').first().locator('td').first().textContent();
+  const digits = '०१२३४५६७८९';
+  const asAscii = (sun ?? '').replace(/[०-९]/g, char => String(digits.indexOf(char)));
+  const longitude = parseFloat(asAscii);
+  expect(longitude,'June solstice solar tropical longitude').toBeGreaterThan(88);
+  expect(longitude,'June solstice solar tropical longitude').toBeLessThan(92);
 });
