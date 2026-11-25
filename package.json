@@ -7,10 +7,14 @@
     "dev": "astro dev",
     "check:content": "node scripts/check-content.mjs",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "astro": "^6.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.1"
   },
   "engines": {
     "node": ">=22.12.0"

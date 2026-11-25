@@ -1,0 +1,50 @@
+name: Mobile and desktop browser QA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/pages/paath/**'
+      - 'src/components/PrayerCard.astro'
+      - 'src/styles/**'
+      - 'src/content/prayers/**'
+      - 'src/content.config.ts'
+      - 'tests/e2e/**'
+      - 'playwright.config.mjs'
+      - 'package.json'
+      - '.github/workflows/browser-qa.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Install Chromium browser
+        run: npx playwright install --with-deps chromium
+      - name: Build static site
+        run: npm run build
+      - name: Test 320px, 390px and desktop browsers
+        run: npm run test:e2e
+        env:
+          CI: true
+      - name: Upload browser QA report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-qa-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
