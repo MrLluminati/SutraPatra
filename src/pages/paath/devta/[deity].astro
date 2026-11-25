@@ -25,10 +25,13 @@ const prayers = (await getCollection('prayers', ({ data }) => !data.draft && dat
       <a href="/paath/">भक्ति पाठ संग्रह</a><span aria-hidden="true">/</span>
       <span>{deity.name}</span>
     </div>
-    <header class="section-page-header">
-      <span class="section-kicker">देवता के अनुसार भक्ति संग्रह</span>
-      <h1>{deity.name} के पाठ</h1>
-      <p>{deity.description}। नीचे संग्रह में उपलब्ध पूरे पाठ पढ़ें। नए प्रमाणित पाठ समय के साथ जोड़े जाएँगे।</p>
+    <header class="section-page-header deity-page-header">
+      <div class="deity-page-copy">
+        <span class="section-kicker">देवता के अनुसार भक्ति संग्रह</span>
+        <h1>{deity.name} के पाठ</h1>
+        <p>{deity.description}। मूल पाठ और उनसे जुड़े संदर्भ एक ही स्थान पर पढ़ें।</p>
+      </div>
+      <span class="deity-page-seal" aria-hidden="true">{deity.symbol}</span>
     </header>
     {prayers.length > 0 ? (
       <div class="prayer-list-grid">{prayers.map((item) => <PrayerCard item={item} />)}</div>

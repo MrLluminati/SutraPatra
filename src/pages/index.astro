@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ArticleCard from '../components/ArticleCard.astro';
+import EditorialArtwork from '../components/EditorialArtwork.astro';
 import { categories, formatHindiDate, getCategory } from '../lib/site';
 
 const articles = (await getCollection('articles', ({ data }) => !data.draft))
@@ -19,17 +20,30 @@ const featuredCategory = featured && getCategory(featured.data.category);
 
 <BaseLayout>
   <div class="container">
-    <section class="introduction" aria-label="सूत्रपत्र परिचय">
-      <span class="section-kicker"><span class="red-dot"></span> विचार, संस्कृति और जानकारी</span>
-      <h1>हर जानकारी के पीछे <em>एक कहानी</em> है।</h1>
-      <p>परंपराओं से लेकर रोज़मर्रा के सवालों तक — पढ़िए आसान भाषा में, सोचिए नए नज़रिए से।</p>
+    <section class="introduction editorial-intro" aria-label="सूत्रपत्र परिचय">
+      <div class="intro-copy">
+        <span class="section-kicker"><span class="red-dot"></span> स्वतंत्र हिंदी डिजिटल पत्रिका</span>
+        <h1>हर जानकारी के पीछे <em>एक कहानी</em> है।</h1>
+        <p>भारत की परंपराओं, आस्थाओं और रोज़मर्रा के सवालों को समझिए — स्पष्ट भाषा, संदर्भ और नई दृष्टि के साथ।</p>
+        <div class="intro-actions">
+          <a class="intro-primary" href="/lekh/">नवीन लेख पढ़ें <span aria-hidden="true">↗</span></a>
+          <a class="intro-secondary" href="/paath/">भक्ति पाठ संग्रह <span aria-hidden="true">←</span></a>
+        </div>
+        <div class="intro-note"><span class="intro-note-rule"></span> विचार · संस्कृति · परंपरा</div>
+      </div>
+      <div class="intro-visual">
+        <div class="intro-visual-cover">
+          <EditorialArtwork category="dharm-sanskriti" slug="surya-upasana" format="intro" />
+          <span class="intro-visual-overprint">पढ़िए।<br />समझिए।<br /><em>खोजिए।</em></span>
+        </div>
+        <span class="intro-visual-side">SUTRAPATRA / HINDI EDITORIAL</span>
+      </div>
     </section>
     <div class="rule-with-label"><span>संपादक की पसंद</span></div>
     {featured ? (
       <section class="lead-grid" aria-label="प्रमुख लेख">
-        <a href={'/lekh/' + featured.id + '/'} class:list={['lead-illustration', 'theme-' + featured.data.category]} aria-label={featured.data.title}>
-          <span class="lead-illustration-symbol" aria-hidden="true">{featuredCategory?.letter ?? 'सू'}</span>
-          <span class="lead-illustration-caption">सूत्रपत्र · विशेष प्रस्तुति</span>
+        <a href={'/lekh/' + featured.id + '/'} class="lead-art-link" aria-label={featured.data.title}>
+          <EditorialArtwork category={featured.data.category} slug={featured.id} format="lead" />
         </a>
         <div class="lead-copy">
           <a class="eyebrow" href={'/vishay/' + featured.data.category + '/'}>{featuredCategory?.label}</a>

@@ -2,6 +2,7 @@
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
+import EditorialArtwork from '../../components/EditorialArtwork.astro';
 import { formatHindiDate, getCategory } from '../../lib/site';
 
 interface Props { article: CollectionEntry<'articles'>; }
@@ -46,9 +47,7 @@ const otherArticles = (await getCollection('articles', ({ data }) => !data.draft
           {article.data.updated && <span>· संशोधित: <time datetime={article.data.updated.toISOString()}>{formatHindiDate(article.data.updated)}</time></span>}
         </div>
       </header>
-      <div class:list={['article-hero-art','theme-' + article.data.category]} aria-hidden="true">
-        <span>{category?.letter ?? 'सू'}</span>
-      </div>
+      <EditorialArtwork category={article.data.category} slug={article.id} format="article" />
       <div class="prose"><Content /></div>
       <div class="article-bottom"><span>यह लेख उपयोगी लगा?</span><p>इस पृष्ठ का लिंक साझा करें और सूत्रपत्र के अन्य विषय पढ़ें।</p><a href={'/vishay/' + article.data.category + '/'}>इसी विषय के और लेख देखें ←</a></div>
     </article>

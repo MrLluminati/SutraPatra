@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import '../styles/visual-refresh.css';
 import { categories, siteName, siteNameEnglish, tagline } from '../lib/site';
 
 interface Props {
@@ -20,6 +21,8 @@ const baseUrl = (import.meta.env.PUBLIC_SITE_URL?.trim() || 'https://sutrapatra.
 const canonical = new URL(Astro.url.pathname, baseUrl).toString();
 const fullTitle = title.includes('सूत्रपत्र') ? title : title + ' | सूत्रपत्र';
 const year = new Date().getFullYear();
+const currentPath = Astro.url.pathname;
+const currentSection = (path: string) => currentPath === path || (path !== '/' && currentPath.startsWith(path));
 ---
 
 <!doctype html>
@@ -28,7 +31,7 @@ const year = new Date().getFullYear();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light" />
-    <meta name="theme-color" content="#9f2f28" />
+    <meta name="theme-color" content="#762e2a" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <meta name="google-site-verification" content="Vq9UrqZGHfm7BowxTbjTVe-cuyfzKuu72DGWRe1b5hU" />
@@ -47,21 +50,21 @@ const year = new Date().getFullYear();
   </head>
   <body>
     <a class="skip-link" href="#main-content">मुख्य सामग्री पर जाएँ</a>
-    <div class="utility-bar"><div class="container utility-inner"><span>स्वतंत्र हिंदी डिजिटल पत्रिका</span><span>संस्कृति • परंपरा • उपयोगी जानकारी</span></div></div>
+    <div class="utility-bar"><div class="container utility-inner"><span>सूत्रपत्र <span aria-hidden="true">✦</span> स्वतंत्र हिंदी पत्रिका</span><span>विचार · संस्कृति · संदर्भ</span></div></div>
     <header class="site-header">
       <div class="container header-main">
         <a class="brand" href="/" aria-label="सूत्रपत्र — मुख्य पृष्ठ">
           <span class="brand-emblem" aria-hidden="true">सू</span>
           <span class="brand-text"><strong>{siteName}</strong><small>{tagline}</small></span>
         </a>
-        <div class="header-message">हर विषय को समझने का एक नया नज़रिया<span class="header-message-line"></span></div>
+        <div class="header-message"><span>शब्दों से विचार तक। विचारों से समझ तक।</span><span class="header-message-line"></span></div>
       </div>
       <nav class="nav-bar" aria-label="मुख्य नेविगेशन">
         <div class="container nav-inner">
-          <a class="nav-home" href="/">मुखपृष्ठ</a>
-          {categories.map((category) => <a href={'/vishay/' + category.slug + '/'}>{category.label}</a>)}
-          <a href="/paath/">आरती, चालीसा और स्तोत्र</a>
-          <a href="/lekh/">सभी लेख</a>
+          <a class="nav-home" href="/" aria-current={currentPath === '/' ? 'page' : undefined}>मुखपृष्ठ</a>
+          {categories.map((category) => <a href={'/vishay/' + category.slug + '/'} aria-current={currentSection('/vishay/' + category.slug + '/') ? 'page' : undefined}>{category.label}</a>)}
+          <a href="/paath/" aria-current={currentSection('/paath/') ? 'page' : undefined}>आरती, चालीसा और स्तोत्र</a>
+          <a href="/lekh/" aria-current={currentSection('/lekh/') ? 'page' : undefined}>सभी लेख</a>
           <a class="nav-about" href="/hamare-bare-mein/">हमारे बारे में</a>
         </div>
       </nav>

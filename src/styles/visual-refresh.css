@@ -1,0 +1,422 @@
+/*
+ * SutraPatra · editorial visual refresh
+ * Original CSS/SVG artwork; zero external image or font dependencies.
+ * Works with the existing Astro content and the accessible reading controls.
+ */
+:root {
+  --paper: #f8f3eb;
+  --surface: #fffdfa;
+  --ink: #2a2521;
+  --muted: #72665c;
+  --line: #e5d9cc;
+  --brand: #85312d;
+  --brand-dark: #622321;
+  --gold: #bc8a4d;
+  --deep: #272a26;
+  --card-shadow: 0 15px 38px rgba(65, 44, 26, .055);
+}
+body {
+  background:
+    radial-gradient(ellipse 560px 270px at 94% -90px, rgba(195, 151, 89, .13), transparent 80%),
+    radial-gradient(ellipse 420px 260px at -5% 25%, rgba(135, 57, 46, .055), transparent 85%),
+    var(--paper);
+}
+::selection { background: #e4c4a0; color: #33251b; }
+.container { width: min(1210px, calc(100% - 64px)); }
+.utility-bar { background: #342c28; color: #f0e5d7; border-bottom: 1px solid rgba(255,255,255,.13); }
+.utility-inner { min-height: 34px; font-size: 11px; letter-spacing: .04em; }
+.utility-inner span span { color: #d9ab6a; padding: 0 6px; }
+.site-header { background: rgba(255,253,248,.97); }
+.header-main { min-height: 122px; }
+.brand { gap: 16px; }
+.brand-emblem {
+  border: 1px solid #bd8b58;
+  outline: 3px double #c8ab7c;
+  outline-offset: 3px;
+  background: radial-gradient(circle at 30% 20%, #a85242 0%, #802d28 52%, #5b2625 100%);
+  border-radius: 50%;
+  width: 58px;
+  height: 58px;
+  color: #ffebc5;
+  box-shadow: inset 0 0 0 4px rgba(255,238,214,.12), 0 4px 10px rgba(95,50,32,.1);
+}
+.brand-text strong { letter-spacing: -.025em; font-size: clamp(29px, 3.45vw, 40px); }
+.brand-text small { letter-spacing: .07em; font-weight: 600; margin-top: 1px; }
+.header-message { padding-bottom: 13px; color: #857369; font-size: 14px; }
+.header-message-line { width: 145px; height: 1px; background: var(--gold); }
+.nav-bar { border-top: 1px solid #e8dcd0; border-bottom: 1px solid #dac6b2; box-shadow: 0 4px 12px rgba(66,39,25,.035); }
+.nav-inner { min-height: 56px; }
+.nav-inner a {
+  min-height: 56px;
+  position: relative;
+  color: #4b4038;
+  font-weight: 740;
+  font-size: 13px;
+  padding: 11px 19px;
+}
+.nav-inner a:first-child { padding-left: 8px; }
+.nav-inner a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 18px;
+  right: 18px;
+  height: 2px;
+  background: transparent;
+  transition: background .2s ease;
+}
+.nav-inner a:hover { background: #f7eee4; color: var(--brand-dark); }
+.nav-inner a:hover::after, .nav-inner a[aria-current="page"]::after { background: var(--brand); }
+.nav-inner a[aria-current="page"] { color: var(--brand); }
+.section-kicker { letter-spacing: .06em; font-size: 11px; }
+.section-heading { border-bottom: 1px solid #dacbb9; margin-bottom: 26px; padding-bottom: 18px; }
+.section-heading h2 { letter-spacing: -.01em; }
+.section-heading::before { content: ''; align-self: flex-end; width: 4px; height: 30px; background: var(--brand); order: -1; margin-right: -6px; }
+.all-articles-link, .read-more, .category-cta { transition: color .2s; }
+.all-articles-link:hover, .read-more:hover, .category-cta:hover { color: #a65332; }
+.breadcrumbs { color: #8b796a; }
+.breadcrumbs a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+/* Front page: publication-style cover and readable introduction. */
+.editorial-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.06fr) minmax(0, .94fr);
+  padding: 0;
+  text-align: left;
+  margin: 38px 0 52px;
+  min-height: 485px;
+  background: #f7ecdd;
+  border: 1px solid #e5d5c2;
+  box-shadow: var(--card-shadow);
+}
+.intro-copy {
+  padding: clamp(35px, 4.8vw, 72px) clamp(31px, 5vw, 65px);
+  align-self: center;
+  position: relative;
+}
+.intro-copy::before {
+  content: '';
+  position: absolute;
+  left: clamp(31px, 5vw, 65px);
+  top: 24px;
+  width: 48px;
+  height: 3px;
+  background: #a85043;
+}
+.editorial-intro .section-kicker { color: #8b4739; font-size: 12px; }
+.editorial-intro h1 {
+  margin: 22px 0 18px;
+  font-size: clamp(38px, 4.5vw, 61px);
+  line-height: 1.38;
+  max-width: 540px;
+  font-family: var(--serif);
+  font-weight: 850;
+  letter-spacing: -.03em;
+}
+.editorial-intro h1 em { color: var(--brand); }
+.editorial-intro p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 2.05;
+  max-width: 460px;
+  color: #645649;
+}
+.intro-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 29px; }
+.intro-actions a { display: inline-flex; justify-content: center; align-items: center; gap: 16px; padding: 12px 19px; font-size: 13px; font-weight: 780; transition: transform .18s ease, background .18s ease; }
+.intro-actions a:hover { transform: translateY(-2px); }
+.intro-primary { color: #fff7eb; background: #84332f; border: 1px solid #84332f; }
+.intro-primary:hover { background: #642721; color: #fff; }
+.intro-secondary { color: #71372e; background: #fff8ef; border: 1px solid #d6bfa6; }
+.intro-secondary:hover { background: #f0e0cd; color: #71372e; }
+.intro-note { display: flex; gap: 10px; align-items: center; color: #a28a79; font-size: 11px; margin-top: 29px; letter-spacing: .05em; }
+.intro-note-rule { width: 25px; height: 1px; background: #bb9d79; }
+.intro-visual { position: relative; padding: 17px 32px 17px 0; min-height: 485px; background: #f7ecdd; }
+.intro-visual-cover { position: relative; height: 100%; overflow: hidden; box-shadow: 0 8px 24px rgba(49,32,18,.16); }
+.intro-visual .editorial-artwork { height: 100%; }
+.intro-visual-overprint { position: absolute; z-index: 2; bottom: 23%; left: 11%; display: block; font-family: var(--serif); font-size: clamp(26px, 3.1vw, 43px); line-height: 1.4; color: #fff3da; text-shadow: 0 3px 18px rgba(0,0,0,.23); font-weight: 850; letter-spacing: -.03em; }
+.intro-visual-overprint em { font-style: normal; color: #f2cd91; }
+.intro-visual-side { position: absolute; transform: rotate(90deg) translateY(-50%); transform-origin: top left; top: 10%; right: -30px; color: #9c806b; letter-spacing: .14em; font-size: 9px; }
+
+/* Original vector artwork replaces repetitive single-letter placeholders. */
+.editorial-artwork {
+  height: 100%;
+  min-height: 0;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: block;
+  color: #f2c88c;
+}
+.artwork-dharm-sanskriti {
+  background: radial-gradient(circle at 68% 44%, rgba(235,196,122,.2) 0%, transparent 43%),
+    linear-gradient(140deg,#755239 0%,#3e4a42 48%,#213a3b 100%);
+}
+.artwork-aarti-stotra {
+  background: radial-gradient(circle at 57% 39%, rgba(246,191,128,.2) 0%, transparent 39%),
+    linear-gradient(125deg,#a0533c 0%,#722e35 50%,#452831 100%);
+}
+.artwork-vrat-tyohar {
+  background: radial-gradient(circle at 52% 37%,rgba(206,220,169,.18) 0%,transparent 44%),
+    linear-gradient(135deg,#3f7170 0%,#2d5156 46%,#263c44 100%);
+}
+.editorial-artwork::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: .45;
+  background-image: linear-gradient(90deg,rgba(255,240,205,.06) 1px, transparent 1px),linear-gradient(rgba(255,240,205,.04) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.editorial-artwork::after {
+  content: '';
+  position: absolute;
+  inset: 13px;
+  z-index: -1;
+  border: 1px solid rgba(255,229,185,.16);
+  pointer-events: none;
+}
+.artwork-svg { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .95; }
+.artwork-focus { filter: drop-shadow(0 5px 12px rgba(0,0,0,.15)); }
+.artwork-edition { position: absolute; z-index: 1; top: 25px; left: 29px; display: flex; align-items: center; gap: 10px; color: #ffe7bd; font-size: 11px; font-weight: 800; letter-spacing: .045em; }
+.artwork-edition-rule { height: 1px; width: 22px; background: #efc98f; }
+.artwork-caption { position: absolute; bottom: 23px; right: 27px; display: inline-flex; align-items: center; gap: 11px; font-size: 11px; color: #f2ddc1; letter-spacing: .07em; font-weight: 700; }
+.artwork-caption-line { width: 20px; height: 1px; background: rgba(255,228,185,.8); }
+.artwork-intro .artwork-edition { top: 27px; }
+.artwork-intro .artwork-svg { opacity: .7; transform: scale(1.25) translateX(5%); }
+.artwork-intro .artwork-caption { bottom: 28px; left: 29px; right: auto; }
+.lead-art-link, .article-art-link { display: block; overflow: hidden; min-width: 0; }
+.lead-art-link .editorial-artwork { height: 100%; min-height: 395px; }
+.lead-art-link:hover .artwork-svg, .article-art-link:hover .artwork-svg { transform: scale(1.04); }
+.lead-art-link .artwork-svg, .article-art-link .artwork-svg { transition: transform .45s ease; }
+.article-art-link { aspect-ratio: 1.55; }
+.article-art-link .editorial-artwork { height: 100%; width: 100%; }
+.artwork-card .artwork-edition { top: 16px; left: 18px; font-size: 9px; }
+.artwork-card .artwork-caption { bottom: 16px; right: 17px; font-size: 10px; }
+.artwork-card::after { inset: 9px; }
+.artwork-article { width: 100%; height: clamp(230px, 36vw, 385px); margin: 28px 0 40px; }
+.artwork-article .artwork-svg { transform: scale(1.04); }
+
+/* Article cards and editorial story feature. */
+.rule-with-label { margin-top: 32px; }
+.lead-grid { border-color: #e4d5c4; min-height: 400px; box-shadow: var(--card-shadow); }
+.lead-copy { padding: 45px clamp(30px,3.5vw,55px); }
+.lead-copy h2 { font-size: clamp(27px,3.15vw,42px); line-height: 1.48; letter-spacing: -.025em; }
+.lead-copy p { font-size: 15px; line-height: 2; }
+.read-more { padding-bottom: 8px; }
+.cards-grid { gap: 22px; }
+.article-card { display: flex; flex-direction: column; min-width: 0; overflow: hidden; background: #fffdfa; border: 1px solid #e6d9c9; box-shadow: 0 6px 22px rgba(54,36,24,.035); transition: box-shadow .18s ease, transform .18s ease; }
+.article-card:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(54,36,24,.11); }
+.article-card-body { padding: 21px 22px 23px; display: flex; flex-direction: column; flex: 1; }
+.article-card h3 { font-size: 21px; line-height: 1.55; margin: 9px 0 12px; }
+.article-card .card-description { font-size: 13px; line-height: 1.8; }
+.article-card .byline { margin-top: auto; padding-top: 13px; border-top: 1px solid #ede3d8; }
+.article-card.compact .article-art-link { aspect-ratio: 1.48; }
+.article-card.compact h3 { font-size: 18px; }
+.article-card.compact .article-card-body { padding: 15px 16px 19px; }
+.related-articles .article-art-link { aspect-ratio: 1.6; }
+.category-section { padding-bottom: 67px; }
+.category-grid { gap: 18px; }
+.category-tile { padding: 32px 26px; border: 1px solid #e1cfbc; min-height: 188px; background: #f4e8d8; position: relative; overflow: hidden; }
+.category-tile::after { content: ''; position: absolute; right: -32px; bottom: -60px; width: 148px; height: 148px; border: 1px solid rgba(136,92,58,.16); border-radius: 50%; box-shadow: 0 0 0 23px rgba(136,92,58,.045),0 0 0 45px rgba(136,92,58,.022); }
+.category-1 { background: #f3e6e3; }
+.category-2 { background: #e6efe9; }
+.category-symbol { border: 1px solid #bc9b79; color: var(--brand); background: rgba(255,255,255,.5); border-radius: 50%; font-size: 23px; }
+.category-content strong { font-size: 22px; }
+.mission-band { position: relative; overflow: hidden; background: linear-gradient(125deg,#322b29,#252c2b); border-top: 4px solid #ae7f4d; }
+.mission-band::after { content: 'सूत्रपत्र'; position: absolute; right: -40px; top: -65px; color: rgba(235,206,165,.055); font-family: var(--serif); font-size: 180px; white-space: nowrap; pointer-events: none; }
+.mission-band > * { position: relative; z-index: 1; }
+.site-footer { border-top: 4px solid #a87843; background: #252724; }
+.footer-brand { color: #ffedce; }
+.footer-grid h2 { color: #f5d4a1; }
+.footer-bottom { border-top-color: #4b4943; }
+
+/* Article reading layout: warm print-paper with clearer hierarchy. */
+.article-shell .full-article:not(.prayer-reader) { max-width: 850px; }
+.article-shell .full-article:not(.prayer-reader) .article-header { padding-top: 13px; }
+.article-shell .full-article:not(.prayer-reader) .article-header h1 { font-size: clamp(34px,4.5vw,55px); line-height: 1.42; }
+.article-shell .full-article:not(.prayer-reader) .article-deck { color: #6c6057; }
+.prose { color: #38312c; }
+.prose h2 { color: #5d2c28; border-bottom: 1px solid #e5d7c8; padding-bottom: 9px; }
+.prose h3 { color: #594138; }
+.prose a { text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.article-bottom { background: #f2e8db; border: 1px solid #dfccb9; padding: 22px 28px; }
+.section-page-header { border-color: #dcc9b6; }
+.section-page-header h1 { letter-spacing: -.02em; }
+
+/* Devotional collection's premium printed manuscript visual language. */
+.prayer-home-section { margin-top: 78px; padding: 37px 38px 39px; background: #eee2d4; border: 1px solid #dfcdb8; }
+.prayer-home-section .section-heading { border-color: #d3bda4; }
+.prayer-preview-card { min-height: 194px; gap: 12px; background: linear-gradient(145deg,#fffefa 0%,#f8efe4 100%); border: 1px solid #e4d5c4; border-top: 3px solid #a7744d; padding: 25px; position: relative; overflow: hidden; box-shadow: 0 3px 10px rgba(75,53,30,.02); }
+.prayer-preview-card::before { content: ''; position: absolute; right: -35px; bottom: -57px; width: 125px; height: 125px; border-radius: 50%; border: 1px solid rgba(165,113,68,.12); box-shadow: 0 0 0 15px rgba(165,113,68,.035),0 0 0 32px rgba(165,113,68,.025); pointer-events: none; }
+.prayer-preview-card:hover { color: var(--ink); transform: translateY(-3px); box-shadow: 0 14px 28px rgba(75,53,30,.11); }
+.prayer-preview-card strong { font-size: 21px; }
+.prayer-card-type { font-size: 11px; letter-spacing: .015em; color: #7e3d30; }
+.prayer-card-action { font-size: 12px; position: relative; z-index: 1; }
+.prayer-card-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 35px; }
+.prayer-card-medallion { display: grid; place-items: center; width: 44px; height: 44px; flex: 0 0 44px; border: 1px solid #ccaa7e; color: #914632; background: #f7ebd8; border-radius: 50%; font-size: 17px; font-weight: 800; font-family: var(--serif); }
+.prayer-browser-card { min-height: 234px; gap: 9px; }
+.prayer-browser-card h3 { font-size: 20px; line-height: 1.5; }
+.prayer-card-description { font-size: 12px; max-width: 39ch; line-height: 1.8; }
+.devotional-page-header { position: relative; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(200px,.5fr); gap: 20px; align-items: center; background: #f2e6d8; border: 1px solid #ddc7ae; padding: clamp(23px,3.5vw,43px); overflow: hidden; min-height: 248px; margin-top: 21px; }
+.devotional-page-header::before { content: ''; position: absolute; top: 0; left: 0; height: 4px; width: 100%; background: linear-gradient(90deg,#78322b,#cc9a59,#78322b); }
+.devotional-page-header h1 { margin: 12px 0 13px; font-size: clamp(32px,4vw,49px); line-height: 1.35; }
+.devotional-page-header p { margin: 0; max-width: 590px; font-size: 14px; line-height: 1.95; }
+.devotional-header-copy { position: relative; z-index: 1; }
+.devotional-header-meta { display: inline-block; margin-top: 15px; color: #906b53; font-size: 11px; letter-spacing: .05em; font-weight: 800; }
+.devotional-header-art { width: 190px; height: 190px; display: grid; place-items: center; justify-self: center; border: 2px solid #cda573; border-radius: 50%; box-shadow: 0 0 0 10px #f2e6d8,0 0 0 11px #d8b892,0 0 0 24px rgba(170,121,72,.06),inset 0 0 0 12px rgba(184,134,78,.05); background: #f9f0e3; position: relative; transform: rotate(-7deg); }
+.devotional-header-art::before, .devotional-header-art::after { content: '✦'; position: absolute; color: #b38858; font-size: 13px; }
+.devotional-header-art::before { top: 14px; }
+.devotional-header-art::after { bottom: 14px; }
+.devotional-header-seal { font-family: var(--serif); font-size: 35px; font-weight: 800; color: #8f4636; white-space: nowrap; }
+.devotional-header-caption { position: absolute; bottom: 39px; color: #a47b56; font-size: 9px; letter-spacing: .06em; }
+.prayer-discovery { background: #fffdfa; border: 1px solid #e2d0bc; border-top: 4px solid #903b32; padding: 29px 30px 20px; box-shadow: var(--card-shadow); }
+.prayer-discovery h2 { font-size: 26px; }
+.prayer-search-wrap input { border-color: #cdb8a1; background: #fffaf3; border-radius: 2px; min-height: 55px; padding: 12px 17px; font-size: 16px; }
+.prayer-filter-row { margin: 16px 0; gap: 9px; }
+.prayer-filter-row button { padding: 8px 15px; border-radius: 3px; border: 1px solid #d4c4b3; background: #faf4eb; }
+.prayer-filter-row button[aria-pressed="true"] { background: #7f312d; color: #fff; border-color: #7f312d; }
+.prayer-filter-bottom { border-color: #e7d9cb; }
+.deity-grid { gap: 15px; }
+.deity-tile { border: 1px solid #e2d2c0; background: linear-gradient(120deg,#f5e7d6,#eee1d1); min-height: 108px; padding: 16px 18px; position: relative; overflow: hidden; }
+.deity-tile:nth-child(2) { background: linear-gradient(120deg,#f7e9e1,#efe0d9); }
+.deity-tile:nth-child(3) { background: linear-gradient(120deg,#e5ede8,#dce5e0); }
+.deity-tile:nth-child(4) { background: linear-gradient(120deg,#ebe8db,#e5dfcf); }
+.deity-symbol { width: 49px; height: 49px; flex-basis: 49px; border-radius: 50%; background: #fff9ed; border: 1px solid #bd9773; color: var(--brand); }
+.deity-tile strong { font-size: 18px; }
+.deity-tile small { color: #7c6756; }
+.deity-page-header { display: grid; grid-template-columns: minmax(0,1fr) 145px; align-items: center; padding: 35px 39px; gap: 20px; border: 1px solid #ddc8b2; border-top: 4px solid #aa754b; background: #f2e7d9; }
+.deity-page-header h1 { line-height: 1.4; }
+.deity-page-seal { justify-self: center; display: grid; place-items: center; width: 125px; height: 125px; border: 2px solid #bf9461; border-radius: 50%; outline: 1px solid #d8b78c; outline-offset: 8px; font-size: 45px; font-family: var(--serif); color: #864035; background: #fcf4e7; }
+
+/* Full-text devotional reader: tactile but restrained paper, no intrusive UI. */
+.prayer-reader { max-width: 870px; }
+.prayer-reader .article-header { padding: 30px 18px 16px; border-top: 3px double #c49a68; }
+.prayer-reader .article-header h1 { font-size: clamp(33px,4vw,47px); line-height: 1.48; }
+.prayer-reader .article-deck { max-width: 690px; margin-inline: auto; }
+.prayer-kind { letter-spacing: .035em; }
+.prayer-byline { line-height: 1.8; }
+.prayer-back-category { margin-top: 17px; }
+.prayer-toolbar { max-width: 800px; margin: 22px auto 20px; border: 1px solid #deceb9; background: #ede1d2; padding: 14px 15px 11px; gap: 9px; }
+.prayer-toolbar button { min-height: 40px; background: #fffbf5; border: 1px solid #d4bfa6; color: #71352d; border-radius: 2px; font-weight: 800; }
+.prayer-toolbar button:hover { background: #f9ecda; }
+.prayer-status { color: #7b604d; }
+.prayer-sheet { position: relative; max-width: 800px; background: #fffcf6; border: 1px solid #dcc8ab; box-shadow: 0 11px 37px rgba(77,53,29,.07); padding: clamp(30px,5.7vw,65px) clamp(20px,6vw,73px); }
+.prayer-sheet::before { content: ''; position: absolute; inset: 12px; border: 1px solid rgba(174,127,75,.24); pointer-events: none; }
+.prayer-sheet-ornament, .prayer-sheet-end { font-family: var(--serif); text-align: center; color: #af8253; font-size: 15px; letter-spacing: .09em; }
+.prayer-sheet-ornament { margin: 0 auto 20px; }
+.prayer-sheet-end { border-top: 1px solid #e8d6bf; padding-top: 23px; margin-top: 33px; }
+.prayer-sheet > p:first-of-type { text-align: center; font-size: 15px; max-width: 610px; margin: 0 auto 34px; color: #63564a; line-height: 2.05; }
+.prayer-sheet h2 { color: #86402e; font-family: var(--serif); border: none; font-size: 25px; margin: 41px 0 24px; padding-bottom: 0; }
+.prayer-sheet h2::after { content: '❧'; display: block; font-size: 14px; color: #b8935e; line-height: 2.1; }
+.prayer-sheet h3 { color: #83523a; text-align: center; font-family: var(--serif); margin-top: 30px; }
+.prayer-sheet blockquote { max-width: 610px; background: transparent; border: none; border-top: 1px solid rgba(201,161,109,.24); border-radius: 0; padding: 27px 0 0; margin: 9px auto 27px; box-shadow: none; }
+.prayer-sheet blockquote:first-of-type { border-top: 0; }
+.prayer-sheet blockquote p { font-family: var(--serif); color: #46352c; line-height: 2.25; letter-spacing: .006em; margin-bottom: .95em; }
+.prayer-sheet blockquote p:last-child { margin-bottom: 0; }
+.prayer-sheet li { line-height: 1.85; }
+.prayer-sheet a { text-decoration-thickness: 1px; }
+
+/* Responsive adjustments, including genuinely narrow Hindi mobile layouts. */
+@media (max-width: 1050px) {
+  .nav-inner a { padding-inline: 12px; }
+  .nav-inner a::after { left: 12px; right: 12px; }
+  .intro-copy { padding: 45px 38px; }
+  .editorial-intro h1 { font-size: clamp(35px,4.5vw,50px); }
+  .intro-visual { padding-right: 24px; }
+  .deity-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 790px) {
+  .editorial-intro { grid-template-columns: minmax(0,1fr) minmax(0,.72fr); min-height: 405px; }
+  .intro-copy { padding: 41px 30px; }
+  .intro-copy::before { left: 30px; }
+  .editorial-intro h1 { font-size: clamp(35px,4.8vw,44px); }
+  .intro-visual { min-height: 405px; }
+  .intro-visual-overprint { bottom: 25%; left: 7%; font-size: 28px; }
+  .lead-copy { padding: 30px; }
+  .prayer-home-section { padding: 27px 25px; }
+  .devotional-page-header { grid-template-columns: minmax(0,1fr) 175px; }
+  .devotional-header-art { width: 160px; height: 160px; }
+  .devotional-header-seal { font-size: 27px; }
+  .devotional-header-caption { bottom: 31px; font-size: 8px; }
+}
+@media (max-width: 650px) {
+  .container { width: min(100% - 30px, 1210px); }
+  .header-main { min-height: 93px; }
+  .brand { gap: 13px; }
+  .brand-emblem { width: 44px; height: 44px; font-size: 21px; }
+  .brand-text strong { font-size: 29px; }
+  .nav-inner { min-height: 48px; }
+  .nav-inner a, .nav-inner a:first-child { min-height: 48px; padding: 11px 13px; font-size: 12px; }
+  .editorial-intro { display: flex; flex-direction: column; margin: 21px 0 36px; min-height: 0; }
+  .intro-copy { padding: 40px 24px 35px; }
+  .intro-copy::before { left: 24px; top: 21px; }
+  .editorial-intro h1 { font-size: clamp(35px,8.6vw,46px); line-height: 1.43; margin: 19px 0 14px; }
+  .editorial-intro p { font-size: 14px; line-height: 1.95; }
+  .intro-actions { margin-top: 24px; gap: 9px; }
+  .intro-actions a { padding: 11px 14px; font-size: 12px; gap: 9px; }
+  .intro-note { margin-top: 21px; }
+  .intro-visual { padding: 0 15px 15px; min-height: 285px; height: 285px; }
+  .intro-visual-cover { height: 100%; }
+  .intro-visual-side { display: none; }
+  .intro-visual-overprint { font-size: 31px; bottom: 21%; }
+  .artwork-intro .artwork-edition { top: 18px; left: 20px; }
+  .artwork-intro .artwork-caption { bottom: 18px; left: 20px; }
+  .lead-grid { display: flex; flex-direction: column; min-height: 0; }
+  .lead-art-link .editorial-artwork { height: 250px; min-height: 250px; }
+  .lead-copy { padding: 27px 24px 32px; }
+  .lead-copy h2 { font-size: 27px; }
+  .cards-grid { gap: 22px; }
+  .article-card h3 { font-size: 21px; }
+  .article-card-body { padding: 18px 19px 21px; }
+  .section-heading { align-items: flex-start; gap: 13px; }
+  .section-heading::before { height: 30px; margin-right: -6px; }
+  .section-heading h2 { font-size: 27px; }
+  .all-articles-link { font-size: 11px; line-height: 2.25; white-space: normal; text-align: right; max-width: 95px; }
+  .category-grid { gap: 15px; }
+  .category-tile { min-height: 155px; padding: 24px 21px; }
+  .mission-band { padding: 31px 25px; margin-bottom: 45px; }
+  .prayer-home-section { margin-top: 48px; padding: 20px 16px; }
+  .prayer-preview-card { padding: 21px; min-height: 166px; }
+  .prayer-browser-card { min-height: 0; }
+  .prayer-card-medallion { width: 39px; height: 39px; flex-basis: 39px; }
+  .devotional-page-header { grid-template-columns: 1fr; margin-top: 12px; padding: 28px 23px 25px; }
+  .devotional-page-header h1 { font-size: 35px; }
+  .devotional-page-header p { font-size: 13px; }
+  .devotional-header-art { display: none; }
+  .prayer-discovery { padding: 22px 18px 16px; }
+  .prayer-discovery h2 { font-size: 23px; }
+  .deity-grid { grid-template-columns: 1fr 1fr; gap: 9px; }
+  .deity-tile { min-height: 129px; padding: 15px; }
+  .deity-page-header { padding: 27px 21px; grid-template-columns: minmax(0,1fr) 65px; gap: 13px; }
+  .deity-page-header h1 { font-size: 33px; }
+  .deity-page-seal { width: 61px; height: 61px; font-size: 24px; outline-offset: 4px; }
+  .prayer-reader .article-header { padding: 25px 5px 12px; }
+  .prayer-reader .article-header h1 { font-size: 33px; }
+  .prayer-toolbar { padding: 11px; }
+  .prayer-sheet { padding: 33px 19px; margin-inline: auto; }
+  .prayer-sheet::before { inset: 7px; }
+  .prayer-sheet h2 { font-size: 21px; }
+  .prayer-sheet blockquote { padding-top: 19px; }
+  .prayer-sheet blockquote p { line-height: 2.15; }
+  .article-shell .full-article:not(.prayer-reader) .article-header h1 { font-size: 34px; }
+  .artwork-article { height: 234px; margin: 23px 0 31px; }
+  .footer-grid { gap: 25px; }
+}
+@media (max-width: 360px) {
+  .intro-actions a { flex: 1 1 100%; justify-content: space-between; }
+  .editorial-intro h1 { font-size: 34px; }
+  .deity-tile strong { font-size: 15px; }
+  .prayer-filter-row button { padding: 7px 10px; }
+  .prayer-sheet blockquote p { font-size: var(--prayer-font-size); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .article-card, .intro-actions a, .artwork-svg, .prayer-preview-card { transition: none !important; }
+}
+@media print {
+  body { background: #fff !important; }
+  .prayer-sheet { padding: 0 !important; border: 0 !important; box-shadow: none !important; background: #fff !important; }
+  .prayer-sheet::before, .prayer-sheet-ornament, .prayer-sheet-end { display: none !important; }
+  .prayer-sheet blockquote { border: none !important; }
+  .devotional-page-header { border: none !important; }
+}

@@ -6,6 +6,11 @@ on:
     branches: [main]
     paths:
       - 'src/pages/paath/**'
+      - 'src/pages/lekh/**'
+      - 'src/pages/index.astro'
+      - 'src/layouts/BaseLayout.astro'
+      - 'src/components/ArticleCard.astro'
+      - 'src/components/EditorialArtwork.astro'
       - 'src/components/PrayerCard.astro'
       - 'src/styles/**'
       - 'src/content/prayers/**'

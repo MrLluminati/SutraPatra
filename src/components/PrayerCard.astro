@@ -17,7 +17,10 @@ const { item, searchText } = Astro.props;
   data-deity={item.data.deitySlug}
   data-search={searchText}
 >
-  <span class="prayer-card-type">{kindLabels[item.data.kind]} · {item.data.deity}</span>
+  <div class="prayer-card-header">
+    <span class="prayer-card-type">{kindLabels[item.data.kind]} · {item.data.deity}</span>
+    <span class="prayer-card-medallion" aria-hidden="true">{item.data.deitySlug === 'ganesh' ? 'ग' : item.data.deitySlug === 'hanuman' ? 'ह' : item.data.deitySlug === 'shiv' ? 'शि' : 'वि'}</span>
+  </div>
   <h3><a class="prayer-card-title" href={'/paath/' + item.id + '/'}>{item.data.title}</a></h3>
   <p class="prayer-card-description">{item.data.description}</p>
   <a class="prayer-card-action" href={'/paath/' + item.id + '/'}>पूरा पाठ पढ़ें ←</a>

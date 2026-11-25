@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { formatHindiDate, getCategory } from '../lib/site';
+import EditorialArtwork from './EditorialArtwork.astro';
 
 interface Props {
   article: CollectionEntry<'articles'>;
@@ -13,9 +14,8 @@ const articleUrl = '/lekh/' + article.id + '/';
 ---
 
 <article class:list={['article-card', { compact }]}>
-  <a class:list={['article-art', 'theme-' + article.data.category]} href={articleUrl} aria-label={article.data.title}>
-    <span class="art-decor" aria-hidden="true">{category?.letter ?? 'सू'}</span>
-    <span class="art-corner" aria-hidden="true">सूत्रपत्र</span>
+  <a class="article-art-link" href={articleUrl} aria-label={article.data.title}>
+    <EditorialArtwork category={article.data.category} slug={article.id} format="card" />
   </a>
   <div class="article-card-body">
     <a class="eyebrow" href={'/vishay/' + article.data.category + '/'}>{category?.label}</a>
