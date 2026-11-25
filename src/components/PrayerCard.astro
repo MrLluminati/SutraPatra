@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { kindLabels } from '../lib/devotional';
+
+interface Props {
+  item: CollectionEntry<'prayers'>;
+  searchText?: string;
+}
+
+const { item, searchText } = Astro.props;
+---
+
+<article
+  class="prayer-preview-card prayer-browser-card"
+  data-prayer-card
+  data-kind={item.data.kind}
+  data-deity={item.data.deitySlug}
+  data-search={searchText}
+>
+  <span class="prayer-card-type">{kindLabels[item.data.kind]} · {item.data.deity}</span>
+  <h3><a class="prayer-card-title" href={'/paath/' + item.id + '/'}>{item.data.title}</a></h3>
+  <p class="prayer-card-description">{item.data.description}</p>
+  <a class="prayer-card-action" href={'/paath/' + item.id + '/'}>पूरा पाठ पढ़ें ←</a>
+</article>

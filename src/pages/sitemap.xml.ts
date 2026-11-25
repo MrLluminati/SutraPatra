@@ -1,6 +1,7 @@
 import { getCollection } from 'astro:content';
 import type { APIRoute } from 'astro';
 import { categories } from '../lib/site';
+import { deityGroups } from '../lib/devotional';
 
 const publicPages = [
   '/',
@@ -24,6 +25,7 @@ export const GET: APIRoute = async ({ site }) => {
   const entries = [
     ...publicPages.map((pathname) => ({ pathname })),
     ...categories.map(({ slug }) => ({ pathname: '/vishay/' + slug + '/' })),
+    ...deityGroups.map(({ slug }) => ({ pathname: '/paath/devta/' + slug + '/' })),
     ...articles.map(({ id, data }) => ({
       pathname: '/lekh/' + id + '/',
       modified: (data.updated ?? data.date).toISOString().slice(0, 10),

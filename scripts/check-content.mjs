@@ -74,10 +74,11 @@ for (const file of prayerFiles) {
     const m = line.match(/^([a-z]+):\s*(.*)$/);
     return m ? [m[1], m[2].trim().replace(/^["']|["']$/g, '')] : [];
   }).filter((item) => item.length === 2));
-  for (const key of ['title', 'description', 'kind', 'deity', 'attribution', 'date', 'draft']) {
+  for (const key of ['title', 'description', 'kind', 'deity', 'deitySlug', 'attribution', 'date', 'draft']) {
     if (!metadata[key]) errors.push(file + ': missing devotional field ' + key);
   }
   if (!['aarti', 'chalisa', 'stotra'].includes(metadata.kind)) errors.push(file + ': invalid devotional kind');
+  if (!['ganesh', 'hanuman', 'shiv', 'vishnu'].includes(metadata.deitySlug)) errors.push(file + ': invalid deitySlug');
   if (!['true', 'false'].includes(metadata.draft)) errors.push(file + ': invalid draft value');
   if (metadata.language && !['hi', 'mr', 'sa', 'awa'].includes(metadata.language)) errors.push(file + ': invalid language');
   if (!text.includes('## पाठ') && !text.includes('## स्रोत') && !text.includes('## संस्करण')) {

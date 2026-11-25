@@ -37,6 +37,12 @@ jobs:
           test -f dist/lekh/chhath-puja-char-din/index.html
           test -f dist/sitemap.xml
           test -f dist/paath/index.html
+          test -f dist/paath/devta/ganesh/index.html
+          test -f dist/paath/devta/hanuman/index.html
+          test -f dist/paath/devta/shiv/index.html
+          test -f dist/paath/devta/vishnu/index.html
+          grep -q 'id="prayer-search"' dist/paath/index.html
+          grep -q 'data-prayer-card' dist/paath/index.html
           test -f dist/paath/hanuman-chalisa/index.html
           test -f dist/paath/om-jai-jagdish-hare/index.html
           test -f dist/paath/jai-ganesh-deva/index.html

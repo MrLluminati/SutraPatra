@@ -23,6 +23,7 @@ const prayers = defineCollection({
     description: z.string().min(30),
     kind: z.enum(['aarti', 'chalisa', 'stotra']),
     deity: z.string().min(2),
+    deitySlug: z.enum(['ganesh', 'hanuman', 'shiv', 'vishnu']),
     language: z.enum(['hi', 'mr', 'sa', 'awa']).default('hi'),
     attribution: z.string().min(4),
     date: z.coerce.date(),

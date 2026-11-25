@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PrayerCard from '../../../components/PrayerCard.astro';
+import { deityGroups, type DeitySlug } from '../../../lib/devotional';
+
+interface Props {
+  deity: (typeof deityGroups)[number];
+}
+export function getStaticPaths() {
+  return deityGroups.map((deity) => ({
+    params: { deity: deity.slug },
+    props: { deity },
+  }));
+}
+const { deity } = Astro.props;
+const prayers = (await getCollection('prayers', ({ data }) => !data.draft && data.deitySlug === deity.slug))
+  .sort((a, b) => a.data.title.localeCompare(b.data.title, 'hi'));
+---
+
+<BaseLayout title={deity.name + ' की आरती, चालीसा और स्तोत्र'} description={deity.description + '। मूल देवनागरी पाठ और संस्करण-संदर्भ।'}>
+  <div class="container page-container">
+    <div class="breadcrumbs">
+      <a href="/">मुखपृष्ठ</a><span aria-hidden="true">/</span>
+      <a href="/paath/">भक्ति पाठ संग्रह</a><span aria-hidden="true">/</span>
+      <span>{deity.name}</span>
+    </div>
+    <header class="section-page-header">
+      <span class="section-kicker">देवता के अनुसार भक्ति संग्रह</span>
+      <h1>{deity.name} के पाठ</h1>
+      <p>{deity.description}। नीचे संग्रह में उपलब्ध पूरे पाठ पढ़ें। नए प्रमाणित पाठ समय के साथ जोड़े जाएँगे।</p>
+    </header>
+    {prayers.length > 0 ? (
+      <div class="prayer-list-grid">{prayers.map((item) => <PrayerCard item={item} />)}</div>
+    ) : (
+      <div class="empty-notice"><p>इस समय कोई प्रकाशित पाठ उपलब्ध नहीं है।</p></div>
+    )}
+    <p class="back-to-archive"><a href="/paath/">← सभी आरती, चालीसा और स्तोत्र देखें</a></p>
+  </div>
+</BaseLayout>

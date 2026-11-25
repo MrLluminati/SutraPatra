@@ -240,3 +240,48 @@ h1,h2,h3,h4 { line-height: 1.4; }
   body { background: white; }
   .article-shell { padding: 0; }
 }
+
+/* Client-only discovery interface; no server-side search or storage needed. */
+.prayer-discovery { border: 1px solid var(--line); border-top: 3px solid var(--brand); background: var(--surface); padding: 24px 26px 16px; margin-bottom: 45px; }
+.prayer-discovery h2 { font-family: var(--serif); font-size: 23px; margin: 0 0 13px; }
+.prayer-search-wrap label { display: block; font-weight: 750; font-size: 13px; margin-bottom: 7px; }
+.prayer-search-wrap input { display: block; width: 100%; min-height: 48px; padding: 11px 14px; border: 1px solid #cbb9ab; border-radius: 6px; background: #fff; color: var(--ink); font: inherit; font-size: 15px; }
+.prayer-search-wrap input:focus-visible { outline: 3px solid #e3b985; outline-offset: 2px; }
+.prayer-help { color: var(--muted); font-size: 12px; margin: 7px 0 14px; }
+.prayer-filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin: 13px 0; }
+.prayer-filter-row .filter-label { flex: 0 0 60px; font-size: 13px; font-weight: 800; color: #564a40; }
+.prayer-filter-row button { cursor: pointer; border: 1px solid #d5c8ba; border-radius: 100px; background: #fff9f2; padding: 7px 12px; color: #5a4b43; font: inherit; font-size: 13px; }
+.prayer-filter-row button[aria-pressed="true"] { background: var(--brand); color: #fff; border-color: var(--brand); }
+.prayer-filter-row button:hover:not([aria-pressed="true"]) { background: #f1e3d6; }
+.prayer-filter-row button:focus-visible, .prayer-clear:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.prayer-filter-bottom { display: flex; justify-content: space-between; align-items: center; gap: 20px; border-top: 1px solid var(--line); margin-top: 20px; padding-top: 12px; }
+.prayer-filter-bottom p { margin: 0; font-size: 13px; color: var(--muted); font-weight: 700; }
+.prayer-clear { font: inherit; font-size: 13px; background: transparent; color: var(--brand); font-weight: 800; border: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.deity-browse { margin-bottom: 50px; }
+.deity-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.deity-tile { display: flex; align-items: center; gap: 10px; min-height: 92px; background: #f4e8dc; border: 1px solid #e6d5c3; padding: 14px; }
+.deity-tile:hover { color: var(--brand-dark); box-shadow: 0 7px 19px rgba(60,44,31,.07); }
+.deity-symbol { display: grid; place-items: center; font-family: var(--serif); font-size: 24px; font-weight: 800; flex: 0 0 43px; height: 43px; color: var(--brand); border: 1px solid #d2b2a2; }
+.deity-tile > span:nth-child(2) { display: flex; flex: 1; flex-direction: column; min-width: 0; }
+.deity-tile strong { font-family: var(--serif); font-size: 16px; }
+.deity-tile small { color: var(--muted); font-size: 12px; }
+.deity-tile > span:last-child { color: var(--brand); }
+.prayer-type-section { margin-top: 48px; }
+.prayer-browser-card { display: flex; flex-direction: column; gap: 8px; min-height: 220px; }
+.prayer-browser-card h3 { font-size: 20px; line-height: 1.6; font-family: var(--serif); margin: 0; }
+.prayer-card-title:hover { color: var(--brand); }
+.prayer-card-description { color: var(--muted); font-size: 12px; line-height: 1.75; margin-bottom: 3px; }
+.prayer-browser-card[hidden], .prayer-type-section[hidden], .prayer-no-results[hidden] { display: none !important; }
+.prayer-no-results { margin-top: 20px; }
+.prayer-back-category { display: inline-block; color: var(--brand); font-size: 13px; font-weight: 800; margin-top: 12px; }
+.prayer-kind a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.back-to-archive { margin: 34px 0 0; color: var(--brand); font-weight: 800; }
+@media (max-width: 900px) { .deity-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width: 650px) {
+  .prayer-discovery { padding: 19px 16px 14px; }
+  .prayer-filter-row .filter-label { flex: 1 0 100%; }
+  .deity-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .deity-tile { flex-direction: column; align-items: flex-start; gap: 5px; min-height: 122px; }
+  .deity-tile > span:last-child { display: none; }
+  .prayer-filter-bottom { flex-wrap: wrap; gap: 6px; }
+}

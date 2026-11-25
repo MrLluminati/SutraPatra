@@ -60,3 +60,11 @@ draft: true
 Use blockquoted stanzas with two spaces before each line break to retain the two-line verse format. Include historical source/edition notes and clear treatment of text variants. Only public-domain source compositions or material with adequate republication rights may be added; do not copy modern translations or web-specific annotations without permission.
 
 The `/paath/` archive and site sitemap automatically include approved (non-draft) texts. Use the original language in metadata, including Marathi and Sanskrit rather than assuming all Devanagari is Hindi. Reading mode includes size adjustment, copy-text, and print controls. Refer to `docs/TEXT_SOURCES.md` before extending the library.
+
+## Devotional library browsing and zero-cost search
+
+All published texts are listed under `/paath/`. Every text includes a required `deitySlug` field whose value must be `ganesh`, `hanuman`, `shiv`, or `vishnu`. The label `deity` remains the human-facing display text.
+
+The `/paath/` library offers client-side searching over **titles, descriptions and the Markdown source of the complete text**, plus accessible filters by devotional type and deity. The search index is embedded by Astro during the build. No user query is transmitted to a server or analytics provider.
+
+The four deity directories at `/paath/devta/{slug}/` are statically generated and linked from the archive and individual texts. When adding a completely new deity, add a new entry to `src/lib/devotional.ts`, update the frontmatter schema in `src/content.config.ts`, and extend the validation script `scripts/check-content.mjs`.

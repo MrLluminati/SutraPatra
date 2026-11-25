@@ -46,3 +46,14 @@ Additional devotional sources:
 - `/paath/shiva-panchakshara-stotram/` — five Sanskrit verses plus phalashruti
 - `/paath/ganesha-pancharatnam/` — five Sanskrit verses plus phalashruti
 - `/paath/sukhkarta-dukhharta/` — three-stanza Marathi aarti
+
+## Search and deity navigation
+
+The static devotional collection supports full-text client-side search, kind filters (आरती, चालीसा, स्तोत्र) and deity navigation:
+
+- `/paath/devta/ganesh/`
+- `/paath/devta/hanuman/`
+- `/paath/devta/shiv/`
+- `/paath/devta/vishnu/`
+
+The search is generated at build time directly from published Markdown and does not use a paid API, hosted search index, cookies or database.

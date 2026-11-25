@@ -1,67 +1,143 @@
 ---
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PrayerCard from '../../components/PrayerCard.astro';
+import { deityGroups, kindLabels } from '../../lib/devotional';
 
 const prayers = (await getCollection('prayers', ({ data }) => !data.draft))
   .sort((a, b) => a.data.title.localeCompare(b.data.title, 'hi'));
-const chalisa = prayers.filter((item) => item.data.kind === 'chalisa');
-const aarti = prayers.filter((item) => item.data.kind === 'aarti');
-const stotra = prayers.filter((item) => item.data.kind === 'stotra');
+
+const groups = [
+  { kind: 'chalisa', title: 'चालीसा' },
+  { kind: 'aarti', title: 'आरतियाँ' },
+  { kind: 'stotra', title: 'स्तोत्र' },
+] as const;
+
+// Search index is embedded at build time and stays entirely in the browser:
+// no API, database, cookies, or third-party search service.
+const searchCorpus = new Map(prayers.map((prayer) => {
+  const source = readFileSync(join(process.cwd(), 'src', 'content', 'prayers', prayer.id + '.md'), 'utf8');
+  const text = source.replace(/^---[\s\S]*?---\r?\n/, '');
+  return [prayer.id, [prayer.data.title, prayer.data.description, prayer.data.deity, prayer.data.attribution, text].join(' ')];
+}));
 ---
 
-<BaseLayout title="संपूर्ण आरती, चालीसा और स्तोत्र पाठ" description="सूत्रपत्र पर पारंपरिक आरती, चालीसा और संस्कृत स्तोत्र का मूल देवनागरी पाठ पढ़ें। बड़े अक्षर, पाठ कॉपी और प्रिंट की सुविधा।">
-  <div class="container page-container">
-    <div class="breadcrumbs"><a href="/">मुखपृष्ठ</a><span aria-hidden="true">/</span><span>आरती, चालीसा और स्तोत्र</span></div>
+<BaseLayout title="आरती, चालीसा एवं स्तोत्र — खोजें और पढ़ें" description="आरती, चालीसा और स्तोत्र के मूल पाठ खोजें। श्री गणेश, शिव, हनुमान और विष्णु के अनुसार ब्राउज़ करें तथा किसी पाठ की पंक्ति से भी खोजें।">
+  <div class="container page-container" id="prayer-browser">
+    <div class="breadcrumbs"><a href="/">मुखपृष्ठ</a><span aria-hidden="true">/</span><span>भक्ति पाठ संग्रह</span></div>
     <header class="section-page-header">
-      <span class="section-kicker">सूत्रपत्र · भक्ति संग्रह</span>
-      <h1>आरती, चालीसा और स्तोत्र का मूल पाठ</h1>
-      <p>पढ़ने में सुविधाजनक देवनागरी पाठ। प्रत्येक रचना के साथ स्रोत और पाठभेद की जानकारी भी दी गई है।</p>
+      <span class="section-kicker">सूत्रपत्र · भक्ति पाठ संग्रह</span>
+      <h1>आरती, चालीसा और स्तोत्र</h1>
+      <p>पूरा मूल पाठ पढ़ें। नाम, देवता या पाठ की किसी पंक्ति से खोजें, अथवा नीचे दिए गए विषय चुनें।</p>
     </header>
-    {prayers.length === 0 ? <div class="empty-notice">अभी कोई प्रकाशित पाठ उपलब्ध नहीं है।</div> : (
+
+    <section class="prayer-discovery" aria-labelledby="discovery-heading">
+      <h2 id="discovery-heading">अपना पाठ खोजें</h2>
+      <div class="prayer-search-wrap">
+        <label for="prayer-search">भक्ति पाठ में खोजें</label>
+        <input id="prayer-search" type="search" autocomplete="off" spellcheck="false" placeholder="जैसे: हनुमान, नमः शिवाय, सुखकर्ता..." />
+        <p class="prayer-help">नाम और मूल श्लोकों सहित उपलब्ध पाठ में खोज। इंटरनेट कनेक्शन से कोई अतिरिक्त खोज अनुरोध नहीं किया जाता।</p>
+      </div>
+      <div class="prayer-filter-row" role="group" aria-label="पाठ का प्रकार">
+        <span class="filter-label">प्रकार</span>
+        <button type="button" data-kind-filter="all" aria-pressed="true">सभी</button>
+        {Object.entries(kindLabels).map(([key, label]) => <button type="button" data-kind-filter={key} aria-pressed="false">{label}</button>)}
+      </div>
+      <div class="prayer-filter-row" role="group" aria-label="देवता के अनुसार">
+        <span class="filter-label">देवता</span>
+        <button type="button" data-deity-filter="all" aria-pressed="true">सभी</button>
+        {deityGroups.map((deity) => <button type="button" data-deity-filter={deity.slug} aria-pressed="false">{deity.name}</button>)}
+      </div>
+      <div class="prayer-filter-bottom">
+        <p id="prayer-count" role="status" aria-live="polite">{prayers.length} पाठ उपलब्ध हैं</p>
+        <button type="button" id="clear-prayer-filters" class="prayer-clear">खोज साफ़ करें</button>
+      </div>
+    </section>
+
+    {prayers.length === 0 ? (
+      <div class="empty-notice">अभी कोई प्रकाशित पाठ उपलब्ध नहीं है।</div>
+    ) : (
       <>
-        {chalisa.length > 0 && (
-          <section aria-labelledby="chalisa-heading" class="home-section">
-            <div class="section-heading"><h2 id="chalisa-heading">चालीसा</h2></div>
-            <div class="prayer-list-grid">
-              {chalisa.map((item) => (
-                <a class="prayer-preview-card" href={'/paath/' + item.id + '/'}>
-                  <span class="prayer-card-type">चालीसा · {item.data.deity}</span>
-                  <strong>{item.data.title}</strong>
-                  <span class="prayer-card-action">पूरा पाठ पढ़ें ←</span>
+        <section class="deity-browse" aria-labelledby="deity-heading">
+          <div class="section-heading"><h2 id="deity-heading">देवता के अनुसार पढ़ें</h2></div>
+          <div class="deity-grid">
+            {deityGroups.map((deity) => {
+              const count = prayers.filter((prayer) => prayer.data.deitySlug === deity.slug).length;
+              return (
+                <a class="deity-tile" href={'/paath/devta/' + deity.slug + '/'}>
+                  <span class="deity-symbol" aria-hidden="true">{deity.symbol}</span>
+                  <span><strong>{deity.name}</strong><small>{count} पाठ</small></span>
+                  <span aria-hidden="true">←</span>
                 </a>
-              ))}
-            </div>
-          </section>
-        )}
-        {stotra.length > 0 && (
-          <section aria-labelledby="stotra-heading" class="home-section">
-            <div class="section-heading"><h2 id="stotra-heading">स्तोत्र</h2></div>
-            <div class="prayer-list-grid">
-              {stotra.map((item) => (
-                <a class="prayer-preview-card" href={'/paath/' + item.id + '/'}>
-                  <span class="prayer-card-type">स्तोत्र · {item.data.deity}</span>
-                  <strong>{item.data.title}</strong>
-                  <span class="prayer-card-action">पूरा मूल पाठ पढ़ें ←</span>
-                </a>
-              ))}
-            </div>
-          </section>
-        )}
-        {aarti.length > 0 && (
-          <section aria-labelledby="aarti-heading" class="home-section">
-            <div class="section-heading"><h2 id="aarti-heading">आरतियाँ</h2></div>
-            <div class="prayer-list-grid">
-              {aarti.map((item) => (
-                <a class="prayer-preview-card" href={'/paath/' + item.id + '/'}>
-                  <span class="prayer-card-type">आरती · {item.data.deity}</span>
-                  <strong>{item.data.title}</strong>
-                  <span class="prayer-card-action">पूरा पाठ पढ़ें ←</span>
-                </a>
-              ))}
-            </div>
-          </section>
-        )}
+              );
+            })}
+          </div>
+        </section>
+        <div id="prayer-results">
+          {groups.map((group) => {
+            const matches = prayers.filter((item) => item.data.kind === group.kind);
+            return matches.length > 0 && (
+              <section class="prayer-type-section" data-prayer-group aria-labelledby={'group-' + group.kind}>
+                <div class="section-heading"><h2 id={'group-' + group.kind}>{group.title}</h2></div>
+                <div class="prayer-list-grid">
+                  {matches.map((item) => <PrayerCard item={item} searchText={searchCorpus.get(item.id)} />)}
+                </div>
+              </section>
+            );
+          })}
+        </div>
+        <div class="empty-notice prayer-no-results" id="prayer-no-results" hidden>
+          <h2>कोई पाठ नहीं मिला</h2>
+          <p>दूसरा शब्द आज़माएँ या प्रकार और देवता वाले फ़िल्टर हटा दें।</p>
+        </div>
       </>
     )}
   </div>
+
+  <script>
+    const browser = document.getElementById('prayer-browser');
+    const search = document.getElementById('prayer-search') as HTMLInputElement | null;
+    const cards = [...(browser?.querySelectorAll<HTMLElement>('[data-prayer-card]') ?? [])];
+    const sections = [...(browser?.querySelectorAll<HTMLElement>('[data-prayer-group]') ?? [])];
+    const kindButtons = [...(browser?.querySelectorAll<HTMLButtonElement>('[data-kind-filter]') ?? [])];
+    const deityButtons = [...(browser?.querySelectorAll<HTMLButtonElement>('[data-deity-filter]') ?? [])];
+    const count = document.getElementById('prayer-count');
+    const noResults = document.getElementById('prayer-no-results');
+    const reset = document.getElementById('clear-prayer-filters');
+    let kind = 'all';
+    let deity = 'all';
+    const normalize = (value: string) => value.normalize('NFC').toLocaleLowerCase('hi').replace(/\s+/g, ' ').trim();
+    const searchIndex = new Map(cards.map((card) => [card, normalize(card.dataset.search ?? '')]));
+    function applyFilters() {
+      const terms = normalize(search?.value ?? '').split(' ').filter(Boolean);
+      let visible = 0;
+      cards.forEach((card) => {
+        const matchesKind = kind === 'all' || card.dataset.kind === kind;
+        const matchesDeity = deity === 'all' || card.dataset.deity === deity;
+        const matchesWords = terms.every((term) => (searchIndex.get(card) ?? '').includes(term));
+        const show = matchesKind && matchesDeity && matchesWords;
+        card.hidden = !show;
+        if (show) visible++;
+      });
+      sections.forEach((section) => {
+        section.hidden = ![...section.querySelectorAll<HTMLElement>('[data-prayer-card]')].some((card) => !card.hidden);
+      });
+      kindButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.kindFilter === kind)));
+      deityButtons.forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.deityFilter === deity)));
+      if (count) count.textContent = new Intl.NumberFormat('hi-IN').format(visible) + ' पाठ मिले';
+      if (noResults) noResults.hidden = visible !== 0;
+    }
+    search?.addEventListener('input', applyFilters);
+    kindButtons.forEach((button) => button.addEventListener('click', () => { kind = button.dataset.kindFilter ?? 'all'; applyFilters(); }));
+    deityButtons.forEach((button) => button.addEventListener('click', () => { deity = button.dataset.deityFilter ?? 'all'; applyFilters(); }));
+    reset?.addEventListener('click', () => {
+      kind = 'all';
+      deity = 'all';
+      if (search) search.value = '';
+      applyFilters();
+      search?.focus();
+    });
+  </script>
 </BaseLayout>
