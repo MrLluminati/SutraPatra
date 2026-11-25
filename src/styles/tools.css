@@ -1,0 +1,124 @@
+/* SutraPatra religious tools — original editorial UI, no remote assets. */
+.tools-container{padding-bottom:80px}
+.tools-hero{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(190px,.6fr);align-items:center;gap:40px;padding:43px clamp(26px,5vw,65px);border:1px solid #dfcbb5;border-top:4px solid #a36f45;background:linear-gradient(120deg,#f5e9db 0%,#f3e4d3 100%);min-height:280px}
+.tools-hero h1,.tool-page-header h1{font-family:var(--serif);font-size:clamp(36px,5vw,54px);line-height:1.37;margin:13px 0 16px;letter-spacing:-.02em}
+.tools-hero h1 em{font-style:normal;color:var(--brand)}
+.tools-hero p,.tool-page-header p{font-size:16px;line-height:1.95;max-width:660px;color:#67584e;margin:0}
+.tools-tagline{display:block;margin-top:23px;font-size:12px;font-weight:750;color:#925b43}
+.tools-emblem{place-self:center;display:grid;place-items:center;width:185px;height:185px;border-radius:50%;border:2px solid #be9363;outline:1px solid #d3b891;outline-offset:11px;background:radial-gradient(circle,#fff8ed,#eddbc4);color:#81392d;font-family:var(--serif);font-size:73px;box-shadow:0 0 0 23px rgba(183,137,83,.05)}
+.tools-section{margin-top:53px}
+.tools-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.tool-card{display:flex;flex-direction:column;min-height:233px;gap:10px;padding:27px 29px;background:#fffdfa;border:1px solid #e5d7c8;border-top:3px solid #a87d51;box-shadow:var(--card-shadow);position:relative;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}
+.tool-card:hover{transform:translateY(-3px);box-shadow:0 16px 28px rgba(70,40,20,.1);color:var(--ink)}
+.tool-symbol{font-family:var(--serif);font-size:33px;color:#873c31;display:grid;place-items:center;background:#f6e9d8;border:1px solid #dbb88f;border-radius:50%;height:62px;width:62px}
+.tool-card-tag{font-size:11px;font-weight:800;color:#9d6248;letter-spacing:.035em}
+.tool-card strong{font-family:var(--serif);font-size:23px;line-height:1.5}
+.tool-card>span:nth-last-child(2){font-size:13px;color:#695d53;line-height:1.8}
+.tool-card-cta{margin-top:auto;color:var(--brand);font-size:12px;font-weight:850;padding-top:7px}
+.tool-note,.kundli-notice{padding:23px 28px;border:1px solid #dec6a7;background:#f3e5d5;margin-top:36px}
+.tool-note strong,.kundli-notice strong{font-family:var(--serif);font-size:18px;color:#68312c}
+.tool-note p,.kundli-notice p{color:#695b50;font-size:13px;line-height:1.9;margin:8px 0 0}
+.home-tools-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.home-tool-link{display:flex;align-items:center;gap:15px;min-width:0;padding:18px 19px;background:linear-gradient(120deg,#f6eee4,#eae0d3);border:1px solid #decdb9}
+.home-tool-link:hover{background:#e8d7c3;color:var(--brand)}
+.home-tool-icon{flex:0 0 55px;width:55px;height:55px;display:grid;place-items:center;font-family:var(--serif);font-size:23px;border-radius:50%;color:var(--brand);border:1px solid #caa781;background:#fff7eb}
+.home-tool-link>span:nth-child(2){display:flex;min-width:0;flex:1;flex-direction:column}
+.home-tool-link strong{font-family:var(--serif);font-size:17px;line-height:1.4}
+.home-tool-link small{font-size:11px;color:#887364;margin-top:4px}
+.home-tool-link>span:last-child{color:var(--brand);font-weight:900}
+.tool-detail{max-width:990px;padding-top:22px;padding-bottom:85px}
+.tool-page-header{text-align:center;max-width:760px;margin:13px auto 35px}
+.tool-page-header h1{margin:11px 0}
+.tool-page-header p{font-size:15px;margin:auto}
+.tool-explainer{margin:42px auto 0;max-width:800px;border-top:1px solid #ddc9b3;padding-top:26px}
+.tool-explainer h2{font-family:var(--serif);font-size:25px;color:#71332e;margin:13px 0 13px}
+.tool-explainer p,.tool-explainer li{line-height:2;font-size:15px;color:#5b5047}
+.tool-explainer a{color:var(--brand);text-decoration:underline;text-underline-offset:3px}
+.jaap-panel,.checklist-panel{max-width:720px;margin:auto;background:#fffcf7;border:1px solid #ddc9b1;border-top:4px solid #9e6745;padding:clamp(22px,4vw,44px);box-shadow:var(--card-shadow)}
+.jaap-panel{text-align:center}
+.jaap-symbol{display:block;font-family:var(--serif);font-size:33px;color:#8b3a31;line-height:1}
+.jaap-ring{width:min(270px,100%);position:relative;margin:14px auto 22px;aspect-ratio:1}
+.jaap-ring svg{display:block;width:100%;height:100%}
+.jaap-ring-center{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;line-height:1.4}
+.jaap-ring-center span{font-size:13px;color:#7b6251;font-weight:750}
+.jaap-ring-center strong{font-size:65px;font-family:var(--serif);color:#84362d;font-weight:800;line-height:1.25}
+.jaap-ring-center small{font-size:15px;color:#987c5e}
+.jaap-tap,.tool-action{border:0;background:var(--brand);color:#fff9ef;min-height:55px;padding:12px 29px;cursor:pointer;font-family:var(--sans);font-size:18px;font-weight:800;transition:background .18s}
+.jaap-tap{width:min(330px,100%);border-radius:3px}
+.jaap-tap:hover,.tool-action:hover{background:var(--brand-dark)}
+.jaap-help{font-size:12px;color:#87786a;margin:10px 0 17px}
+.jaap-stats{display:grid;grid-template-columns:1fr 1fr;gap:13px;max-width:465px;margin:23px auto}
+.jaap-stats div{background:#f3e9dc;border:1px solid #e0cdb7;padding:18px 15px;display:flex;flex-direction:column;gap:4px}
+.jaap-stats span{color:#795c4c;font-size:12px}
+.jaap-stats strong{font-family:var(--serif);color:#76322d;font-size:29px}
+.tool-button-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px 0}
+.tool-button-row button,.puja-add-form button{font-family:var(--sans);font-size:13px;font-weight:750;min-height:42px;padding:9px 15px;cursor:pointer;border:1px solid #c9ae92;background:#f4e7d7;color:#75392e}
+.tool-button-row button:hover,.puja-add-form button:hover{background:#e9d6c1}
+.tool-checkbox{display:flex;gap:9px;align-items:center;justify-content:center;margin-top:18px;font-size:13px;color:#65564a;cursor:pointer}
+.tool-checkbox input{width:19px;height:19px;accent-color:var(--brand)}
+.tool-feedback{font-size:13px;color:#754c38;min-height:1.7em;margin:13px 0 0}
+.tool-field label,.puja-add-form label{display:block;font-size:13px;font-weight:800;color:#59473d;margin-bottom:8px}
+.tool-field select,.tool-field input,.puja-add-form input{display:block;width:100%;min-height:48px;font-family:var(--sans);font-size:15px;background:#fffaf4;border:1px solid #cdb79f;color:#342923;padding:10px 13px;border-radius:2px}
+.tool-field select:focus-visible,.tool-field input:focus-visible,.puja-add-form input:focus-visible{outline:3px solid #c99e67;outline-offset:2px}
+.tool-caveat{font-size:12px;color:#766657;background:#f7eddf;border-left:3px solid #be9466;padding:14px;margin:20px 0}
+.checklist-progress{margin:20px 0 20px}
+.checklist-progress>div{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:#7f5542}
+.checklist-progress progress{width:100%;height:13px;accent-color:#9a4d3a;margin-top:9px}
+.puja-items{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.puja-item{min-width:0;background:#faf3e9;border:1px solid #e6d5c1}
+.puja-item label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;padding:13px;font-size:13px;line-height:1.6;color:#51473d}
+.puja-item input{accent-color:var(--brand);margin-top:3px;flex:0 0 18px;width:18px;height:18px}
+.puja-item.checked{background:#f0eadf}
+.puja-item.checked span{text-decoration:line-through;color:#8b8179}
+.puja-add-form{border-top:1px solid #e4d3c1;padding-top:23px;margin-top:24px}
+.puja-add-form>div{display:flex;gap:10px}
+.puja-add-form input{flex:1;min-width:0}
+.tool-form{background:#fffaf4;border:1px solid #dfcbb5;padding:25px 28px 30px;max-width:820px;margin:auto}
+.tool-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.tool-action{font-size:15px;margin-top:22px;min-height:47px}
+.solar-result{max-width:820px;border:1px solid #dec6a6;background:#f4e6d6;margin:22px auto 0;padding:25px;text-align:center}
+.solar-result[hidden]{display:none}
+.solar-times{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:15px 0}
+.solar-times>div{display:flex;flex-direction:column;gap:9px;background:#fffcf5;padding:20px 10px;border:1px solid #e3d3be}
+.solar-icon{font-size:31px;color:#a7753c}
+.solar-times span:not(.solar-icon){font-size:13px;color:#746254}
+.solar-times strong{font-family:var(--serif);font-size:clamp(19px,3vw,29px);color:#743a30}
+.solar-result p{font-size:14px;color:#6a5546}
+.solar-timezone{font-size:12px!important;color:#8d7769!important}
+.tool-detail>#sun-feedback{max-width:820px;margin:12px auto}
+.kundli-notice{max-width:790px;margin:28px auto;padding:27px}
+.tool-card:focus-visible,.home-tool-link:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+@media(max-width:850px){.home-tools-grid{grid-template-columns:1fr}.tools-hero{gap:20px}.tools-emblem{width:140px;height:140px;font-size:57px}}
+@media(max-width:650px){
+  .tools-container{padding-bottom:45px}
+  .tools-hero{grid-template-columns:1fr;padding:30px 24px;gap:0}
+  .tools-hero h1,.tool-page-header h1{font-size:36px}
+  .tools-hero p,.tool-page-header p{font-size:14px}
+  .tools-emblem{display:none}
+  .tools-grid{grid-template-columns:1fr;gap:13px}
+  .tool-card{min-height:190px;padding:22px}
+  .tool-card strong{font-size:21px}
+  .tool-detail{padding-bottom:50px}
+  .jaap-panel,.checklist-panel{padding:20px 16px}
+  .jaap-ring{max-width:230px}
+  .jaap-ring-center strong{font-size:56px}
+  .jaap-stats{gap:9px}
+  .puja-items{grid-template-columns:1fr}
+  .puja-add-form>div{flex-direction:column}
+  .tool-form{padding:20px 17px}
+  .tool-form-grid{grid-template-columns:1fr;gap:15px}
+  .solar-result{padding:17px}
+  .solar-times{gap:8px}
+  .solar-times>div{padding:15px 5px}
+  .solar-times strong{font-size:19px}
+}
+@media(max-width:360px){.tool-button-row button{flex:1 1 100%}.home-tool-link{gap:10px;padding:14px}}
+@media(prefers-reduced-motion:reduce){.tool-card{transition:none}}
+@media print{
+  .site-header,.site-footer,.utility-bar,.breadcrumbs,.tool-page-header,.puja-add-form,.tool-button-row,.tool-checkbox,.tool-feedback,.tool-explainer,.tool-action,.tool-form,.tool-note{display:none!important}
+  body{background:white!important}
+  .tool-detail{width:100%;max-width:100%;padding:0}
+  .checklist-panel,.solar-result{max-width:100%;box-shadow:none;border:0;padding:0}
+  .puja-items{grid-template-columns:repeat(2,1fr)}
+  .puja-item{break-inside:avoid}
+}

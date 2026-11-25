@@ -49,5 +49,10 @@ jobs:
           test -f dist/paath/shiva-panchakshara-stotram/index.html
           test -f dist/paath/ganesha-pancharatnam/index.html
           test -f dist/paath/sukhkarta-dukhharta/index.html
+          test -f dist/upkaran/index.html
+          test -f dist/upkaran/jaap-mala/index.html
+          test -f dist/upkaran/puja-samagri/index.html
+          test -f dist/upkaran/suryoday-suryast/index.html
+          test -f dist/upkaran/janam-kundli/index.html
           test -f dist/rss.xml
           test -f dist/robots.txt

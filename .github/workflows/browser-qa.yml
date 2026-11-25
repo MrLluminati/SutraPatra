@@ -7,6 +7,8 @@ on:
     paths:
       - 'src/pages/paath/**'
       - 'src/pages/lekh/**'
+      - 'src/pages/upkaran/**'
+      - 'src/lib/religious-tools.ts'
       - 'src/pages/index.astro'
       - 'src/layouts/BaseLayout.astro'
       - 'src/components/ArticleCard.astro'

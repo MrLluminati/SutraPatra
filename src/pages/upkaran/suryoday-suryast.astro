@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { indianCities } from '../../lib/religious-tools';
+---
+<BaseLayout title="सूर्योदय और सूर्यास्त कैलकुलेटर — भारत" description="भारत के चुनिंदा शहरों के लिए तारीख के अनुसार सूर्योदय और सूर्यास्त का खगोलीय समय। बिना लॉगइन के गणना।">
+  <div class="container tool-detail">
+    <div class="breadcrumbs"><a href="/">मुखपृष्ठ</a><span aria-hidden="true">/</span><a href="/upkaran/">धार्मिक उपकरण</a><span aria-hidden="true">/</span><span>सूर्योदय और सूर्यास्त</span></div>
+    <header class="tool-page-header"><span class="section-kicker">खगोलीय गणना</span><h1>सूर्योदय और सूर्यास्त</h1><p>शहर और तारीख चुनकर सूर्य के दिखने और अस्त होने का अनुमानित समय जानें।</p></header>
+    <form id="sun-form" class="tool-form">
+      <div class="tool-form-grid">
+        <div class="tool-field"><label for="sun-city">शहर</label><select id="sun-city" required>{indianCities.map((city)=><option value={city.id}>{city.name}</option>)}</select></div>
+        <div class="tool-field"><label for="sun-date">तारीख</label><input id="sun-date" type="date" min="2000-01-01" max="2099-12-31" required /></div>
+      </div>
+      <button type="submit" class="tool-action">सूर्योदय-सूर्यास्त देखें</button>
+    </form>
+    <section class="solar-result" id="sun-results" aria-live="polite" hidden>
+      <span class="section-kicker" id="sun-caption">खगोलीय समय</span>
+      <div class="solar-times"><div><span class="solar-icon" aria-hidden="true">☼</span><span>सूर्योदय</span><strong id="sunrise-time">—</strong></div><div><span class="solar-icon" aria-hidden="true">☾</span><span>सूर्यास्त</span><strong id="sunset-time">—</strong></div></div>
+      <p id="sun-duration"></p><p class="solar-timezone">सभी समय भारतीय मानक समय (IST, UTC+05:30) में हैं।</p>
+    </section>
+    <p id="sun-feedback" class="tool-feedback" role="status" aria-live="polite">शहर और तारीख चुनें।</p>
+    <section class="tool-explainer">
+      <h2>यह समय कैसे निकाला जाता है?</h2>
+      <p>गणना <a href="https://github.com/cosinekitty/astronomy" target="_blank" rel="noopener noreferrer">Astronomy Engine (MIT लाइसेंस)</a> के सूर्य उदय/अस्त खगोलीय मॉडल से की जाती है। शहर के केंद्र के निर्देशांक और आदर्श क्षितिज का उपयोग होता है। स्थानीय पहाड़, इमारत, मौसम और दृश्यता वास्तविक समय को बदल सकते हैं।</p>
+      <p><strong>यह पंचांग या पूजा का मुहूर्त नहीं है।</strong> अलग धार्मिक गणनाओं में स्थान, सूर्योदय की परिभाषा और संबंधित व्रत-विधि अलग हो सकती है। चयनित शहर के निर्देशांक ब्राउज़र के भीतर उपयोग होते हैं; कोई सटीक GPS स्थान नहीं माँगा जाता।</p>
+      <a href="/lekh/bharatiya-panchang-kya-hai/">पंचांग के पाँच अंग समझें ←</a>
+    </section>
+  </div>
+  <script>
+    import * as Astronomy from 'astronomy-engine';
+    import { indianCities } from '../../lib/religious-tools';
+    const form = document.getElementById('sun-form');
+    const citySelect = document.getElementById('sun-city') as HTMLSelectElement | null;
+    const dateInput = document.getElementById('sun-date') as HTMLInputElement | null;
+    const results = document.getElementById('sun-results') as HTMLElement | null;
+    const feedback = document.getElementById('sun-feedback');
+    function currentIndiaDate() {
+      const values = Object.fromEntries(new Intl.DateTimeFormat('en-GB', {timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).map(p=>[p.type,p.value]));
+      return values.year+'-'+values.month+'-'+values.day;
+    }
+    if (dateInput) dateInput.value = currentIndiaDate();
+    function timeInIndia(date: Date): string {
+      return new Intl.DateTimeFormat('hi-IN', {timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}).format(date);
+    }
+    function indiaDay(date: Date): string {
+      return currentDayFrom(date);
+    }
+    function currentDayFrom(date: Date): string {
+      const parts=Object.fromEntries(new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Kolkata',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(date).map(x=>[x.type,x.value]));
+      return parts.year+'-'+parts.month+'-'+parts.day;
+    }
+    form?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (results) results.hidden = true;
+      const city = indianCities.find(c=>c.id===citySelect?.value);
+      const date = dateInput?.value ?? '';
+      if (!city || !/^20\d\d-\d\d-\d\d$/.test(date) || date < '2000-01-01' || date > '2099-12-31') {
+        if (feedback) feedback.textContent='सही शहर और 2000–2099 के बीच तारीख चुनें।'; return;
+      }
+      try {
+        const midnight = new Date(date+'T00:00:00+05:30');
+        if (Number.isNaN(midnight.getTime())) throw new Error('तारीख मान्य नहीं है');
+        const observer = new Astronomy.Observer(city.lat, city.lon, 0);
+        const rise = Astronomy.SearchRiseSet(Astronomy.Body.Sun, observer, +1, midnight, 1);
+        const set = Astronomy.SearchRiseSet(Astronomy.Body.Sun, observer, -1, midnight, 1);
+        if (!rise || !set || indiaDay(rise.date)!==date || indiaDay(set.date)!==date) throw new Error('इस दिन के लिए समय उपलब्ध नहीं है।');
+        const durationMinutes = Math.round((set.date.getTime() - rise.date.getTime()) / 60000);
+        if (durationMinutes<=0 || durationMinutes > 1440) throw new Error('सूर्य की समय-गणना असामान्य है।');
+        const riseEl = document.getElementById('sunrise-time');
+        const setEl = document.getElementById('sunset-time');
+        const caption = document.getElementById('sun-caption');
+        const duration = document.getElementById('sun-duration');
+        if (riseEl) riseEl.textContent=timeInIndia(rise.date);
+        if (setEl) setEl.textContent=timeInIndia(set.date);
+        if (caption) caption.textContent=city.name+' · '+date;
+        if (duration) duration.textContent='दिन की अनुमानित अवधि: '+new Intl.NumberFormat('hi-IN').format(Math.floor(durationMinutes/60))+' घंटे '+new Intl.NumberFormat('hi-IN').format(durationMinutes%60)+' मिनट';
+        if (results) results.hidden = false;
+        if (feedback) feedback.textContent='गणना पूरी हुई।';
+      } catch {
+        if (feedback) feedback.textContent='समय की गणना नहीं हो सकी। तारीख बदलकर फिर प्रयास करें।';
+      }
+    });
+  </script>
+</BaseLayout>

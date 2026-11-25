@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import EditorialArtwork from '../components/EditorialArtwork.astro';
+import { toolCatalog } from '../lib/religious-tools';
 import { categories, formatHindiDate, getCategory } from '../lib/site';
 
 const articles = (await getCollection('articles', ({ data }) => !data.draft))
@@ -73,6 +74,21 @@ const featuredCategory = featured && getCategory(featured.data.category);
         </div>
       </section>
     )}
+    <section class="home-section home-tools-section" aria-labelledby="tools-title">
+      <div class="section-heading">
+        <div><span class="section-kicker">निःशुल्क डिजिटल साधन</span><h2 id="tools-title">धार्मिक उपकरण</h2></div>
+        <a class="all-articles-link" href="/upkaran/">सभी उपकरण देखें ←</a>
+      </div>
+      <div class="home-tools-grid">
+        {toolCatalog.filter((tool) => tool.ready).map((tool) => (
+          <a class="home-tool-link" href={'/upkaran/' + tool.slug + '/'}>
+            <span class="home-tool-icon" aria-hidden="true">{tool.symbol}</span>
+            <span><strong>{tool.title}</strong><small>{tool.tag}</small></span>
+            <span aria-hidden="true">←</span>
+          </a>
+        ))}
+      </div>
+    </section>
     <section class="home-section" aria-labelledby="recent-title">
       <div class="section-heading"><div><span class="section-kicker">नई प्रस्तुतियाँ</span><h2 id="recent-title">नवीन लेख</h2></div><a class="all-articles-link" href="/lekh/">सभी लेख देखें <span aria-hidden="true">←</span></a></div>
       <div class="cards-grid">

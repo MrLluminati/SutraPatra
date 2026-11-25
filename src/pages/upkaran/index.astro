@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { toolCatalog } from '../../lib/religious-tools';
+---
+<BaseLayout title="धार्मिक उपकरण — जाप माला, पूजा सामग्री और सूर्योदय" description="सूत्रपत्र के निःशुल्क धार्मिक उपकरण: डिजिटल जाप माला, पूजा सामग्री चेकलिस्ट और सूर्योदय-सूर्यास्त।">
+  <div class="container tools-container">
+    <div class="breadcrumbs"><a href="/">मुखपृष्ठ</a><span aria-hidden="true">/</span><span>धार्मिक उपकरण</span></div>
+    <header class="tools-hero">
+      <div>
+        <span class="section-kicker">सूत्रपत्र · उपयोगी डिजिटल साधन</span>
+        <h1>धार्मिक <em>उपकरण</em></h1>
+        <p>पूजा की तैयारी, दैनिक जाप और खगोलीय समय — सहज, निःशुल्क और गोपनीयता का ध्यान रखने वाले साधन।</p>
+        <span class="tools-tagline">श्रद्धा और उपयोगिता · बिना साइन-इन</span>
+      </div>
+      <div class="tools-emblem" aria-hidden="true">ॐ</div>
+    </header>
+    <section class="tools-section" aria-labelledby="tools-head">
+      <div class="section-heading"><h2 id="tools-head">अपने काम का उपकरण चुनें</h2></div>
+      <div class="tools-grid">
+        {toolCatalog.map((tool) => (
+          <a class="tool-card" href={'/upkaran/' + tool.slug + '/'}>
+            <span class="tool-symbol" aria-hidden="true">{tool.symbol}</span>
+            <span class="tool-card-tag">{tool.tag}{!tool.ready && ' · तैयारी में'}</span>
+            <strong>{tool.title}</strong>
+            <span>{tool.description}</span>
+            <span class="tool-card-cta">{tool.ready ? 'उपकरण खोलें' : 'कार्ययोजना देखें'} ←</span>
+          </a>
+        ))}
+      </div>
+    </section>
+    <aside class="tool-note"><strong>पारदर्शिता और गोपनीयता</strong><p>जाप काउंटर और चेकलिस्ट आपके ब्राउज़र में काम करते हैं। जन्म कुंडली का गणना-इंजन अभी जारी नहीं किया गया है; हम किसी का जन्म-विवरण एकत्र नहीं कर रहे।</p></aside>
+  </div>
+</BaseLayout>

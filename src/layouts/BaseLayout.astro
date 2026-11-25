@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import '../styles/visual-refresh.css';
+import '../styles/tools.css';
 import { categories, siteName, siteNameEnglish, tagline } from '../lib/site';
 
 interface Props {
@@ -64,6 +65,7 @@ const currentSection = (path: string) => currentPath === path || (path !== '/' &
           <a class="nav-home" href="/" aria-current={currentPath === '/' ? 'page' : undefined}>मुखपृष्ठ</a>
           {categories.map((category) => <a href={'/vishay/' + category.slug + '/'} aria-current={currentSection('/vishay/' + category.slug + '/') ? 'page' : undefined}>{category.label}</a>)}
           <a href="/paath/" aria-current={currentSection('/paath/') ? 'page' : undefined}>आरती, चालीसा और स्तोत्र</a>
+          <a href="/upkaran/" aria-current={currentSection('/upkaran/') ? 'page' : undefined}>धार्मिक उपकरण</a>
           <a href="/lekh/" aria-current={currentSection('/lekh/') ? 'page' : undefined}>सभी लेख</a>
           <a class="nav-about" href="/hamare-bare-mein/">हमारे बारे में</a>
         </div>
@@ -87,7 +89,7 @@ const currentSection = (path: string) => currentPath === path || (path !== '/' &
           <p>{tagline} — भारतीय संस्कृति और सामान्य विषयों पर स्पष्ट, सुलभ और उपयोगी हिंदी सामग्री।</p>
         </div>
         <div><h2>विषय</h2>{categories.map((category) => <a href={'/vishay/' + category.slug + '/'}>{category.label}</a>)}</div>
-        <div><h2>महत्वपूर्ण लिंक</h2><a href="/paath/">संपूर्ण आरती और चालीसा पाठ</a><a href="/lekh/">सभी लेख</a><a href="/hamare-bare-mein/">हमारे बारे में</a><a href="/sampadakiya-neeti/">संपादकीय नीति</a><a href="/gopniyata/">गोपनीयता नीति</a><a href="/sampark/">संपर्क</a></div>
+        <div><h2>महत्वपूर्ण लिंक</h2><a href="/paath/">संपूर्ण आरती और चालीसा पाठ</a><a href="/upkaran/">धार्मिक उपकरण</a><a href="/lekh/">सभी लेख</a><a href="/hamare-bare-mein/">हमारे बारे में</a><a href="/sampadakiya-neeti/">संपादकीय नीति</a><a href="/gopniyata/">गोपनीयता नीति</a><a href="/sampark/">संपर्क</a></div>
       </div>
       <div class="container footer-bottom"><span>© {year} सूत्रपत्र। सर्वाधिकार सुरक्षित।</span><span>स्वतंत्र प्रकाशन · हिंदी में</span></div>
     </footer>

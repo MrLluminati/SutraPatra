@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { pujaTemplates } from '../../lib/religious-tools';
+const initial = pujaTemplates[0];
+---
+<BaseLayout title="पूजा सामग्री सूची — चेकलिस्ट" description="गणेश, शिव, लक्ष्मी और सत्यनारायण पूजा की सामग्री चुनें, टिक करें, अपनी वस्तुएँ जोड़ें और सूची कॉपी या प्रिंट करें।">
+  <div class="container tool-detail">
+    <div class="breadcrumbs"><a href="/">मुखपृष्ठ</a><span aria-hidden="true">/</span><a href="/upkaran/">धार्मिक उपकरण</a><span aria-hidden="true">/</span><span>पूजा सामग्री सूची</span></div>
+    <header class="tool-page-header"><span class="section-kicker">पूजा की तैयारी</span><h1>पूजा सामग्री सूची</h1><p>पूजा का प्रकार चुनें, सामग्री तैयार होने पर टिक करें और जरूरत के अनुसार अपनी वस्तु जोड़ें।</p></header>
+    <div class="checklist-panel">
+      <div class="tool-field"><label for="puja-type">किस पूजा के लिए तैयारी कर रहे हैं?</label><select id="puja-type">{pujaTemplates.map((item) => <option value={item.id}>{item.name}</option>)}</select></div>
+      <p class="tool-caveat">यह एक सामान्य शुरुआती सूची है। किसी परिवार, क्षेत्र या पूजा-विधि में सामग्री अलग हो सकती है; अपने पुरोहित या पारिवारिक परंपरा का अनुसरण करें।</p>
+      <div class="checklist-progress">
+        <div><strong id="puja-progress">० / {new Intl.NumberFormat('hi-IN').format(initial.items.length)} तैयार</strong><span id="puja-percent">०%</span></div>
+        <progress id="puja-progress-bar" max={initial.items.length} value="0">0</progress>
+      </div>
+      <ul id="puja-list" class="puja-items">
+        {initial.items.map((name, index) => <li class="puja-item"><label><input type="checkbox" value={index} /><span>{name}</span></label></li>)}
+      </ul>
+      <form id="puja-add-form" class="puja-add-form">
+        <label for="puja-custom">अपनी सामग्री जोड़ें</label>
+        <div><input id="puja-custom" type="text" maxlength="80" placeholder="उदाहरण: पूजा के लिए एक अतिरिक्त वस्तु" autocomplete="off" /><button type="submit">सूची में जोड़ें</button></div>
+      </form>
+      <div class="tool-button-row"><button id="puja-copy" type="button">सूची कॉपी करें</button><button id="puja-print" type="button">प्रिंट करें</button><button id="puja-clear" type="button">टिक हटाएँ</button></div>
+      <p id="puja-feedback" class="tool-feedback" role="status" aria-live="polite"></p>
+    </div>
+    <section class="tool-explainer"><h2>इस सूची का सही उपयोग</h2><p>उपरोक्त सामग्री सामान्य परंपराओं से ली गई है; यह किसी एक पूजा की अनिवार्य या संपूर्ण विधि नहीं है। क्षेत्र, गृह-परंपरा तथा अनुष्ठान के स्वरूप के अनुसार सामग्री और प्रसाद बदल सकते हैं।</p><p>चेकलिस्ट आपकी स्क्रीन पर काम करती है। इसमें दर्ज कोई वस्तु सर्वर पर नहीं भेजी जाती, और पृष्ठ पुनः खोलने पर सूची नए सिरे से शुरू होती है।</p><a href="/paath/">आरती और स्तोत्र पढ़ें ←</a></section>
+  </div>
+  <script>
+    import { pujaTemplates } from '../../lib/religious-tools';
+    const select = document.getElementById('puja-type') as HTMLSelectElement | null;
+    const list = document.getElementById('puja-list') as HTMLUListElement | null;
+    const custom = document.getElementById('puja-custom') as HTMLInputElement | null;
+    const progress = document.getElementById('puja-progress');
+    const percent = document.getElementById('puja-percent');
+    const bar = document.getElementById('puja-progress-bar') as HTMLProgressElement | null;
+    const feedback = document.getElementById('puja-feedback');
+    const hi = (n: number) => new Intl.NumberFormat('hi-IN').format(n);
+    let entries: {label:string,done:boolean}[] = [];
+    function updateProgress() {
+      const complete = entries.filter((item) => item.done).length;
+      if (progress) progress.textContent = hi(complete) + ' / ' + hi(entries.length) + ' तैयार';
+      if (percent) percent.textContent = hi(Math.round(complete * 100 / Math.max(entries.length,1))) + '%';
+      if (bar) { bar.max = entries.length || 1; bar.value = complete; }
+    }
+    function render() {
+      if (!list) return;
+      list.replaceChildren();
+      entries.forEach((entry, index) => {
+        const row = document.createElement('li');
+        row.className = 'puja-item';
+        const label = document.createElement('label');
+        const input = document.createElement('input');
+        input.type = 'checkbox'; input.checked = entry.done; input.value = String(index);
+        input.addEventListener('change', () => { entries[index].done = input.checked; row.classList.toggle('checked', input.checked); updateProgress(); });
+        label.append(input);
+        const span = document.createElement('span');
+        span.textContent = entry.label;
+        label.append(span); row.append(label);
+        row.classList.toggle('checked', entry.done); list.append(row);
+      });
+      updateProgress();
+    }
+    function selectTemplate() {
+      const selected = pujaTemplates.find((item) => item.id === select?.value) ?? pujaTemplates[0];
+      entries = selected.items.map((label) => ({label, done:false}));
+      if (feedback) feedback.textContent = selected.name + ' की सूची खुली है।';
+      render();
+    }
+    select?.addEventListener('change', selectTemplate);
+    document.getElementById('puja-add-form')?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const name = custom?.value.trim().replace(/\s+/g,' ');
+      if (!name) { custom?.focus(); return; }
+      if (entries.some((e) => e.label.toLocaleLowerCase('hi') === name.toLocaleLowerCase('hi'))) {
+        if (feedback) feedback.textContent = 'यह वस्तु पहले से सूची में है।';
+        return;
+      }
+      entries.push({label:name,done:false});
+      if (custom) custom.value = '';
+      render();
+      if (feedback) feedback.textContent = 'नई सामग्री जोड़ दी गई।';
+    });
+    document.getElementById('puja-copy')?.addEventListener('click', async () => {
+      const title = pujaTemplates.find((item)=>item.id===select?.value)?.name ?? 'पूजा सामग्री';
+      const output = title + '\n' + entries.map((item)=>(item.done?'☑ ':'☐ ')+item.label).join('\n');
+      try { await navigator.clipboard.writeText(output); if (feedback) feedback.textContent = 'सूची कॉपी हो गई।'; }
+      catch { if (feedback) feedback.textContent = 'कॉपी नहीं हुई; ब्राउज़र की अनुमति जाँचें।'; }
+    });
+    document.getElementById('puja-print')?.addEventListener('click', () => window.print());
+    document.getElementById('puja-clear')?.addEventListener('click', () => { entries.forEach(e=>e.done=false); render(); if (feedback) feedback.textContent='सभी टिक हटा दिए गए।'; });
+    selectTemplate();
+  </script>
+</BaseLayout>

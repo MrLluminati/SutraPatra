@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout title="डिजिटल जाप माला — 108 जाप का काउंटर" description="108 मनकों वाली डिजिटल जाप माला: एक स्पर्श में जाप, पूरी माला की गणना, पिछला जाप और रीसेट।">
+  <div class="container tool-detail">
+    <div class="breadcrumbs"><a href="/">मुखपृष्ठ</a><span aria-hidden="true">/</span><a href="/upkaran/">धार्मिक उपकरण</a><span aria-hidden="true">/</span><span>डिजिटल जाप माला</span></div>
+    <header class="tool-page-header"><span class="section-kicker">जाप और ध्यान</span><h1>डिजिटल जाप माला</h1><p>प्रत्येक स्पर्श पर एक जाप जोड़ें। 108 जाप पूरे होने पर एक माला पूरी होगी।</p></header>
+    <section class="jaap-panel" aria-label="108 जाप का काउंटर">
+      <span class="jaap-symbol" aria-hidden="true">ॐ</span>
+      <div class="jaap-ring">
+        <svg viewBox="0 0 244 244" aria-hidden="true" focusable="false">
+          <circle cx="122" cy="122" r="107" fill="none" stroke="#e1cbb1" stroke-width="11"/>
+          <circle id="jaap-progress-ring" cx="122" cy="122" r="107" fill="none" stroke="#873b33" stroke-width="11" stroke-linecap="round" transform="rotate(-90 122 122)" stroke-dasharray="672.3" stroke-dashoffset="672.3"/>
+          <circle cx="122" cy="122" r="91" fill="#fffaf1" stroke="#e2d0b7"/>
+        </svg>
+        <div class="jaap-ring-center"><span>वर्तमान माला</span><strong id="jaap-current">०</strong><small>/ १०८</small></div>
+      </div>
+      <button id="jaap-tap" class="jaap-tap" type="button">एक जाप जोड़ें ＋</button>
+      <p class="jaap-help">बटन टैप करें या कीबोर्ड पर Enter/Space दबाएँ।</p>
+      <div class="jaap-stats"><div><span>पूरी मालाएँ</span><strong id="jaap-malas">०</strong></div><div><span>कुल जाप</span><strong id="jaap-total">०</strong></div></div>
+      <div class="tool-button-row"><button id="jaap-undo" type="button">पिछला जाप हटाएँ</button><button id="jaap-reset" type="button">गिनती शून्य करें</button></div>
+      <label class="tool-checkbox"><input id="jaap-save" type="checkbox" /> इस ब्राउज़र पर गिनती याद रखें</label>
+      <p id="jaap-feedback" class="tool-feedback" role="status" aria-live="polite">जाप आरंभ करने के लिए बटन दबाएँ।</p>
+    </section>
+    <section class="tool-explainer"><h2>108 जाप का अर्थ</h2><p>विभिन्न हिंदू परंपराओं में 108 मनकों की माला प्रचलित है। मंत्र, जाप संख्या और पूजा-विधि परंपरा के अनुसार बदलती है। यह उपकरण केवल गिनती करने का माध्यम है, धार्मिक निर्देश नहीं।</p><p>गिनती केवल आपके ब्राउज़र पर रहती है। स्थानीय रूप से सहेजना वैकल्पिक है; विकल्प बंद करने पर सहेजी हुई गिनती मिटा दी जाएगी।</p><a href="/paath/">मंत्र, आरती एवं चालीसा संग्रह देखें ←</a></section>
+  </div>
+  <script>
+    const key = 'sutrapatra-jaap-v1';
+    const totalEl = document.getElementById('jaap-total');
+    const currentEl = document.getElementById('jaap-current');
+    const malaEl = document.getElementById('jaap-malas');
+    const ring = document.getElementById('jaap-progress-ring');
+    const feedback = document.getElementById('jaap-feedback');
+    const saveBox = document.getElementById('jaap-save') as HTMLInputElement | null;
+    const hindi = (value: number) => new Intl.NumberFormat('hi-IN').format(value);
+    let total = 0;
+    let persist = false;
+    try {
+      const stored = localStorage.getItem(key);
+      if (stored !== null) {
+        const parsed = JSON.parse(stored);
+        if (Number.isSafeInteger(parsed?.total) && parsed.total >= 0) {
+          total = parsed.total; persist = true;
+          if (saveBox) saveBox.checked = true;
+        }
+      }
+    } catch { /* Storage access can be disabled */ }
+    function paint(message?: string) {
+      if (totalEl) totalEl.textContent = hindi(total);
+      if (currentEl) currentEl.textContent = hindi(total % 108);
+      if (malaEl) malaEl.textContent = hindi(Math.floor(total / 108));
+      ring?.setAttribute('stroke-dashoffset', String(672.3 * (1 - (total % 108) / 108)));
+      if (feedback && message) feedback.textContent = message;
+      if (persist) { try { localStorage.setItem(key, JSON.stringify({total})); } catch { /* private mode */ } }
+    }
+    document.getElementById('jaap-tap')?.addEventListener('click', () => {
+      if (total >= Number.MAX_SAFE_INTEGER) return;
+      total++;
+      paint(total % 108 === 0 ? 'एक माला पूरी हुई।' : 'जाप जुड़ गया।');
+      if (total % 108 === 0 && 'vibrate' in navigator) navigator.vibrate?.(70);
+    });
+    document.getElementById('jaap-undo')?.addEventListener('click', () => { if (total > 0) total--; paint('एक जाप हटाया गया।'); });
+    document.getElementById('jaap-reset')?.addEventListener('click', () => {
+      if (total === 0 || window.confirm('क्या आप पूरी गिनती शून्य करना चाहते हैं?')) { total = 0; paint('नई गिनती आरंभ।'); }
+    });
+    saveBox?.addEventListener('change', () => {
+      persist = saveBox.checked;
+      if (persist) paint('अब गिनती इसी ब्राउज़र पर सहेजी जाएगी।');
+      else { try { localStorage.removeItem(key); } catch { /* storage blocked */ } paint('सहेजी हुई गिनती हटा दी गई।'); }
+    });
+    paint();
+  </script>
+</BaseLayout>
