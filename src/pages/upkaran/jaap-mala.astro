@@ -32,7 +32,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     const ring = document.getElementById('jaap-progress-ring');
     const feedback = document.getElementById('jaap-feedback');
     const saveBox = document.getElementById('jaap-save') as HTMLInputElement | null;
-    const hindi = (value: number) => new Intl.NumberFormat('hi-IN').format(value);
+    const hindi = (value: number) => new Intl.NumberFormat('hi-IN-u-nu-deva').format(value);
     let total = 0;
     let persist = false;
     try {

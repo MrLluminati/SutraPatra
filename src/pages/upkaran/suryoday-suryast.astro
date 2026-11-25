@@ -40,7 +40,7 @@ import { indianCities } from '../../lib/religious-tools';
     }
     if (dateInput) dateInput.value = currentIndiaDate();
     function timeInIndia(date: Date): string {
-      return new Intl.DateTimeFormat('hi-IN', {timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}).format(date);
+      return new Intl.DateTimeFormat('hi-IN-u-nu-deva', {timeZone:'Asia/Kolkata',hour:'numeric',minute:'2-digit',hour12:true}).format(date);
     }
     function indiaDay(date: Date): string {
       return currentDayFrom(date);
@@ -73,7 +73,7 @@ import { indianCities } from '../../lib/religious-tools';
         if (riseEl) riseEl.textContent=timeInIndia(rise.date);
         if (setEl) setEl.textContent=timeInIndia(set.date);
         if (caption) caption.textContent=city.name+' · '+date;
-        if (duration) duration.textContent='दिन की अनुमानित अवधि: '+new Intl.NumberFormat('hi-IN').format(Math.floor(durationMinutes/60))+' घंटे '+new Intl.NumberFormat('hi-IN').format(durationMinutes%60)+' मिनट';
+        if (duration) duration.textContent='दिन की अनुमानित अवधि: '+new Intl.NumberFormat('hi-IN-u-nu-deva').format(Math.floor(durationMinutes/60))+' घंटे '+new Intl.NumberFormat('hi-IN-u-nu-deva').format(durationMinutes%60)+' मिनट';
         if (results) results.hidden = false;
         if (feedback) feedback.textContent='गणना पूरी हुई।';
       } catch {

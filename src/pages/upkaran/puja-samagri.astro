@@ -11,7 +11,7 @@ const initial = pujaTemplates[0];
       <div class="tool-field"><label for="puja-type">किस पूजा के लिए तैयारी कर रहे हैं?</label><select id="puja-type">{pujaTemplates.map((item) => <option value={item.id}>{item.name}</option>)}</select></div>
       <p class="tool-caveat">यह एक सामान्य शुरुआती सूची है। किसी परिवार, क्षेत्र या पूजा-विधि में सामग्री अलग हो सकती है; अपने पुरोहित या पारिवारिक परंपरा का अनुसरण करें।</p>
       <div class="checklist-progress">
-        <div><strong id="puja-progress">० / {new Intl.NumberFormat('hi-IN').format(initial.items.length)} तैयार</strong><span id="puja-percent">०%</span></div>
+        <div><strong id="puja-progress">० / {new Intl.NumberFormat('hi-IN-u-nu-deva').format(initial.items.length)} तैयार</strong><span id="puja-percent">०%</span></div>
         <progress id="puja-progress-bar" max={initial.items.length} value="0">0</progress>
       </div>
       <ul id="puja-list" class="puja-items">
@@ -35,7 +35,7 @@ const initial = pujaTemplates[0];
     const percent = document.getElementById('puja-percent');
     const bar = document.getElementById('puja-progress-bar') as HTMLProgressElement | null;
     const feedback = document.getElementById('puja-feedback');
-    const hi = (n: number) => new Intl.NumberFormat('hi-IN').format(n);
+    const hi = (n: number) => new Intl.NumberFormat('hi-IN-u-nu-deva').format(n);
     let entries: {label:string,done:boolean}[] = [];
     function updateProgress() {
       const complete = entries.filter((item) => item.done).length;
