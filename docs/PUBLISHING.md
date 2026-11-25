@@ -1,6 +1,6 @@
 # Publishing an article
 
-Each article is a Markdown file in `src/content/articles/`. File names become article URL slugs, for example:
+SutraPatra articles are Markdown files in `src/content/articles/`. File names become article URL slugs:
 
 `src/content/articles/example-article.md` → `/lekh/example-article/`
 
@@ -11,35 +11,29 @@ Use the following frontmatter:
 title: "लेख का स्पष्ट हिंदी शीर्षक"
 description: "लेख का सारांश, जो पाठक को वास्तविक जानकारी दे और खोज परिणाम में भी दिख सके।"
 category: "dharm-sanskriti"
-date: 2026-11-23
+date: 2026-11-25
 author: "सूत्रपत्र संपादकीय"
 featured: false
 draft: true
 ---
 ```
 
-Valid category identifiers:
+Valid categories: `dharm-sanskriti`, `aarti-stotra`, and `vrat-tyohar`.
 
-- `dharm-sanskriti`
-- `aarti-stotra`
-- `vrat-tyohar`
+## Solo editorial workflow
 
-Write the article below the frontmatter using Markdown headings, paragraphs and links. Set `draft: false` **only after human editorial review**. Draft entries will not appear in production routes or article lists.
+1. Choose a topic from `docs/EDITORIAL_PLAN.md` (or propose another topic).
+2. Draft an original Hindi explainer, recording the specific source links used.
+3. Verify all key facts, wording, citations, regional differences, and copyright boundaries.
+4. Run `npm run check:content` (automatically run by GitHub Actions) to catch missing metadata and broken internal article links.
+5. **Have the owner review the text before marking `draft: false` in routine publication workflows.** A draft is excluded from the website and sitemap.
+6. Commit to `main`. Cloudflare Pages automatically deploys updates.
+7. Check the published page and the `/sitemap.xml` entry.
 
-To correct an existing article, you may add an `updated: YYYY-MM-DD` field. Retain the original `date` when making an ordinary correction.
+**ChatGPT-assisted path:** Give the topic, notes or reference material in this conversation. ChatGPT can make direct GitHub repository changes when authorized and available. No Codex, local PowerShell, or paid editor is needed.
 
-Please verify factual statements, avoid copying copyrighted materials and disclose sponsored content clearly if introduced in the future.
+**GitHub web fallback:** Open `src/content/articles/`, choose **Add file → Create new file**, enter the slug and `.md` extension, and add content with `draft: true`. Request a review before publishing.
 
-## Publishing workflow for our solo operation
+Use `updated: YYYY-MM-DD` for substantive corrections while retaining the original publication date in `date`. Avoid year-specific claims without year/location verification.
 
-1. Choose a topic from `docs/EDITORIAL_PLAN.md` (or propose a new one).
-2. Create a **draft**, verify names/dates/claims and add sources as appropriate.
-3. Check that the heading answers a clear reader question, the body is useful and accurate, and copyrighted material is not copied.
-4. Set `draft: false` only after review. GitHub automatically builds the updated site through Cloudflare Pages.
-5. Confirm the article URL works and appears in `/sitemap.xml`.
-
-**ChatGPT-assisted path:** Send the proposed topic, notes and/or sources in this conversation. ChatGPT can prepare or update the Markdown file directly in the GitHub repository where connected permissions allow. No Codex, paid editor, or local PowerShell is required.
-
-**Manual GitHub fallback:** Open `src/content/articles/` in GitHub and use **Add file → Create new file**. Choose a descriptive, lowercase hyphen-separated name ending in `.md`. Use the frontmatter from this document, save it with `draft: true`, then request review before changing to `draft: false`.
-
-Never publish articles solely to hit an arbitrary daily quantity. Correct existing content when warranted, and keep the original publication date on ordinary edits.
+The first source-linked batch is recorded in `docs/ARTICLE_REVIEW.md`. The six articles from that batch need a final site-owner copyedit even though they were prepared and source-compared before publication. The original three articles should also be reviewed for citations.

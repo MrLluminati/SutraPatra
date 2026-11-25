@@ -20,6 +20,8 @@ jobs:
           node-version: '22'
       - name: Install dependencies
         run: npm install --no-audit --no-fund
+      - name: Validate article frontmatter and internal links
+        run: npm run check:content
       - name: Build static website
         run: npm run build
       - name: Verify key generated pages
@@ -27,6 +29,12 @@ jobs:
           test -f dist/index.html
           test -f dist/lekh/index.html
           test -f dist/lekh/aarti-aur-stotra-mein-antar/index.html
+          test -f dist/lekh/bharatiya-panchang-kya-hai/index.html
+          test -f dist/lekh/sankranti-aur-tithi-mein-antar/index.html
+          test -f dist/lekh/amavasya-aur-purnima/index.html
+          test -f dist/lekh/aditya-hridaya-stotra-parichay/index.html
+          test -f dist/lekh/hanuman-chalisa-parichay/index.html
+          test -f dist/lekh/chhath-puja-char-din/index.html
           test -f dist/sitemap.xml
           test -f dist/rss.xml
           test -f dist/robots.txt
